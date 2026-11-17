@@ -1,9 +1,11 @@
-import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner } from "../lib.js";
+import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey } from "../lib.js";
 
 export function ExplainButton({ cid, conceptId, snippet, label }) {
+  const hasKey = useHasKey();
   const [state, setState] = useState(null); // null | "loading" | {md} | {error}
   const [msg, setMsg] = useState("");
   const [open, setOpen] = useState(false);
+  if (!hasKey) return null; // needs live Claude; without a key, ask Claude Code instead
   async function ask() {
     setState("loading");
     try { const r = await api(`/courses/${cid}/explain`, { json: { concept_id: conceptId, snippet, message: msg } }); setState({ md: r.markdown }); }

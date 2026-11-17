@@ -48,9 +48,9 @@ export function HomePage() {
       </p>
     </div>
 
-    ${h && !h.api_key_configured && html`<div class="notice warn">
-      <b>No Anthropic API key yet.</b> You can explore the demo course now; to analyze your own materials,
-      add a key in <a href="#/settings">Settings</a>.
+    ${h && !h.ai_available && html`<div class="notice accent">
+      <b>No AI API key? No problem.</b> Create a course, add its files, then ask Claude Code to <i>"build the FinalForge pack"</i> for it
+      (details on the course's Materials page). Or add Claude, OpenAI, Gemini or another provider in <a href="#/settings">Settings</a> to let the app analyze files by itself.
     </div>`}
     ${err && html`<div class="notice bad">${err}</div>`}
 

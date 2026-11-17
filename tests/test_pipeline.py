@@ -8,10 +8,22 @@ import pytest
 from app import config, llm, pipeline, schemas, storage
 
 
+class FakeProvider:
+    native_pdf = True
+    pdf_mode = "auto"
+    concurrency = 2
+    label = "Fake · test"
+    model = "test"
+
+    def prices(self):
+        return None
+
+
 @pytest.fixture()
 def tmp_data(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "COURSES_DIR", tmp_path / "courses")
-    monkeypatch.setattr(config, "CONCURRENCY", 2)
+    monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
+    monkeypatch.setattr(llm, "provider", lambda role="main": FakeProvider())
     return tmp_path
 
 
@@ -101,7 +113,8 @@ def test_full_pipeline(tmp_data, monkeypatch):
             break
         time.sleep(0.05)
     job = storage.get_job(cid)
-    assert job["status"] == "completed", job["log"]
+    assert job["status"] == "completed" and job["errors"] == 0, job["log"]
+    assert job["log"][-1]["msg"].startswith("Finished (completed)")
 
     kn = storage.get_knowledge(cid)
     ids = {c["id"] for c in kn["concepts"]}

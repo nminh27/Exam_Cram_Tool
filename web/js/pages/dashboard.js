@@ -26,7 +26,8 @@ export function DashboardPage({ cid, d }) {
         <h3>Let's build your knowledge base</h3>
         <ol class="md">
           <li>Upload lecture notes, slides, textbook chapters, and <b>every past paper</b> (plus solutions if you have them).</li>
-          <li>Press <b>Analyze</b>. Claude reads everything, maps the concepts, finds every exam question pattern and builds practice.</li>
+          <li>Press <b>Analyze</b> (needs an API key), or ask Claude Code to build the pack for this course (no key needed).
+            Either way Claude reads everything, maps the concepts, finds every exam question pattern and builds practice.</li>
           <li>Learn each concept in atomic steps, then train with MCQs and step-by-step exam problems.</li>
         </ol>
         <a class="btn primary" href=${`#/c/${cid}/materials`}>Go to materials →</a>

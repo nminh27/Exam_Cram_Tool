@@ -43,17 +43,17 @@ PRICE_CACHE_READ = 0.20
 PRICE_CACHE_WRITE = 8.0  # 1-hour TTL writes
 
 
-def api_key_configured() -> bool:
-    return bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
+SETTINGS_FILE = DATA_DIR / "settings.json"  # AI providers (no secrets; keys live in .env)
 
 
-def save_api_key(key: str) -> None:
-    """Persist the key the user typed in Settings to .env (never committed: .env is gitignored)."""
-    key = key.strip()
+def set_env_var(name: str, value: str | None) -> None:
+    """Write (or with value=None remove) NAME=value in .env, which is git-ignored, and in this process."""
     lines: list[str] = []
     if ENV_FILE.exists():
-        lines = [ln for ln in ENV_FILE.read_text(encoding="utf-8").splitlines()
-                 if not ln.startswith("ANTHROPIC_API_KEY=")]
-    lines.append(f"ANTHROPIC_API_KEY={key}")
-    ENV_FILE.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    os.environ["ANTHROPIC_API_KEY"] = key
+        lines = [ln for ln in ENV_FILE.read_text(encoding="utf-8").splitlines() if not ln.startswith(f"{name}=")]
+    if value is not None:
+        lines.append(f"{name}={value.strip()}")
+        os.environ[name] = value.strip()
+    else:
+        os.environ.pop(name, None)
+    ENV_FILE.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")

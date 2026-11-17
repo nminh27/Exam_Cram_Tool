@@ -5,6 +5,7 @@ Run with:  python -m uvicorn app.main:app --port 8000   (or run.bat / run.ps1)
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 from typing import Any
 
@@ -12,7 +13,8 @@ from fastapi import Body, FastAPI, File, Form, HTTPException, Request, UploadFil
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import config, ingest, llm, pipeline, storage
+from . import config, ingest, llm, packkit, pipeline, settings, storage
+from .providers import make_provider
 
 app = FastAPI(title=config.APP_NAME)
 
@@ -38,18 +40,71 @@ async def _conflict(_: Request, exc: RuntimeError):
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"ok": True, "app": config.APP_NAME, "model": config.MODEL,
-            "api_key_configured": config.api_key_configured(), "fallbacks": config.USE_FALLBACKS}
+    p = llm.provider("main")
+    q = llm.provider("quick")
+    return {"ok": True, "app": config.APP_NAME,
+            "ai_available": p is not None,
+            "api_key_configured": p is not None,  # kept for older UI code
+            "mode": "api" if p else "claude_code",
+            "provider": p.rec["label"] if p else None, "model": p.model if p else None,
+            "quick_provider": q.label if q else None,
+            "native_pdf": p.native_pdf if p else None}
 
 
-@app.post("/api/settings/api-key")
-def set_api_key(payload: dict = Body(...)) -> dict:
-    key = str(payload.get("key", "")).strip()
-    if not key.startswith("sk-"):
-        raise HTTPException(400, "That does not look like an Anthropic API key (it should start with sk-).")
-    config.save_api_key(key)
-    llm.reset_client()
-    return {"api_key_configured": True}
+@app.get("/api/settings")
+def get_settings() -> dict:
+    return settings.public()
+
+
+@app.post("/api/settings/providers")
+def save_provider(payload: dict = Body(...)) -> dict:
+    if payload.get("preset") and payload["preset"] not in settings.PRESETS_BY_ID:
+        raise HTTPException(400, "Unknown provider preset")
+    rec = settings.upsert(payload)
+    return {"saved": rec["id"], "settings": settings.public()}
+
+
+@app.delete("/api/settings/providers/{pid}")
+def delete_provider(pid: str) -> dict:
+    settings.remove(pid)
+    return settings.public()
+
+
+@app.post("/api/settings/roles")
+def set_roles(payload: dict = Body(...)) -> dict:
+    settings.set_roles(payload.get("main") or None, payload.get("quick") or None)
+    return settings.public()
+
+
+@app.post("/api/settings/models")
+def list_models(payload: dict = Body(...)) -> dict:
+    """Models available to a saved provider, or to an unsaved one described in the payload."""
+    if payload.get("id"):
+        rec = settings.get(payload["id"])
+        key = str(payload.get("api_key") or "") or settings.get_key(rec)
+    else:
+        rec = settings._normalize({k: v for k, v in payload.items() if k in settings.FIELDS})
+        key = str(payload.get("api_key") or "") or None
+    if rec["type"] == "openai" and not rec["base_url"]:
+        raise HTTPException(400, "Enter the API base URL first.")
+    return {"models": make_provider(rec, key).list_models()}
+
+
+@app.post("/api/settings/providers/{pid}/test")
+def test_provider(pid: str) -> dict:
+    rec = settings.get(pid)
+    if not settings.is_ready(rec):
+        raise HTTPException(400, "Add a model (and a key, if this provider needs one) first.")
+    prov = make_provider(rec, settings.get_key(rec))
+    t0 = time.time()
+    out = llm.structured("You are a connection test.", "Reply with answer = \"ok\" and the number 2+2 as sum.",
+                         TEST_SCHEMA, effort="low", max_tokens=2000, prov=prov)
+    return {"ok": out.get("answer", "").strip().lower() == "ok" and int(out.get("sum", 0)) == 4,
+            "reply": out, "seconds": round(time.time() - t0, 1), "label": prov.label}
+
+
+TEST_SCHEMA = {"type": "object", "properties": {"answer": {"type": "string"}, "sum": {"type": "integer"}},
+               "required": ["answer", "sum"], "additionalProperties": False}
 
 
 # ------------------------------------------------------------------ courses
@@ -138,8 +193,8 @@ def material_digest(cid: str, mid: str) -> dict:
 # ------------------------------------------------------------------ analysis jobs
 
 def _require_key() -> None:
-    if not config.api_key_configured():
-        raise HTTPException(400, "Add your Anthropic API key in Settings first.")
+    if not llm.ai_available():
+        raise HTTPException(400, "No AI provider is set up. Add one in Settings, or ask Claude Code to build the course.")
 
 
 @app.post("/api/courses/{cid}/analyze")
@@ -223,7 +278,7 @@ def reset_progress(cid: str) -> dict:
 
 # ------------------------------------------------------------------ import / export packs
 
-PACK_FORMAT = "finalforge-pack"
+PACK_FORMAT = packkit.PACK_FORMAT
 
 
 @app.get("/api/courses/{cid}/export")
@@ -238,9 +293,12 @@ def export_pack(cid: str):
 def _import_pack(pack: dict[str, Any], name: str | None = None) -> dict:
     if pack.get("format") != PACK_FORMAT or "knowledge" not in pack:
         raise HTTPException(400, "Not a FinalForge knowledge pack")
+    errors, _ = packkit.validate(pack)
+    if errors:
+        raise HTTPException(400, "Pack has errors: " + "; ".join(errors[:5]) + (" …" if len(errors) > 5 else ""))
     meta = storage.create_course(name or pack.get("name") or "Imported course", pack.get("description", ""))
     kn = storage.empty_knowledge()
-    kn.update(pack["knowledge"])
+    kn.update(packkit.finalize(pack["knowledge"]))
     storage.save_knowledge(meta["id"], kn)
     return meta
 

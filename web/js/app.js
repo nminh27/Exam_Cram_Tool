@@ -32,9 +32,9 @@ function TopBar({ courseName }) {
     <a class="brand" href="#/"><span class="logo">F</span>FinalForge</a>
     ${courseName && html`<span class="crumb">/ ${courseName}</span>`}
     <span class="spacer"></span>
-    ${h && html`<a class="small muted" href="#/settings" title="Settings">
-      <span class="dot" style=${`background:${h.api_key_configured ? "var(--good)" : "var(--warn)"}`}></span>
-      ${h.api_key_configured ? h.model : "No API key"}
+    ${h && html`<a class="small muted" href="#/settings" title=${h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
+      <span class="dot" style=${`background:${h.ai_available ? "var(--good)" : "var(--accent)"}`}></span>
+      ${h.ai_available ? h.model : "Claude Code mode"}
     </a>`}
     <a class="btn ghost sm" href="#/settings">⚙ Settings</a>
   </header>`;
@@ -88,4 +88,6 @@ function App() {
   return html`<${CourseShell} cid=${cid} section=${navKey} wide=${key === "map" || key === "problem"} view=${page} />`;
 }
 
-render(html`<${App} />`, document.getElementById("app"));
+const root = document.getElementById("app");
+root.textContent = ""; // drop the "Loading…" placeholder
+render(html`<${App} />`, root);

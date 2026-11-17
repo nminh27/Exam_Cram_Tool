@@ -27,18 +27,52 @@ Then you train:
 
 1. Install Python 3.11+ (you have 3.13).
 2. Double-click **`run.bat`** (first run installs dependencies into `.venv`). The app opens at http://localhost:8000.
-3. Click **Open demo course** to try everything without an API key.
-4. For your own course: **Settings → paste your Anthropic API key** (stored only in `.env`, which is git-ignored), create a course, upload files, press **Analyze**.
+3. Click **Open demo course** to try everything without any AI key.
+4. Pick how your own courses get built (next section), create a course, and upload its files.
 
 macOS / Linux / Git Bash: `./run.sh`
 
 Manual: `python -m venv .venv && .venv\Scripts\pip install -r requirements.txt && .venv\Scripts\python -m uvicorn app.main:app --port 8000`
 
+## Two ways to build a course
+
+### API mode: the app does it, with the AI of your choice
+
+In **Settings → AI providers**, add one or more providers and pick which one does the work:
+
+| Provider | Notes |
+|---|---|
+| **Anthropic Claude** (recommended) | FinalForge's prompts are written for Claude, and it reads PDFs natively (formulas, tables, diagrams). Default model `claude-opus-5-5`. |
+| OpenAI, Google Gemini, OpenRouter, Groq, DeepSeek, Mistral, xAI, Together | Any OpenAI-compatible API. Paste the key, press **Load models**, pick one, press **Test**. |
+| Ollama, LM Studio | Free models running on your own computer, no key. Much weaker results with small models. |
+| Any other OpenAI-compatible endpoint | Give its base URL. |
+
+- **Two roles:** *Analysis* builds the course; *Quick tasks* (marking written answers, "Break it down further") can use a cheaper or local model.
+- **Keys** are stored only in `.env` (git-ignored), one line per provider, and are never shown again or sent anywhere but that provider.
+- **PDFs with non-Claude models:** each page is sent as text; pages without a text layer (scans, handwriting) are sent as page images, so pick a vision model. *Advanced* lets you send every page as an image (best for maths) or text only (for text-only models).
+- **Structured output:** FinalForge asks for strict JSON-schema output, and automatically falls back to plain JSON mode or instructions for APIs that don't support it; missing fields are filled in so the app never breaks.
+- Quality varies by model. Keep **Verify generated problems** on, and use **Test** after adding a provider.
+
+### Claude Code mode: no API key at all
+
+With no provider set, Claude Code builds the course:
+
+1. Create a course and upload its files on the Materials page, or drop them into `inbox/<course name>/`.
+2. In Claude Code, say **"Build the FinalForge pack for <course name>"**. It reads every file, writes the same
+   breakdowns, questions and step-by-step problems the Analyze button would (numbers computed in Python, then
+   validated), and loads them into the app. Big courses are built topic by topic ("continue the pack for …").
+3. Everything else works as usual. In this mode the app hides Analyze, "Break it down further", AI marking
+   (you mark written answers against the model answer) and in-app generation; ask Claude Code for those instead.
+
+Details: [docs/CLAUDE_CODE_WORKFLOW.md](docs/CLAUDE_CODE_WORKFLOW.md). Tools: `python -m app.packcli --help`.
+
+You can switch any time: courses built either way look and work the same.
+
 ## Cost
 
-Analysis uses Claude Opus 5.5 (`claude-opus-5-5`, about $4 / $20 per million input / output tokens). The course corpus is prompt-cached (1 h) so the many per-concept and per-pattern calls reuse it cheaply. The job panel shows a live token count and an approximate dollar figure. Re-running an analysis only processes new material unless you tick the rebuild boxes. A typical course of a few hundred pages plus 5–10 past papers costs a few dollars.
+With Claude Opus 5.5 (`claude-opus-5-5`, about $4 / $20 per million input / output tokens) the course corpus is prompt-cached (1 h), so the many per-concept and per-pattern calls reuse it cheaply. A typical course of a few hundred pages plus 5–10 past papers costs a few dollars. For other providers, enter their prices under *Advanced* to get a cost estimate. The job panel shows live token counts. Re-running an analysis only processes new material unless you tick the rebuild boxes.
 
-Settings live in `.env` (see `.env.example`): model, effort per stage, parallelism, refusal fallback, PDF chunk size.
+Other knobs live in `.env` (see `.env.example`): Claude effort per stage, refusal fallback, PDF chunk size.
 
 ## Knowledge packs
 
@@ -51,15 +85,20 @@ app/                FastAPI backend
   main.py           HTTP API + serves the web UI
   pipeline.py       analysis job: digest → knowledge map → concept breakdowns → pattern kits → verification
   prompts.py        every prompt (the pedagogy lives here)
-  schemas.py        JSON schemas for Claude's structured outputs
-  llm.py            Anthropic SDK wrapper (streaming, structured output, caching, cost meter)
-  ingest.py         PDF / image / DOCX / PPTX / text → Claude content blocks
+  schemas.py        JSON schemas for structured outputs
+  settings.py       AI providers (presets, roles, keys in .env)
+  providers.py      adapters: Anthropic SDK, OpenAI-compatible HTTP; JSON fallbacks; cost meter
+  llm.py            routes each call to the provider for its role
+  ingest.py         PDF / image / DOCX / PPTX / text → content blocks (native PDF or text + page images)
+  packkit.py        build / validate / merge knowledge packs (Claude Code mode)
+  packcli.py        command line: list, materials, validate, import, dump
   storage.py        file-based storage under data/
 web/                no-build UI (Preact + htm, KaTeX, marked, Cytoscape from CDNs)
   js/pages/*.js     one file per screen
 samples/            demo course (build_demo.py → demo_pack.json)
-tests/              pytest suite (fake Claude, no key needed)
-data/               your courses (git-ignored)
+tests/              pytest suite (fake AI, no key needed)
+inbox/              drop materials here for Claude Code mode (git-ignored)
+data/               your courses and provider settings (git-ignored)
 ```
 
 Run tests: `.venv\Scripts\python -m pytest -q`

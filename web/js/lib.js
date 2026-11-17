@@ -88,6 +88,13 @@ export function useStore() {
   return store;
 }
 
+// True when an AI provider is set up (API mode). Features that call the AI live are hidden otherwise
+// (the course itself can still be built by Claude Code: see inbox/README.md).
+export function useHasKey() {
+  const s = useStore();
+  return !!(s.health && s.health.ai_available);
+}
+
 export async function loadHealth() {
   store.health = await api("/health");
   notify();

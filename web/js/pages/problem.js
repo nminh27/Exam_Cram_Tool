@@ -61,7 +61,7 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
         wrong(`${missing ? `You missed ${missing}. ` : ""}${extra ? `${extra} of your picks ${extra > 1 ? "are" : "is"} not right. ` : ""}Read the question again, word by word.`);
       }
     } else if (step.answer_type === "text") {
-      if (!store.health || !store.health.api_key_configured) { setSelfGrade(true); return; }
+      if (!store.health || !store.health.ai_available) { setSelfGrade(true); return; }
       setGrading(true);
       try {
         const r = await api(`/courses/${cid}/grade`, { json: { context, prompt: step.prompt_md, model: step.text_answer_md, answer: val } });
@@ -100,7 +100,7 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
       ${step.answer_type === "text" && html`<div style="margin-top:8px">
         <textarea placeholder="Write your answer as you would in the exam…" value=${val} onInput=${(e) => setVal(e.target.value)}></textarea>
         <div class="row" style="margin-top:8px">
-          <button class="btn primary" onClick=${check} disabled=${!val.trim() || grading}>${grading ? "Marking…" : store.health && store.health.api_key_configured ? "Mark my answer" : "Compare with model answer"}</button>
+          <button class="btn primary" onClick=${check} disabled=${!val.trim() || grading}>${grading ? "Marking…" : store.health && store.health.ai_available ? "Mark my answer" : "Compare with model answer"}</button>
         </div></div>`}
 
       ${fb && html`<div class=${"feedback " + fb.cls}><${Md} text=${fb.text} /></div>`}

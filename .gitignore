@@ -3,6 +3,8 @@
 
 # your course materials, digests and progress stay on your computer
 data/
+inbox/*
+!inbox/README.md
 
 # python
 .venv/

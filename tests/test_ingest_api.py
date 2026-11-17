@@ -13,6 +13,7 @@ from app import config, ingest
 @pytest.fixture()
 def client(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "COURSES_DIR", tmp_path / "courses")
+    monkeypatch.setattr(config, "SETTINGS_FILE", tmp_path / "settings.json")
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     monkeypatch.delenv("ANTHROPIC_AUTH_TOKEN", raising=False)
     from app.main import app
@@ -63,7 +64,9 @@ def test_docx_and_pptx_text(tmp_path):
 
 
 def test_api_flow(client):
-    assert client.get("/api/health").json()["api_key_configured"] is False
+    h = client.get("/api/health").json()
+    assert h["ai_available"] is False and h["mode"] == "claude_code"
+    assert client.get("/api/settings").json()["providers"] == []
     c = client.post("/api/courses", json={"name": "Calculus I"}).json()
     cid = c["id"]
     r = client.post(f"/api/courses/{cid}/materials", data={"kind": "past_paper"},

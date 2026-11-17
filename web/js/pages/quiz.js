@@ -1,4 +1,4 @@
-import { html, useState, useMemo, api, Md, recordEvents, shuffle, pct, loadCourse } from "../lib.js";
+import { html, useState, useMemo, api, Md, recordEvents, shuffle, pct, loadCourse, useHasKey } from "../lib.js";
 
 // ------------------------------------------------------------------ building the question list
 
@@ -122,6 +122,7 @@ export function QuizPage({ cid, d, query }) {
   const [i, setI] = useState(0);
   const [results, setResults] = useState([]);
   const [busyMore, setBusyMore] = useState(false);
+  const hasKey = useHasKey();
   const concept = query.get("concept");
   const cName = concept && (kn.concepts.find((c) => c.id === concept) || {}).name;
 
@@ -139,7 +140,8 @@ export function QuizPage({ cid, d, query }) {
   if (!items.length) {
     return html`<h1>${isMap ? "Map drills" : "Quiz"}</h1>
       <div class="notice">${query.get("mode") === "mistakes" ? "No mistakes to review. Nice." : "No questions match these filters yet."}</div>
-      ${concept && html`<button class="btn" onClick=${genMore} disabled=${busyMore}>${busyMore ? "Generating…" : "Generate questions for this concept"}</button>`}`;
+      ${concept && hasKey && html`<button class="btn" onClick=${genMore} disabled=${busyMore}>${busyMore ? "Generating…" : "Generate questions for this concept"}</button>`}
+      ${concept && !hasKey && html`<p class="muted small">Ask Claude Code: "write 8 MCQs for ${cName}".</p>`}`;
   }
 
   if (i >= items.length) {
@@ -155,7 +157,7 @@ export function QuizPage({ cid, d, query }) {
           ${r.item.concept_ids.slice(0, 1).map((c) => kn.concepts.find((x) => x.id === c) && html`<a class="small" href=${`#/c/${cid}/concept/${c}`}>Revisit ${kn.concepts.find((x) => x.id === c).name} →</a>`)}
         </div>`)}</div>`}
       <div class="row"><button class="btn primary" onClick=${again}>Another round</button>
-        ${concept && html`<button class="btn" onClick=${genMore} disabled=${busyMore}>${busyMore ? "Generating…" : "Generate 6 fresh questions"}</button>`}
+        ${concept && hasKey && html`<button class="btn" onClick=${genMore} disabled=${busyMore}>${busyMore ? "Generating…" : "Generate 6 fresh questions"}</button>`}
         <a class="btn" href=${`#/c/${cid}/practice`}>Back to practice</a></div>`;
   }
 

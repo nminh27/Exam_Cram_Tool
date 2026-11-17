@@ -6,30 +6,20 @@ questions written for the demo, not real exam papers.
 """
 from __future__ import annotations
 
-import json
 import math
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from app.packkit import concept, det, mcq, part, problem, step, write_pack  # noqa: E402
 
 G = 9.8
 
 
-def step(kind, prompt, answer_type, *, choices=(), correct=(), num=None, tol=1, unit="", text="",
-         hint="", expl="", cids=()):
-    return {"kind": kind, "prompt_md": prompt, "answer_type": answer_type, "choices": list(choices),
-            "correct_choices": list(correct), "numeric_answer": num, "tolerance_pct": tol if answer_type == "numeric" else None,
-            "unit": unit, "text_answer_md": text, "hint_md": hint, "explanation_md": expl, "concept_ids": list(cids)}
 
 
-def problem(pid, pattern_id, source, ref, title, statement, parts):
-    for pi, part in enumerate(parts):
-        for si, s in enumerate(part["steps"]):
-            s["id"] = f"{pid}-{pi}-{si}"
-    return {"id": pid, "pattern_id": pattern_id, "source": source, "source_ref": ref, "title": title,
-            "statement_md": statement, "parts": parts, "verified": True, "verify_note": ""}
 
 
-def part(label, prompt, marks, final, steps):
-    return {"label": label, "prompt_md": prompt, "marks": marks, "final_answer_md": final, "steps": steps}
 
 
 PROJ = ["c-suvat", "c-projectile-motion"]
@@ -210,21 +200,8 @@ def braking(pid, source, ref, title, u, s):
 
 # ------------------------------------------------------------------ concepts
 
-def concept(cid, name, topic, one, prereq, related, importance, detail):
-    return {"id": cid, "name": name, "topic_id": topic, "one_liner": one, "prerequisites": prereq, "related": related,
-            "importance": importance, "source_refs": ["demo notes"], "exam_frequency": 0, "detail": detail}
 
 
-def det(why, what, how, analogy, visual, steps, formulas, spot, traps, tips, example, check, svg=""):
-    return {"why_exists_md": why, "what_it_does_md": what, "how_it_works_md": how, "everyday_analogy_md": analogy,
-            "visualize_md": visual, "diagram_svg": svg,
-            "atomic_steps": [{"step_md": s, "everyday_link": e} for s, e in steps],
-            "formulas": [{"latex": l, "name": n, "meaning_md": m, "symbols": [{"symbol": a, "meaning": b, "unit": c} for a, b, c in sy], "when_to_use_md": w}
-                         for l, n, m, sy, w in formulas],
-            "patterns_to_spot": [{"cue": c, "signals_md": s} for c, s in spot],
-            "common_traps": [{"trap_md": t, "fix_md": f} for t, f in traps],
-            "tips_tricks": [{"tip_md": t, "source": s} for t, s in tips],
-            "mini_example_md": example, "self_check": check}
 
 
 PROJ_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" font-family="sans-serif" font-size="12"><rect x="10" y="40" width="50" height="150" fill="none" stroke="#4b5563" stroke-width="2"/><path d="M60 40 Q 170 50 250 190" fill="none" stroke="#6366f1" stroke-width="3" stroke-dasharray="6 4"/><line x1="60" y1="40" x2="110" y2="40" stroke="#4b5563" stroke-width="2" marker-end="url(#a)"/><defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#4b5563"/></marker></defs><text x="68" y="32" fill="#4b5563">u_x (stays the same)</text><line x1="210" y1="120" x2="210" y2="160" stroke="#6366f1" stroke-width="2" marker-end="url(#a)"/><text x="216" y="146" fill="#6366f1">v_y grows</text><text x="16" y="120" fill="#4b5563">h</text><line x1="10" y1="190" x2="310" y2="190" stroke="#4b5563"/><text x="120" y="185" fill="#4b5563">x = u_x t</text></svg>"""
@@ -367,9 +344,6 @@ CONCEPTS = [
 ]
 
 
-def mcq(qid, cids, qtype, q, options, correct, expl, diff=2):
-    return {"id": qid, "concept_ids": cids, "type": qtype, "question_md": q, "options": options, "correct": correct,
-            "option_explanations": expl, "difficulty": diff}
 
 
 MCQS = [
@@ -544,6 +518,4 @@ def build() -> dict:
 
 
 if __name__ == "__main__":
-    out = Path(__file__).with_name("demo_pack.json")
-    out.write_text(json.dumps(build(), ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"wrote {out}")
+    write_pack(Path(__file__).with_name("demo_pack.json"), build())

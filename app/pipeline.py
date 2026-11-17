@@ -24,7 +24,9 @@ _running_lock = threading.Lock()
 class Job:
     def __init__(self, course_id: str, kind: str, opts: dict):
         self.course_id = course_id
-        self.usage = llm.Usage()
+        prov = llm.provider("main")
+        self.usage = llm.usage_for("main")
+        self.concurrency = prov.concurrency if prov else config.CONCURRENCY
         self._lock = threading.Lock()
         self.state: dict[str, Any] = {
             "id": storage.new_id("j"),
@@ -39,6 +41,7 @@ class Job:
             "error": None,
             "usage": {},
             "opts": opts,
+            "provider": prov.label if prov else None,
         }
         self.save()
 
@@ -73,7 +76,8 @@ class Job:
             self.state["finished_at"] = storage.now()
             self.state["stage"] = "done" if status != "failed" else "failed"
         u = self.usage.as_dict()
-        self.log(f"Finished ({status}). {u['calls']} Claude calls, ≈ ${u['approx_cost_usd']:.2f}.",
+        cost = f"≈ ${u['approx_cost_usd']:.2f}" if u["approx_cost_usd"] is not None else "cost unknown (set prices in Settings)"
+        self.log(f"Finished ({status}). {u['calls']} AI calls, {cost}.",
                  "error" if status == "failed" else "info")
 
 
@@ -135,7 +139,7 @@ def run_parallel(job: Job, items: list, fn: Callable[[Any], None], label: Callab
     if warm_first:
         safe(items[0])
         rest = items[1:]
-    with ThreadPoolExecutor(max_workers=max(1, config.CONCURRENCY)) as pool:
+    with ThreadPoolExecutor(max_workers=max(1, job.concurrency)) as pool:
         for f in as_completed([pool.submit(safe, it) for it in rest]):
             f.result()
 
@@ -354,6 +358,8 @@ def run_analysis(job: Job, opts: dict) -> None:
     meta = storage.get_course(cid)
     if not meta["materials"]:
         raise RuntimeError("Upload some materials first.")
+    prov = llm.require("main")
+    job.log(f"Using {prov.label}")
 
     # ---------------- Stage 1: digest every material
     todo = [m for m in meta["materials"] if force_digest or not storage.get_digest(cid, m["id"])]
@@ -362,7 +368,7 @@ def run_analysis(job: Job, opts: dict) -> None:
     def digest(m: dict) -> None:
         path = storage.material_path(cid, m)
         merged = None
-        for ch in ingest.material_chunks(path, m["filename"]):
+        for ch in ingest.material_chunks(path, m["filename"], native_pdf=prov.native_pdf, pdf_mode=prov.pdf_mode):
             content = ch["blocks"] + [{"type": "text", "text": (
                 f"Material id: {m['id']}\nFile: {ch['label']}\nKind (labelled by the student): {m['kind']}\n\n"
                 + prompts.digest_instruction(m["kind"]))}]
@@ -700,13 +706,14 @@ def explain_simpler(course_id: str, concept_id: str, snippet: str, message: str)
     task = prompts.EXPLAIN_SIMPLER_TASK.format(
         concept=f"{c['name']}: {c['one_liner']}", snippet=snippet[:4000] or "(the whole concept)",
         message=message[:1000])
-    return llm.call(prompts.BASE_SYSTEM, task, effort=config.EFFORT_TUTOR, max_tokens=16000)
+    return llm.call(prompts.BASE_SYSTEM, task, effort=config.EFFORT_TUTOR, max_tokens=16000, role="quick")
 
 
 def grade_text(context: str, prompt: str, model: str, answer: str) -> dict:
     task = prompts.GRADE_TASK.format(context=context[:6000], prompt=prompt[:2000],
                                      model=model[:4000], answer=answer[:4000])
-    return llm.structured(prompts.BASE_SYSTEM, task, schemas.GRADE, effort=config.EFFORT_GRADE, max_tokens=8000)
+    return llm.structured(prompts.BASE_SYSTEM, task, schemas.GRADE, effort=config.EFFORT_GRADE, max_tokens=8000,
+                          role="quick")
 
 
 def more_mcqs(course_id: str, concept_id: str, n: int = 6) -> list[dict]:

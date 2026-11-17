@@ -1,4 +1,4 @@
-import { html, useState, useEffect, api, Md, pct, Progress, loadCourse } from "../lib.js";
+import { html, useState, useEffect, api, Md, pct, Progress, loadCourse, useHasKey } from "../lib.js";
 
 export function problemStats(d, problemId) {
   const evs = d.progress.events.filter((e) => e.kind === "problem" && e.item_id === problemId);
@@ -39,6 +39,7 @@ export function PatternsPage({ cid, d }) {
 export function PatternPage({ cid, d, patternId }) {
   const { kn, mastery } = d;
   const p = kn.patterns.find((x) => x.id === patternId);
+  const hasKey = useHasKey();
   const [job, setJob] = useState(null);
   const [err, setErr] = useState("");
   const running = job && job.status === "running";
@@ -93,7 +94,8 @@ export function PatternPage({ cid, d, patternId }) {
 
     <div class="card">
       <div class="row between"><h3 style="margin:0">🏋 Practice problems (${probs.length})</h3>
-        <button class="btn sm" onClick=${more} disabled=${running}>${running ? "Generating…" : "+ 3 more like these"}</button></div>
+        ${hasKey ? html`<button class="btn sm" onClick=${more} disabled=${running}>${running ? "Generating…" : "+ 3 more like these"}</button>`
+          : html`<span class="tiny muted" title="No AI provider: ask Claude Code instead">Want more? Ask Claude Code: "make 3 more problems for ${p.name}"</span>`}</div>
       ${err && html`<div class="notice bad small" style="margin-top:8px">${err}</div>`}
       ${job && html`<div class="small muted" style="margin-top:6px">${job.stage} — ${job.status}${job.error ? `: ${job.error}` : ""}</div>`}
       <div class="tbl-wrap" style="margin-top:8px"><table class="tbl"><tbody>

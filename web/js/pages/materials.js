@@ -87,7 +87,7 @@ export function MaterialsPage({ cid, d }) {
 
   const mats = course.materials;
   const hasPaper = mats.some((m) => m.kind === "past_paper");
-  const keyOk = store.health ? store.health.api_key_configured : true;
+  const keyOk = store.health ? store.health.ai_available : true;
 
   return html`
     <div class="row between"><h1>Materials</h1>
@@ -116,22 +116,23 @@ export function MaterialsPage({ cid, d }) {
     </div>
 
     ${mats.length > 0 && html`<div class="card"><div class="tbl-wrap"><table class="tbl">
-      <thead><tr><th>File</th><th>Type</th><th>Size</th><th>Read?</th><th></th></tr></thead>
+      <thead><tr><th>File</th><th>Type</th><th>Size</th>${keyOk && html`<th>Read?</th>`}<th></th></tr></thead>
       <tbody>${mats.map((m) => html`<tr>
         <td><a href=${`/api/courses/${cid}/materials/${m.id}/file`} target="_blank">${m.filename}</a>
           ${m.pages ? html` <span class="tiny muted">${m.pages} p.</span>` : ""}</td>
         <td><select style="width:auto" value=${m.kind} onChange=${(e) => setMatKind(m, e.target.value)}>
           ${KINDS.map(([k, l]) => html`<option value=${k}>${l}</option>`)}</select></td>
         <td class="muted small">${fmtBytes(m.size)}</td>
-        <td>${m.digest_error ? html`<span class="badge bad" title=${m.digest_error}>error</span>`
+        ${keyOk && html`<td>${m.digest_error ? html`<span class="badge bad" title=${m.digest_error}>error</span>`
           : m.digested ? html`<button class="btn sm ghost" onClick=${() => showDigest(m)}>✓ view what was read</button>`
-          : html`<span class="badge">not yet</span>`}</td>
+          : html`<span class="badge">not yet</span>`}</td>`}
         <td><button class="btn sm ghost danger" onClick=${() => remove(m)}>✕</button></td>
       </tr>`)}</tbody></table></div></div>`}
 
-    <div class="card">
-      <h3>🧠 Analyze with Claude</h3>
-      ${!keyOk && html`<div class="notice warn">Add your Anthropic API key in <a href="#/settings">Settings</a> first.</div>`}
+    ${!keyOk && html`<${ClaudeCodeCard} course=${course} hasPaper=${hasPaper} />`}
+    ${(keyOk || job) && html`<div class="card">
+      <h3>🧠 Analyze with AI ${store.health && store.health.provider && html`<span class="badge">${store.health.provider} · ${store.health.model}</span>`}</h3>
+      ${!keyOk && html`<div class="notice warn">Add an AI provider in <a href="#/settings">Settings</a> first.</div>`}
       ${mats.length > 0 && !hasPaper && html`<div class="notice warn">No file is marked as a <b>past paper</b>. Exam patterns and exam-form practice problems come from past papers, so add them if you have any.</div>`}
       <p class="muted small">Reads each file once (cached), builds the knowledge map, writes the atomic breakdown + MCQs for every concept,
         then builds a solving kit and step-by-step problems for every exam pattern, and independently re-solves each generated problem to catch errors.
@@ -149,7 +150,7 @@ export function MaterialsPage({ cid, d }) {
         ${d.course.analyzed_at && html`<span class="muted small">last full analysis ${timeAgo(d.course.analyzed_at)}</span>`}
       </div>
       ${job && html`<${JobPanel} job=${job} />`}
-    </div>
+    </div>`}
 
     <div class="card flat">
       <h3>Danger zone</h3>
@@ -160,6 +161,27 @@ export function MaterialsPage({ cid, d }) {
   `;
 }
 
+function ClaudeCodeCard({ course, hasPaper }) {
+  const [copied, setCopied] = useState(false);
+  const say = `Build the FinalForge pack for the course "${course.name}" (${course.id})`;
+  const copy = () => { navigator.clipboard.writeText(say).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500); }).catch(() => {}); };
+  return html`<div class="card section-card how">
+    <h3>🤖 No AI provider? Let Claude Code build this course</h3>
+    <ol class="md">
+      <li>Add your files: upload them above (mark past papers as <b>Past paper</b>),
+        or drop them into <span class="kbd">inbox/${course.name}/</span> in the project folder.</li>
+      <li>In Claude Code, say:
+        <div class="row" style="margin:6px 0"><span class="kbd" style="padding:6px 10px">${say}</span>
+          <button class="btn sm" onClick=${copy}>${copied ? "Copied ✓" : "Copy"}</button></div></li>
+      <li>Claude Code reads every file, writes the concept breakdowns, questions and step-by-step exam problems,
+        checks them, and loads them into this course. Refresh this page when it says it's done.</li>
+    </ol>
+    ${!hasPaper && html`<div class="notice warn small">Include your past papers: exam patterns and exam-form practice come from them.</div>`}
+    <p class="tiny muted">Big course? It works topic by topic; say "continue the pack for ${course.name}". This uses your Claude plan's usage, not API billing.
+      Have an API key (Claude, OpenAI, Gemini…)? Add it in <a href="#/settings">Settings</a> to unlock the Analyze button.</p>
+  </div>`;
+}
+
 function JobPanel({ job }) {
   const p = job.progress || { done: 0, total: 0 };
   const u = job.usage || {};
@@ -167,7 +189,7 @@ function JobPanel({ job }) {
   return html`<div style="margin-top:16px">
     <div class="row between small">
       <div><span class=${"badge " + statusBadge}>${job.status.replace(/_/g, " ")}</span> <b>${job.stage}</b></div>
-      <div class="muted">${u.calls || 0} calls · ${((u.input_tokens || 0) + (u.cache_read_tokens || 0)).toLocaleString()} in / ${(u.output_tokens || 0).toLocaleString()} out tokens · ≈ $${(u.approx_cost_usd || 0).toFixed(2)}</div>
+      <div class="muted">${u.calls || 0} calls · ${((u.input_tokens || 0) + (u.cache_read_tokens || 0)).toLocaleString()} in / ${(u.output_tokens || 0).toLocaleString()} out tokens${u.approx_cost_usd !== null && u.approx_cost_usd !== undefined ? ` · ≈ $${u.approx_cost_usd.toFixed(2)}` : ""}</div>
     </div>
     ${p.total > 0 && html`<div style="margin:8px 0"><${Progress} value=${p.done / p.total} /><div class="tiny muted">${p.done} / ${p.total}</div></div>`}
     ${job.error && html`<div class="notice bad small">${job.error}</div>`}
