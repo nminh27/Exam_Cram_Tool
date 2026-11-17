@@ -100,20 +100,20 @@ export function HomePage() {
         </div>
       </div>`}
 
-    <h2 style="margin-top:20px">Your courses</h2>
+    <h2 class="mt-6">Your courses</h2>
     ${courses === null ? html`<${Spinner} />`
       : courses.length === 0 ? html`<p class="muted">No courses yet.</p>`
       : html`<div class="grid three">${courses.map((c) => html`
           <div class="card course-card" onClick=${() => go(`/c/${c.id}`)}>
             <h3>${c.name}</h3>
             ${c.description && html`<div class="muted small">${c.description}</div>`}
-            <div class="row small muted" style="margin-top:10px">
+            <div class="row small muted mt-3">
               ${!IS_STATIC && html`<span>${c.materials.length} files</span>·`}<span>${c.stats.concepts} concepts</span>·
               <span>${c.stats.patterns} patterns</span>·<span>${c.stats.problems} problems</span>
             </div>
-            <div class="tiny muted" style="margin-top:6px">created ${timeAgo(c.created_at)}</div>
+            <div class="tiny muted mt-2">created ${timeAgo(c.created_at)}</div>
           </div>`)}</div>`}
 
-    <div style="margin-top:28px"><${WhatToExpect} skipCourseFile=${true} /></div>
+    <div class="mt-6"><${WhatToExpect} skipCourseFile=${true} /></div>
   `;
 }

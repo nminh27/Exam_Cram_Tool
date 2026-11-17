@@ -93,25 +93,25 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
       ${step.answer_type === "choice" && html`<div class="q-opts">${step.choices.map((c, k) => html`<button class=${"q-opt" + (sel === k ? " selected" : "")} onClick=${() => setSel(k)}>
         <span class="key">${"ABCDEFGH"[k]}</span><span><${Md} text=${c} inline /></span></button>`)}</div>
         <button class="btn primary" onClick=${check} disabled=${sel === null}>Check</button>`}
-      ${step.answer_type === "multi" && html`<div class="tiny muted" style="margin-top:6px">Select all that apply.</div>
+      ${step.answer_type === "multi" && html`<div class="tiny muted mt-2">Select all that apply.</div>
         <div class="q-opts">${step.choices.map((c, k) => { const on = sel.includes(k); return html`<button class=${"q-opt" + (on ? " selected" : "")}
           onClick=${() => setSel(on ? sel.filter((x) => x !== k) : [...sel, k])}><span class="key">${on ? "✓" : ""}</span><span><${Md} text=${c} inline /></span></button>`; })}</div>
         <button class="btn primary" onClick=${check} disabled=${!sel.length}>Check</button>`}
-      ${step.answer_type === "text" && html`<div style="margin-top:8px">
+      ${step.answer_type === "text" && html`<div class="mt-2">
         <textarea placeholder="Write your answer as you would in the exam…" value=${val} onInput=${(e) => setVal(e.target.value)}></textarea>
-        <div class="row" style="margin-top:8px">
+        <div class="row mt-2">
           <button class="btn primary" onClick=${check} disabled=${!val.trim() || grading}>${grading ? "Marking…" : store.health && store.health.ai_available ? "Mark my answer" : "Compare with model answer"}</button>
         </div></div>`}
 
       ${fb && html`<div class=${"feedback " + fb.cls}><${Md} text=${fb.text} /></div>`}
       ${selfGrade && html`<div class="feedback info"><b>Model answer:</b><${Md} text=${step.text_answer_md} />
-        <div class="row" style="margin-top:8px"><span class="small">How did you do?</span>
+        <div class="row mt-2"><span class="small">How did you do?</span>
           <button class="btn sm" onClick=${() => onFinish("correct", 0.75, val)}>Had all the points</button>
           <button class="btn sm" onClick=${() => onFinish("revealed", 0.4, val)}>Partly</button>
           <button class="btn sm" onClick=${() => onFinish("revealed", 0, val)}>Missed it</button></div></div>`}
       ${state.hinted && step.hint_md && html`<div class="feedback info"><${Md} text=${step.hint_md} inline /></div>`}
 
-      <div class="row" style="margin-top:10px">
+      <div class="row mt-3">
         ${step.hint_md && !state.hinted && html`<button class="btn sm ghost" onClick=${() => onChange({ ...state, hinted: true })}>Hint</button>`}
         <button class="btn sm ghost" onClick=${() => onFinish("revealed", 0, null)}>Show answer</button>
         ${step.concept_ids[0] && html`<${ExplainButton} cid=${cid} conceptId=${step.concept_ids[0]} label="I don't get this step"
@@ -122,7 +122,7 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
     ${done && html`<div class="feedback ${state.status === "correct" ? "good" : "warn"}">
       <div><b>Answer:</b> <${Md} text=${answerText(step)} inline /></div>
       ${state.aiFeedback && html`<${Md} text=${state.aiFeedback} />`}
-      ${step.explanation_md && html`<div style="margin-top:6px"><${Md} text=${step.explanation_md} /></div>`}
+      ${step.explanation_md && html`<div class="mt-2"><${Md} text=${step.explanation_md} /></div>`}
     </div>`}
   </div>`;
 }
@@ -163,7 +163,7 @@ export function ProblemPage({ cid, d, problemId }) {
 
   return html`
     <div class="small muted"><a href=${`#/c/${cid}/patterns`}>Exam patterns</a> / ${pattern && html`<a href=${`#/c/${cid}/pattern/${pattern.id}`}>${pattern.name}</a>`}</div>
-    <div class="row between"><h1 style="margin-top:6px">${p.title}</h1>
+    <div class="row between"><h1 class="mt-2">${p.title}</h1>
       <div class="row">${p.source === "past_paper" ? html`<span class="badge accent">past paper · ${p.source_ref}</span>` : html`<span class="badge">variant · ${p.source_ref}</span>`}</div></div>
     ${p.verified === false && html`<div class="notice warn"><b>An independent re-solve disagreed with this problem's solution.</b> Treat the steps with care.
       ${p.verify_note && html`<details><summary class="small">Details</summary><${Md} text=${p.verify_note} /></details>`}</div>`}
@@ -171,14 +171,14 @@ export function ProblemPage({ cid, d, problemId }) {
     <div class="solver">
     <div class="paper-col">
       <div class="paper"><${Md} text=${p.statement_md} /></div>
-      <p class="tiny muted" style="margin-top:6px">Exam technique: try it on paper first, then walk through the boxes. One small step at a time.</p>
+      <p class="tiny muted mt-2">Exam technique: try it on paper first, then walk through the boxes. One small step at a time.</p>
     </div>
     <div class="steps-col">
     ${p.parts.map((part, pi) => {
       const steps = flat.map((f, k) => ({ ...f, k })).filter((f) => f.pi === pi);
       const partDone = steps.every(({ s }) => ["correct", "revealed"].includes(st(s.id).status));
       const partStarted = steps.some(({ k }) => currentIdx === -1 || k <= currentIdx);
-      return html`<div style="margin-top:18px">
+      return html`<div class="mt-4">
         <h3>${part.label ? `(${part.label}) ` : ""}<${Md} text=${part.prompt_md} inline /> ${part.marks && html`<span class="badge">${part.marks} marks</span>`}</h3>
         ${partStarted ? steps.map(({ s, k }) => (currentIdx === -1 || k <= currentIdx || showAll)
           ? html`<${Step} key=${s.id} cid=${cid} step=${s} n=${k + 1} state=${st(s.id)} active=${k === currentIdx} context=${context}
@@ -191,16 +191,16 @@ export function ProblemPage({ cid, d, problemId }) {
       </div>`;
     })}
 
-    ${finished && html`<div class="card center" style="margin-top:20px">
+    ${finished && html`<div class="card center mt-5">
       <div style="font-size:2.4rem;font-weight:800">${pct(totalScore)}</div>
       <div class="muted">${flat.filter(({ s }) => st(s.id).score === 1).length} of ${flat.length} steps right first time</div>
-      <div class="row" style="justify-content:center;margin-top:14px">
+      <div class="row justify-center mt-4">
         ${nextProblem && html`<button class="btn primary" onClick=${() => go(`/c/${cid}/problem/${nextProblem.id}`)}>Next problem like this</button>`}
         <button class="btn" onClick=${() => go(`/c/${cid}/problem/${p.id}?n=${Date.now()}`)}>Retry this one</button>
         <a class="btn" href=${`#/c/${cid}/pattern/${p.pattern_id}`}>Back to pattern</a>
       </div>
     </div>`}
-    ${!finished && html`<div class="row" style="margin-top:12px"><label class="check small"><input type="checkbox" checked=${showAll} onChange=${(e) => setShowAll(e.target.checked)} />Preview all steps</label></div>`}
+    ${!finished && html`<div class="row mt-3"><label class="check small"><input type="checkbox" checked=${showAll} onChange=${(e) => setShowAll(e.target.checked)} />Preview all steps</label></div>`}
     </div></div>
   `;
 }

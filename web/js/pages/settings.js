@@ -61,14 +61,14 @@ function AppSettings() {
     </div>
 
     <div class="card">
-      <div class="row between"><h3 style="margin:0">AI providers</h3>
+      <div class="row between"><h3 class="m-0">AI providers</h3>
         ${!editing && html`<button class="btn primary sm" onClick=${() => setEditing({ ...BLANK })}>+ Add provider</button>`}</div>
       <p class="muted small">Use Claude, or any other AI with an OpenAI-style API (OpenAI, Gemini, OpenRouter, Groq, DeepSeek, Mistral, xAI, Together),
         or a free local model through Ollama or LM Studio. Keys are stored only in the <span class="kbd">.env</span> file on this computer
         (git-ignored) and are never shown again or sent anywhere except that provider.</p>
 
       ${s.providers.length === 0 && !editing && html`<p class="muted">No providers yet.</p>`}
-      ${s.providers.map((p) => html`<div class="card flat" style="margin:10px 0">
+      ${s.providers.map((p) => html`<div class="card flat my-3">
         <div class="row between">
           <div>
             <b>${p.label}</b> <span class="badge">${p.type === "anthropic" ? "Anthropic API" : "OpenAI-compatible"}</span>
@@ -162,7 +162,7 @@ function ProviderForm({ s, init, onCancel, onSaved }) {
     } catch (e2) { setErr(e2.message); } finally { setBusy(false); }
   }
 
-  return html`<form class="card flat" style="margin-top:12px;border-color:var(--accent)" onSubmit=${save}>
+  return html`<form class="card flat mt-3" style="border-color:var(--accent)" onSubmit=${save}>
     <h3>${f.id ? `Edit ${f.label}` : "Add a provider"}</h3>
     <div class="stack">
       ${!f.id && html`<div><label class="field">Provider</label>
@@ -185,7 +185,7 @@ function ProviderForm({ s, init, onCancel, onSaved }) {
           <div class="tiny muted">${models.length} models found. Start typing to pick one.</div>`}
       </div>
       <details><summary class="small">Advanced</summary>
-        <div class="grid two" style="margin-top:8px">
+        <div class="grid two mt-2">
           ${!isAnthropic && html`<div><label class="field">How to read PDFs</label>
             <select value=${f.pdf_mode} onChange=${set("pdf_mode")}>
               <option value="auto">Text, plus images of scanned pages (vision models)</option>

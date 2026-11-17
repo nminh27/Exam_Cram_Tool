@@ -151,7 +151,7 @@ export function QuizPage({ cid, d, query }) {
       <div class="card center"><div style="font-size:2.6rem;font-weight:800">${pct(score)}</div>
         <div class="muted">${results.filter((r) => r.score === 1).length} of ${results.length} right</div></div>
       ${missed.length > 0 && html`<div class="card"><h3>Review what you missed</h3>
-        ${missed.map((r) => html`<div style="margin-bottom:12px"><${Md} text=${r.item.question_md} />
+        ${missed.map((r) => html`<div class="mb-3"><${Md} text=${r.item.question_md} />
           <div class="small">Correct: <b>${r.item.kind === "single" ? html`<${Md} text=${r.item.options[r.item.correct]} inline />`
             : r.item.kind === "multi" ? r.item.correctSet.map((k) => r.item.options[k]).join(", ") : "see order above"}</b></div>
           ${r.item.concept_ids.slice(0, 1).map((c) => kn.concepts.find((x) => x.id === c) && html`<a class="small" href=${`#/c/${cid}/concept/${c}`}>Revisit ${kn.concepts.find((x) => x.id === c).name} →</a>`)}
@@ -167,9 +167,9 @@ export function QuizPage({ cid, d, query }) {
     recordEvents(cid, [{ kind: isMap ? "map" : "mcq", item_id: item.id, concept_ids: item.concept_ids, result: score === 1 ? "correct" : "wrong", score }]);
   };
   return html`
-    <div class="row between"><h1 style="margin:0">${isMap ? "Map drills" : cName ? `Quiz: ${cName}` : "Concept quiz"}</h1>
+    <div class="row between"><h1 class="m-0">${isMap ? "Map drills" : cName ? `Quiz: ${cName}` : "Concept quiz"}</h1>
       <span class="muted">${i + 1} / ${items.length}</span></div>
-    <div class="bar" style="margin:12px 0 18px"><div style=${`width:${(100 * i) / items.length}%`}></div></div>
+    <div class="bar mt-3 mb-4"><div style=${`width:${(100 * i) / items.length}%`}></div></div>
     <div class="card" key=${item.id}>
       ${item.qtype && html`<span class="badge accent">${item.qtype}</span>`}
       <${Question} item=${item} onDone=${onDone} onNext=${() => setI(i + 1)} last=${i + 1 === items.length} />
@@ -199,7 +199,7 @@ function Question({ item, onDone, onNext, last }) {
   };
 
   return html`<div>
-    <div style="margin:10px 0 4px;font-size:1.05rem"><${Md} text=${item.question_md} /></div>
+    <div class="q-stem"><${Md} text=${item.question_md} /></div>
 
     ${item.kind === "single" && html`<div class="q-opts">${item.options.map((o, k) => {
       let cls = "q-opt";
@@ -221,7 +221,7 @@ function Question({ item, onDone, onNext, last }) {
         <span class="key">${on ? "✓" : ""}</span><span><${Md} text=${o} inline /></span></button>`;
     })}</div>`}
 
-    ${item.kind === "order" && html`<div style="margin:14px 0">${order.map((o, k) => html`<div class=${"order-item " + (checked ? (o === item.correctOrder[k] ? "correct" : "wrong") : "")}>
+    ${item.kind === "order" && html`<div class="my-4">${order.map((o, k) => html`<div class=${"order-item " + (checked ? (o === item.correctOrder[k] ? "correct" : "wrong") : "")}>
       <span class="n">${k + 1}</span><span style="flex:1"><${Md} text=${o} inline /></span>
       ${!checked && html`<button class="btn sm ghost" onClick=${() => move(k, -1)} disabled=${k === 0}>↑</button>
         <button class="btn sm ghost" onClick=${() => move(k, 1)} disabled=${k === order.length - 1}>↓</button>`}</div>`)}</div>`}
@@ -230,6 +230,6 @@ function Question({ item, onDone, onNext, last }) {
         disabled=${item.kind === "single" ? picked === null : item.kind === "multi" ? !picked.length : false}>Check</button>`
       : html`<div class=${"feedback " + (score === 1 ? "good" : "bad")}>${score === 1 ? "Correct." : "Not quite."}
           ${item.explain_md && html`<${Md} text=${item.explain_md} />`}</div>
-        <div class="row" style="margin-top:12px"><button class="btn primary" onClick=${onNext}>${last ? "See results" : "Next"}</button></div>`}
+        <div class="row mt-3"><button class="btn primary" onClick=${onNext}>${last ? "See results" : "Next"}</button></div>`}
   </div>`;
 }

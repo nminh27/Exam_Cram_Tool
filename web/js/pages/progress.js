@@ -21,7 +21,7 @@ export function ProgressPage({ cid, d }) {
   return html`
     <div class="row between"><h1>Progress</h1><button class="btn sm danger" onClick=${reset}>Reset progress</button></div>
     <div class="grid two">
-      <div class="card row" style="gap:22px">
+      <div class="card row gap-5">
         <${Ring} value=${mastery.overall} label="exam readiness" />
         <div class="small stack">
           <div><b>${events.length}</b> answers recorded</div>
@@ -31,7 +31,7 @@ export function ProgressPage({ cid, d }) {
       </div>
       <div class="card">
         <h3>Last 14 active days</h3>
-        ${recentDays.length === 0 ? html`<p class="muted small">No activity yet.</p>` : html`<div class="row" style="align-items:flex-end;height:110px;gap:6px">
+        ${recentDays.length === 0 ? html`<p class="muted small">No activity yet.</p>` : html`<div class="row gap-2" style="align-items:flex-end;height:110px">
           ${recentDays.map(([day, v]) => html`<div style="flex:1;text-align:center" title=${`${day}: ${v}`}>
             <div style=${`height:${Math.round((80 * v) / maxDay)}px;background:var(--accent);border-radius:4px 4px 0 0`}></div>
             <div class="tiny muted">${day.slice(5)}</div></div>`)}</div>`}

@@ -73,7 +73,7 @@ export function CourseFilePage({ cid, d }) {
             `${fileSlug(course.name)}.progress.json`)}>Download backup</button>
           <label class="btn">Restore backup<input type="file" accept=".json,application/json" style="display:none" onChange=${restoreProgress} /></label>
         </div>
-        ${info && html`<p class="tiny muted" style="margin-top:10px">
+        ${info && html`<p class="tiny muted mt-3">
           ${info.indexedDb ? "" : html`<b>Warning:</b> this browser blocks site storage (private window?), so everything is lost when the tab closes. `}
           ${info.persisted ? "Storage is protected from automatic clean-up." : html`Storage may be cleared by the browser when space runs low.
             <button class="btn sm ghost" onClick=${keepSafe}>Ask the browser to keep it</button>`}</p>`}

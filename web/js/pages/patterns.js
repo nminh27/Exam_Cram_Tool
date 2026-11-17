@@ -21,7 +21,7 @@ export function PatternsPage({ cid, d }) {
         const r = mastery.patterns[p.id];
         const nProb = kn.problems.filter((x) => x.pattern_id === p.id).length;
         return html`<a class="card course-card" style="display:block;color:inherit" href=${`#/c/${cid}/pattern/${p.id}`}>
-          <div class="row between"><h3 style="margin:0">${p.name}</h3>
+          <div class="row between"><h3 class="m-0">${p.name}</h3>
             ${p.calc ? html`<span class="badge accent">calculation</span>` : html`<span class="badge">theory</span>`}</div>
           <p class="small muted">${p.description}</p>
           <div class="row small">
@@ -29,7 +29,7 @@ export function PatternsPage({ cid, d }) {
             <span class="badge">${nProb} practice problems</span>
             ${!p.guide && html`<span class="badge warn">kit not built yet</span>`}
           </div>
-          <div style="margin-top:10px"><${Progress} value=${r.readiness} color="var(--good)" />
+          <div class="mt-3"><${Progress} value=${r.readiness} color="var(--good)" />
             <div class="tiny muted">readiness ${pct(r.readiness)} · ${r.attempts} attempt(s)</div></div>
         </a>`;
       })}
@@ -67,10 +67,10 @@ export function PatternPage({ cid, d, patternId }) {
 
   return html`
     <div class="small muted"><a href=${`#/c/${cid}/patterns`}>Exam patterns</a></div>
-    <div class="row between"><h1 style="margin-top:6px">${p.name}</h1>
+    <div class="row between"><h1 class="mt-2">${p.name}</h1>
       ${probs.length > 0 && html`<a class="btn primary" href=${`#/c/${cid}/problem/${probs.find((x) => problemStats(d, x.id).attempts === 0)?.id || probs[0].id}`}>Start practising</a>`}</div>
     <p>${p.description}</p>
-    <div class="row small" style="margin-bottom:14px">
+    <div class="row small mb-4">
       <span class="badge">${p.frequency} past-paper question(s)</span>
       <span class="badge good">readiness ${pct(mastery.patterns[p.id].readiness)}</span>
       ${p.concept_ids.map((c) => byId[c] && html`<a class="chip" href=${`#/c/${cid}/concept/${c}`}>${byId[c].name}</a>`)}
@@ -93,12 +93,12 @@ export function PatternPage({ cid, d, patternId }) {
       </div>`}
 
     <div class="card">
-      <div class="row between"><h3 style="margin:0">Practice problems (${probs.length})</h3>
+      <div class="row between"><h3 class="m-0">Practice problems (${probs.length})</h3>
         ${hasKey ? html`<button class="btn sm" onClick=${more} disabled=${running}>${running ? "Generating…" : "+ 3 more like these"}</button>`
           : html`<span class="tiny muted" title="No AI provider: ask Claude Code instead">Want more? Ask Claude Code: "make 3 more problems for ${p.name}"</span>`}</div>
-      ${err && html`<div class="notice bad small" style="margin-top:8px">${err}</div>`}
-      ${job && html`<div class="small muted" style="margin-top:6px">${job.stage} — ${job.status}${job.error ? `: ${job.error}` : ""}</div>`}
-      <div class="tbl-wrap" style="margin-top:8px"><table class="tbl"><tbody>
+      ${err && html`<div class="notice bad small mt-2">${err}</div>`}
+      ${job && html`<div class="small muted mt-2">${job.stage} — ${job.status}${job.error ? `: ${job.error}` : ""}</div>`}
+      <div class="tbl-wrap mt-2"><table class="tbl"><tbody>
         ${probs.map((x) => {
           const st = problemStats(d, x.id);
           return html`<tr>
@@ -115,7 +115,7 @@ export function PatternPage({ cid, d, patternId }) {
     <div class="card"><h3>Source questions (verbatim)</h3>
       ${p.source_questions.length === 0 && html`<p class="muted small">No past-paper questions linked.</p>`}
       ${p.source_questions.map((q) => html`<details><summary>${q.material_label || q.material_id} — Q${q.number} <span class="muted small">${q.marks ? `[${q.marks} marks]` : ""}</span></summary>
-        <div class="paper" style="margin:8px 0"><${Md} text=${q.text_md} /></div>
+        <div class="paper my-2"><${Md} text=${q.text_md} /></div>
         ${q.solution_md && html`<details><summary class="small">Official solution</summary><${Md} text=${q.solution_md} /></details>`}
       </details>`)}
     </div>`;
