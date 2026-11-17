@@ -1,5 +1,5 @@
-import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC, REPO_URL } from "../lib.js";
-import { GettingStarted, WhatToExpect } from "./guide.js";
+import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC, Md } from "../lib.js";
+import { GettingStarted, WhatToExpect, COURSE_FILE_TITLE, COURSE_FILE_MD } from "./guide.js";
 
 export function HomePage() {
   const store = useStore();
@@ -67,13 +67,9 @@ export function HomePage() {
           </div>
         </div>
         <div class="card">
-          <h3>🧭 Getting your own course here</h3>
-          <ol class="md small">
-            <li>Build the course on your computer: in the Cramtoolfinal app (Analyze) or by asking Claude Code.</li>
-            <li>In the app, open the course's <b>Materials</b> page and press <b>Export knowledge pack</b>.</li>
-            <li>Get that file onto this device (cloud drive, email, USB…) and press <b>Import pack</b>.</li>
-          </ol>
-          <p class="tiny muted">Packs stay in your browser: they are not uploaded to GitHub. <a href=${REPO_URL} target="_blank" rel="noopener">Get the app</a></p>
+          <h3>🧭 ${COURSE_FILE_TITLE}</h3>
+          <${Md} text=${COURSE_FILE_MD} cls="small" />
+          <p class="tiny muted">Course files you import stay in this browser: they are not uploaded to GitHub.</p>
         </div>
       </div>` : html`
     ${h && !h.ai_available && html`<div class="notice accent">
@@ -118,6 +114,6 @@ export function HomePage() {
             <div class="tiny muted" style="margin-top:6px">created ${timeAgo(c.created_at)}</div>
           </div>`)}</div>`}
 
-    <div style="margin-top:28px"><${WhatToExpect} /></div>
+    <div style="margin-top:28px"><${WhatToExpect} skipCourseFile=${true} /></div>
   `;
 }

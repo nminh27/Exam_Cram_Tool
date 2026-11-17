@@ -23,14 +23,25 @@ Then you train:
 
 > No tool can promise a 100% mark. What Cramtoolfinal does is make the gaps visible: every past-paper question maps to a pattern, every pattern to concepts, and the readiness numbers only go up when you actually solve exam-form problems without help.
 
-## Quick start (Windows)
+## Get the app on your computer
 
-1. Install Python 3.11+ (you have 3.13).
-2. Double-click **`run.bat`** (first run installs dependencies into `.venv`). The app opens at http://localhost:8000.
-3. Click **Open demo course** to try everything without any AI key.
-4. Pick how your own courses get built (next section), create a course, and upload its files.
+You need the app (not just the [study website](https://nminh27.github.io/Exam_Cram_Tool/)) to turn your own notes and past
+papers into a course. It's free and runs on your own computer.
 
-macOS / Linux / Git Bash: `./run.sh`
+1. **Install Python** 3.11 or newer from [python.org/downloads](https://www.python.org/downloads/).
+   On Windows, tick **"Add python.exe to PATH"** on the first screen of the installer.
+2. **Download Cramtoolfinal:** at the top of this page press the green **Code** button → **Download ZIP**, then unzip it
+   (right-click → *Extract All*).
+3. **Start it:** open the unzipped folder and double-click **`run.bat`**. The first start installs what it needs
+   (a minute or two), then the app opens in your browser at http://localhost:8000. Keep the black window open while you use it;
+   close it to stop the app.
+4. Click **Open demo course** to look around, then create your own course (next section).
+
+macOS / Linux: open a terminal in the folder and run `./run.sh`.
+
+**To study on your phone:** in the app, open the course's **Materials** page and press **Export knowledge pack**. That
+downloads a course file (`.cramtoolfinal.json`); put it on your phone and press **Import pack** on the
+[study website](https://nminh27.github.io/Exam_Cram_Tool/).
 
 Manual: `python -m venv .venv && .venv\Scripts\pip install -r requirements.txt && .venv\Scripts\python -m uvicorn app.main:app --port 8000`
 

@@ -9,13 +9,31 @@ function useMode() {
   return s.health && s.health.ai_available ? "ai" : "cc";
 }
 
+// Where a website visitor's course file comes from: the step new users are most likely to miss.
+export const INSTALL_URL = `${REPO_URL}#get-the-app-on-your-computer`;
+export const COURSE_FILE_TITLE = "Where does the course file come from?";
+export const COURSE_FILE_MD = [
+  "A **course file** (`.cramtoolfinal.json`) is one of your courses after AI has read your notes and past papers and turned them " +
+    "into concept breakdowns, quizzes and step-by-step exam problems. You make it **once, on a computer**, then open it on any device.",
+  "",
+  `1. **Get the Cramtoolfinal app on a computer** (free): on the [GitHub page](${INSTALL_URL}) press **Code → Download ZIP**, unzip it, ` +
+    "and double-click `run.bat`. It needs Python; the GitHub page walks you through it.",
+  "2. **Create a course** in the app and upload your lecture notes, slides and every past paper.",
+  "3. **Let AI build it:** add an AI key in the app's Settings and press **Analyze** (Google Gemini gives free keys with usage limits; " +
+    "Claude gives the best results), or, if you use Claude Code, ask it to build the course with no key at all.",
+  "4. On the course's **Materials** page, press **Export knowledge pack**. That downloads the course file.",
+  "5. Put the file on this device (cloud drive, email, USB…) and press **Import pack** here.",
+  "",
+  "A classmate who has already built the course can also just send you their file.",
+].join("\n");
+
 const STEP1 = {
   ai: "Create a course and upload your lecture notes, slides and **every past paper** (plus solutions if you have them). " +
     "Press **Analyze** on the Materials page. It takes several minutes, longer for big courses; the page shows live progress.",
   cc: "Create a course and upload your notes, slides and **every past paper** on its Materials page. " +
     "Then ask Claude Code: *\"Build the Cramtoolfinal pack for (course name)\"*. It builds the course and loads it here.",
-  web: "Press **Import pack** and choose a `.cramtoolfinal.json` file made in the Cramtoolfinal app on a computer, " +
-    "or press **Open demo course** to look around first.",
+  web: "Your course comes as one **course file** (`.cramtoolfinal.json`), which AI makes from your notes and past papers on a " +
+    "computer (see *Where does the course file come from?*). Press **Import pack** to load it, or **Open demo course** to look around first.",
 };
 
 const STEPS = [
@@ -26,7 +44,7 @@ const STEPS = [
   { ico: "🏋", title: "Train like the exam", body: () =>
     "In **Practice**, quizzes check your intuition. **Exam problems** are your past papers, solved one small box at a time: " +
     "what's given → what's asked → which formula → calculate → final answer." },
-  { ico: "📈", title: "Know where you stand", body: () =>
+  { ico: "📈", title: "Track your progress", body: () =>
     "Concepts move from *Not started* to *Weak*, *Getting there* and *Solid* as you answer. " +
     "**Exam readiness** gives the most weight to the question types that appear most in your past papers." },
 ];
@@ -47,8 +65,16 @@ export function GettingStarted({ hideLink }) {
   </section>`;
 }
 
-function faq(mode) {
+function faq(mode, skipCourseFile) {
   const items = [];
+  if (mode === "web" && !skipCourseFile) items.push([COURSE_FILE_TITLE, COURSE_FILE_MD]);
+  if (mode !== "web") {
+    items.push(["What is a knowledge pack (.cramtoolfinal.json)?",
+      "One file that holds a whole built course: concepts, questions and problems (not your original files, and not your progress). " +
+      "Use it to study on your phone with the [study website](https://nminh27.github.io/Exam_Cram_Tool/), move a course to another " +
+      "computer, keep a backup, or share it with a classmate. Make one with **Materials → Export knowledge pack**; load one with " +
+      "**Import pack** on the home page."]);
+  }
   items.push(["How long does it take to get a course ready?", {
     ai: "Analyzing usually takes several minutes and longer for big courses: each file is read, then every concept and every exam " +
       "question type gets its own breakdown. The Materials page shows live progress and the cost so far. You can start studying " +
@@ -92,11 +118,11 @@ function faq(mode) {
   return items;
 }
 
-export function WhatToExpect() {
+export function WhatToExpect({ skipCourseFile }) {
   const mode = useMode();
   return html`<section class="card" aria-label="What to expect">
     <h2 style="margin-top:0">What to expect</h2>
-    ${faq(mode).map(([q, a]) => html`<details class="faq"><summary>${q}</summary><${Md} text=${a} cls="small" /></details>`)}
+    ${faq(mode, skipCourseFile).map(([q, a]) => html`<details class="faq"><summary>${q}</summary><${Md} text=${a} cls="small" /></details>`)}
     <p class="tiny muted" style="margin-bottom:0">More help and the source code: <a href=${REPO_URL} target="_blank" rel="noopener">GitHub</a>.</p>
   </section>`;
 }
