@@ -68,6 +68,24 @@ Details: [docs/CLAUDE_CODE_WORKFLOW.md](docs/CLAUDE_CODE_WORKFLOW.md). Tools: `p
 
 You can switch any time: courses built either way look and work the same.
 
+## Study website (GitHub Pages)
+
+**https://nminh27.github.io/Exam_Cram_Tool/** is the same FinalForge interface as a website: open it on any
+device, phone included, with nothing to install.
+
+- It studies and drills courses you **import as knowledge packs**: build the course on your computer (Analyze,
+  or Claude Code mode), press **Materials → Export knowledge pack**, get the file onto the device, and press
+  **Import pack** on the website. The demo course is built in.
+- Courses and progress are kept **in that browser** (IndexedDB). They are never uploaded to GitHub and don't
+  sync between devices; **Course file → Progress backup** moves or protects your progress, and **Update with a
+  newer pack** refreshes a course without losing it.
+- Uploading files and the AI features (Analyze, "Break it down further", AI marking, generating more) need the app on your computer.
+- The site is public, so only the app and the demo are published. Never commit your own course packs to the repo.
+
+Publishing is automatic: every push to `main` runs `.github/workflows/pages.yml`, which builds the site with
+`python scripts/build_site.py` and deploys it. One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
+Preview locally with `python scripts/build_site.py` and any static server.
+
 ## Cost
 
 With Claude Opus 5.5 (`claude-opus-5-5`, about $4 / $20 per million input / output tokens) the course corpus is prompt-cached (1 h), so the many per-concept and per-pattern calls reuse it cheaply. A typical course of a few hundred pages plus 5–10 past papers costs a few dollars. For other providers, enter their prices under *Advanced* to get a cost estimate. The job panel shows live token counts. Re-running an analysis only processes new material unless you tick the rebuild boxes.
@@ -95,6 +113,9 @@ app/                FastAPI backend
   storage.py        file-based storage under data/
 web/                no-build UI (Preact + htm, KaTeX, marked, Cytoscape from CDNs)
   js/pages/*.js     one file per screen
+  js/static-api.js  website mode: answers the API in the browser (IndexedDB)
+  config.js         "server" here; "static" in the built website
+scripts/build_site.py  builds the GitHub Pages website into _site/
 samples/            demo course (build_demo.py → demo_pack.json)
 tests/              pytest suite (fake AI, no key needed)
 inbox/              drop materials here for Claude Code mode (git-ignored)

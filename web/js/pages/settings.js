@@ -1,9 +1,30 @@
-import { html, useState, useEffect, api, loadHealth, Spinner } from "../lib.js";
+import { html, useState, useEffect, api, loadHealth, Spinner, IS_STATIC, REPO_URL } from "../lib.js";
 
 const BLANK = { preset: "anthropic", label: "", base_url: "", model: "", api_key: "", pdf_mode: "auto",
   reasoning: false, max_output_tokens: 0, concurrency: 0, price_in: 0, price_out: 0 };
 
 export function SettingsPage() {
+  if (IS_STATIC) return html`<${WebsiteSettings} />`; // constant per page load, so hook order is stable
+  return html`<${AppSettings} />`;
+}
+
+function WebsiteSettings() {
+  return html`
+    <h1>Settings</h1>
+    <div class="card">
+      <h3>🌐 Website mode</h3>
+      <ul class="md small">
+        <li>Everything for studying works here: concept breakdowns, knowledge map, exam patterns, quizzes, map drills, the step-by-step solver and progress.</li>
+        <li>Courses and progress are stored in <b>this browser on this device</b>. They are not uploaded to GitHub and don't sync between devices;
+          use <b>Course file → Progress backup</b> to move or protect your progress.</li>
+        <li>Written answers are marked by comparing with the model answer. AI features (analysing files, "Break it down further", AI marking,
+          generating more questions) need the app on your computer.</li>
+      </ul>
+      <p class="small">Get the app and instructions on <a href=${REPO_URL} target="_blank" rel="noopener">GitHub</a>.</p>
+    </div>`;
+}
+
+function AppSettings() {
   const [s, setS] = useState(null);
   const [err, setErr] = useState("");
   const [editing, setEditing] = useState(null); // null | form object (with id when editing)

@@ -1,8 +1,9 @@
-import { html, render, useEffect, useRoute, useStore, loadHealth, useCourse, Spinner } from "./lib.js";
+import { html, render, useEffect, useRoute, useStore, loadHealth, useCourse, Spinner, IS_STATIC } from "./lib.js";
 import { HomePage } from "./pages/home.js";
 import { SettingsPage } from "./pages/settings.js";
 import { DashboardPage } from "./pages/dashboard.js";
 import { MaterialsPage } from "./pages/materials.js";
+import { CourseFilePage } from "./pages/course-file.js";
 import { LearnPage } from "./pages/learn.js";
 import { ConceptPage } from "./pages/concept.js";
 import { MapPage } from "./pages/map.js";
@@ -22,7 +23,7 @@ const NAV = [
   { key: "practice", label: "Practice", ico: "🏋" },
   { key: "progress", label: "Progress", ico: "📈" },
   { sec: "Setup" },
-  { key: "materials", label: "Materials", ico: "📂" },
+  IS_STATIC ? { key: "materials", label: "Course file", ico: "📦" } : { key: "materials", label: "Materials", ico: "📂" },
 ];
 
 function TopBar({ courseName }) {
@@ -32,9 +33,9 @@ function TopBar({ courseName }) {
     <a class="brand" href="#/"><span class="logo">F</span>FinalForge</a>
     ${courseName && html`<span class="crumb">/ ${courseName}</span>`}
     <span class="spacer"></span>
-    ${h && html`<a class="small muted" href="#/settings" title=${h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
+    ${h && html`<a class="small muted" href="#/settings" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
       <span class="dot" style=${`background:${h.ai_available ? "var(--good)" : "var(--accent)"}`}></span>
-      ${h.ai_available ? h.model : "Claude Code mode"}
+      ${h.static ? "Website" : h.ai_available ? h.model : "Claude Code mode"}
     </a>`}
     <a class="btn ghost sm" href="#/settings">⚙ Settings</a>
   </header>`;
@@ -71,7 +72,7 @@ function App() {
   const q = route.query;
   const pages = {
     "": (d) => html`<${DashboardPage} cid=${cid} d=${d} />`,
-    materials: (d) => html`<${MaterialsPage} cid=${cid} d=${d} />`,
+    materials: (d) => (IS_STATIC ? html`<${CourseFilePage} cid=${cid} d=${d} />` : html`<${MaterialsPage} cid=${cid} d=${d} />`),
     learn: (d) => html`<${LearnPage} cid=${cid} d=${d} />`,
     concept: (d) => html`<${ConceptPage} cid=${cid} d=${d} conceptId=${sub} />`,
     map: (d) => html`<${MapPage} cid=${cid} d=${d} />`,

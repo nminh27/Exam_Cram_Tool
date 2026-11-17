@@ -22,12 +22,19 @@ and drills from it. See README.md for the feature list and docs/PACK_FORMAT.md f
   `data/settings.json`. No provider = Claude Code mode.
 - Anything the pipeline writes must go through `clean_problem` / `clean_mcq` so the UI can trust the shape.
 - UI: one module per screen in `web/js/pages/`; shared helpers in `web/js/lib.js`. CDN script versions are pinned in `web/index.html`.
+  Paths in `web/` must stay relative (the website is served from `/Exam_Cram_Tool/`).
+- Two UI modes from one codebase: `window.FINALFORGE_MODE` ("server" in `web/config.js`; "static" in the
+  GitHub Pages build from `scripts/build_site.py`). In static mode `lib.api()` routes to `web/js/static-api.js`
+  (IndexedDB); any new API route the study screens use needs a static equivalent there, and server-only
+  features must be hidden or explained when `IS_STATIC`.
 - `data/` and `.env` are git-ignored: never commit course materials, progress or keys.
 
 ## GitHub workflow
 - When the user gives a repo URL: `git remote add origin <url>` (or `set-url`), then `git push -u origin main`.
 - For changes: branch from `main`, commit with a clear message, run the tests, push, open a PR if `gh` is available.
-- CI: `.github/workflows/ci.yml` runs pytest on push / PR.
+- CI: `.github/workflows/ci.yml` runs pytest on push / PR. `.github/workflows/pages.yml` deploys the
+  website on every push to `main` (https://nminh27.github.io/Exam_Cram_Tool/).
+- `gh` is not installed: push branches; the user merges on GitHub, or asks for a local merge + push.
 
 ## Building a course without an API key
 When the user says "build the (FinalForge) pack for <course>" (or "continue the pack"), follow

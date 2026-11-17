@@ -6,7 +6,13 @@ import { html, useState, useEffect, useMemo } from "https://unpkg.com/htm@3.1.1/
 
 // ------------------------------------------------------------------ API
 
+// "server" when served by the FinalForge app; "static" on the GitHub Pages website (set in config.js),
+// where a browser-only stand-in answers the API and courses live in this browser's storage.
+export const IS_STATIC = window.FINALFORGE_MODE === "static";
+export const REPO_URL = "https://github.com/nminh27/Exam_Cram_Tool";
+
 export async function api(path, opts = {}) {
+  if (IS_STATIC) return (await import("./static-api.js")).staticApi(path, opts);
   const o = { ...opts };
   if (o.json !== undefined) {
     o.method = o.method || "POST";
@@ -21,6 +27,25 @@ export async function api(path, opts = {}) {
     throw new Error(typeof msg === "string" ? msg : JSON.stringify(msg));
   }
   return r.json();
+}
+
+export function downloadJson(data, filename) {
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: "application/json" }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+export const fileSlug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "course";
+
+// Download a course's knowledge pack (works in both modes).
+export async function exportPack(cid, name) {
+  if (!IS_STATIC) { location.href = `/api/courses/${cid}/export`; return; }
+  downloadJson(await api(`/courses/${cid}/export`), `${fileSlug(name)}.finalforge.json`);
 }
 
 // ------------------------------------------------------------------ markdown + math
