@@ -1,0 +1,20 @@
+# secrets
+.env
+
+# your course materials, digests and progress stay on your computer
+data/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# editor / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# local Claude Code launch config (machine-specific paths)
+.claude/launch.json

@@ -1,0 +1,3672 @@
+{
+ "format": "finalforge-pack",
+ "version": 1,
+ "name": "Physics 101 (demo)",
+ "description": "Sample course: every feature, no API key needed",
+ "knowledge": {
+  "version": 1,
+  "course": {
+   "title": "Physics 101 (demo): Motion & Forces",
+   "overview_md": "**This is a sample course** written to show how FinalForge works; its \"past papers\" are sample questions, not real exams.\n\nThe course tells one story: first we learn to **describe** motion (displacement → velocity → acceleration → the SUVAT toolkit → projectiles), then we learn what **causes** changes in motion (Newton's second law, free-body diagrams, friction on slopes).\n\nThe sample final has 3 recurring question types: a **horizontal projectile** (≈ 10 marks), a **block on a rough slope** (≈ 10 marks) and a **uniform braking** problem (≈ 5 marks)."
+  },
+  "topics": [
+   {
+    "id": "t-kinematics",
+    "name": "Describing motion (kinematics)",
+    "summary": "Where things are, how fast, and how that changes."
+   },
+   {
+    "id": "t-forces",
+    "name": "Forces & Newton's laws",
+    "summary": "Why motion changes."
+   }
+  ],
+  "concepts": [
+   {
+    "id": "c-displacement-velocity",
+    "name": "Displacement & velocity",
+    "topic_id": "t-kinematics",
+    "one_liner": "Velocity is how fast your position changes, and in which direction.",
+    "prerequisites": [],
+    "related": [
+     "c-acceleration"
+    ],
+    "importance": "supporting",
+    "source_refs": [
+     "demo notes"
+    ],
+    "exam_frequency": 0,
+    "detail": {
+     "why_exists_md": "Saying \"I walked 5 km\" doesn't tell anyone where you ended up. To predict *where* something will be, we need distance **with direction** (displacement) and speed **with direction** (velocity).",
+     "what_it_does_md": "Lets you describe exactly where an object goes and how quickly its position changes.\n\n**In one sentence:** velocity = how much your position changes each second, including which way.",
+     "how_it_works_md": "1. Pick a starting point and a positive direction.\n2. Displacement $s$ = final position − starting position (can be negative).\n3. Velocity = displacement ÷ time: $v = s/t$ for steady motion.",
+     "everyday_analogy_md": "Walking to the school gate and back: you walked 400 m (distance) but your displacement is 0, because you're back where you started. Your *average velocity* over the round trip is 0 even though your legs are tired.",
+     "visualize_md": "Draw a number line. An arrow from start to finish is the displacement. The arrow's length per second is the velocity.",
+     "diagram_svg": "",
+     "atomic_steps": [
+      {
+       "step_md": "Choose a positive direction.",
+       "everyday_link": "decide \"towards school is +\""
+      },
+      {
+       "step_md": "Measure where you started.",
+       "everyday_link": "the front door"
+      },
+      {
+       "step_md": "Measure where you ended.",
+       "everyday_link": "the school gate"
+      },
+      {
+       "step_md": "Subtract: end − start = displacement.",
+       "everyday_link": "how far the gate is from the door"
+      },
+      {
+       "step_md": "Divide by time taken = average velocity.",
+       "everyday_link": "metres per second of walking"
+      }
+     ],
+     "formulas": [
+      {
+       "latex": "v = \\frac{s}{t}",
+       "name": "Average velocity",
+       "meaning_md": "Displacement per unit time.",
+       "symbols": [
+        {
+         "symbol": "v",
+         "meaning": "velocity",
+         "unit": "m/s"
+        },
+        {
+         "symbol": "s",
+         "meaning": "displacement",
+         "unit": "m"
+        },
+        {
+         "symbol": "t",
+         "meaning": "time",
+         "unit": "s"
+        }
+       ],
+       "when_to_use_md": "Steady motion, or for the *average* velocity. Not for changing speeds at an instant."
+      }
+     ],
+     "patterns_to_spot": [
+      {
+       "cue": "\"returns to its starting point\"",
+       "signals_md": "Displacement is zero."
+      },
+      {
+       "cue": "\"in which direction\" / \"velocity\"",
+       "signals_md": "Give a sign or a direction with your answer."
+      }
+     ],
+     "common_traps": [
+      {
+       "trap_md": "Mixing up distance and displacement.",
+       "fix_md": "Ask: does the direction matter here? If yes → displacement."
+      }
+     ],
+     "tips_tricks": [
+      {
+       "tip_md": "Always state your positive direction at the top of your working.",
+       "source": "general"
+      }
+     ],
+     "mini_example_md": "A runner goes 300 m east in 60 s then 100 m west in 40 s. Displacement $= 300 - 100 = 200$ m east; average velocity $= 200/100 = 2$ m/s east.",
+     "self_check": [
+      "What's the difference between distance and displacement?",
+      "Can velocity be negative? What does that mean?"
+     ]
+    }
+   },
+   {
+    "id": "c-acceleration",
+    "name": "Acceleration",
+    "topic_id": "t-kinematics",
+    "one_liner": "Acceleration is how fast your velocity changes each second.",
+    "prerequisites": [
+     "c-displacement-velocity"
+    ],
+    "related": [
+     "c-newtons-second-law"
+    ],
+    "importance": "core",
+    "source_refs": [
+     "demo notes"
+    ],
+    "exam_frequency": 1,
+    "detail": {
+     "why_exists_md": "Things don't just move at one speed: cars speed up, balls slow down. We need a number for **how quickly velocity changes**, or we can't predict anything that speeds up or slows down.",
+     "what_it_does_md": "Tells you how many m/s of velocity are added (or removed) every second.\n\n**In one sentence:** acceleration = change in velocity ÷ time taken.",
+     "how_it_works_md": "If velocity goes from $u$ to $v$ in time $t$, the change is $v-u$; spreading it evenly over $t$ seconds gives $a = (v-u)/t$. Negative $a$ means velocity is decreasing in the positive direction (slowing down if you're moving forwards).",
+     "everyday_analogy_md": "Pocket money: if your savings go from \\$10 to \\$40 in 3 weeks, they grow by \\$10 *per week*. Acceleration is the same thing for velocity: how many m/s you gain *per second*.",
+     "visualize_md": "Picture a speedometer needle. Acceleration is how fast the needle moves, not where it points.",
+     "diagram_svg": "",
+     "atomic_steps": [
+      {
+       "step_md": "Note the starting velocity $u$.",
+       "everyday_link": "savings at the start"
+      },
+      {
+       "step_md": "Note the final velocity $v$.",
+       "everyday_link": "savings at the end"
+      },
+      {
+       "step_md": "Find the change $v - u$.",
+       "everyday_link": "how much you gained"
+      },
+      {
+       "step_md": "Divide by the time taken.",
+       "everyday_link": "gain per week"
+      },
+      {
+       "step_md": "Keep the sign: negative = slowing (if moving +).",
+       "everyday_link": "spending, not saving"
+      }
+     ],
+     "formulas": [
+      {
+       "latex": "a = \\frac{v-u}{t}",
+       "name": "Acceleration",
+       "meaning_md": "Change of velocity per second.",
+       "symbols": [
+        {
+         "symbol": "a",
+         "meaning": "acceleration",
+         "unit": "m/s²"
+        },
+        {
+         "symbol": "u",
+         "meaning": "initial velocity",
+         "unit": "m/s"
+        },
+        {
+         "symbol": "v",
+         "meaning": "final velocity",
+         "unit": "m/s"
+        },
+        {
+         "symbol": "t",
+         "meaning": "time",
+         "unit": "s"
+        }
+       ],
+       "when_to_use_md": "Constant acceleration, or the average acceleration over an interval."
+      }
+     ],
+     "patterns_to_spot": [
+      {
+       "cue": "\"brakes\", \"decelerates\", \"slows down uniformly\"",
+       "signals_md": "Negative acceleration in the direction of motion."
+      },
+      {
+       "cue": "\"comes to rest\" / \"from rest\"",
+       "signals_md": "$v = 0$ or $u = 0$."
+      }
+     ],
+     "common_traps": [
+      {
+       "trap_md": "Thinking zero velocity means zero acceleration.",
+       "fix_md": "A ball at the top of its throw has $v = 0$ but $a = g$ downwards."
+      },
+      {
+       "trap_md": "Dropping the minus sign for deceleration.",
+       "fix_md": "Write $a$ with its sign; say \"deceleration of 6.25 m/s²\" only in words."
+      }
+     ],
+     "tips_tricks": [
+      {
+       "tip_md": "Units check: m/s divided by s = m/s².",
+       "source": "general"
+      }
+     ],
+     "mini_example_md": "A car goes from 10 m/s to 25 m/s in 5 s: $a = (25-10)/5 = 3\\ \\text{m s}^{-2}$.",
+     "self_check": [
+      "Can something have zero velocity and non-zero acceleration?",
+      "What does a negative acceleration mean?"
+     ]
+    }
+   },
+   {
+    "id": "c-suvat",
+    "name": "Constant-acceleration equations (SUVAT)",
+    "topic_id": "t-kinematics",
+    "one_liner": "Five linked quantities (s, u, v, a, t): know three, find the other two.",
+    "prerequisites": [
+     "c-acceleration"
+    ],
+    "related": [
+     "c-projectile-motion"
+    ],
+    "importance": "core",
+    "source_refs": [
+     "demo notes"
+    ],
+    "exam_frequency": 5,
+    "detail": {
+     "why_exists_md": "Exam questions give you a few facts about a motion and ask for something else. Without a toolkit linking them, you'd have to reason from scratch every time.",
+     "what_it_does_md": "Four equations that connect displacement $s$, initial velocity $u$, final velocity $v$, acceleration $a$ and time $t$, valid whenever $a$ is constant.\n\n**In one sentence:** list what you know, pick the equation that's missing the one you don't care about.",
+     "how_it_works_md": "Each equation leaves out exactly one of the five quantities. Write down the three you know and the one you want; the fifth (unused) letter tells you which equation to pick.",
+     "everyday_analogy_md": "Like a recipe card where any 3 ingredients tell you the other 2: if you know how many cookies, how many per tray, and how long each tray takes, you can work out the total time.",
+     "visualize_md": "Draw a 5-box table: s | u | v | a | t. Fill in what you know, put ? in the one you want, and a ✗ in the one you neither know nor need.",
+     "diagram_svg": "",
+     "atomic_steps": [
+      {
+       "step_md": "Choose a positive direction.",
+       "everyday_link": "\"down the hill is +\""
+      },
+      {
+       "step_md": "Write s, u, v, a, t in a column.",
+       "everyday_link": "a shopping list"
+      },
+      {
+       "step_md": "Fill in the known values with signs.",
+       "everyday_link": "tick what's in the fridge"
+      },
+      {
+       "step_md": "Mark the unknown you want with ?.",
+       "everyday_link": "what you need to buy"
+      },
+      {
+       "step_md": "Cross out the quantity that is neither known nor wanted.",
+       "everyday_link": "what the recipe doesn't use"
+      },
+      {
+       "step_md": "Pick the equation without the crossed-out letter.",
+       "everyday_link": "choose the recipe card"
+      },
+      {
+       "step_md": "Substitute and solve.",
+       "everyday_link": "cook"
+      }
+     ],
+     "formulas": [
+      {
+       "latex": "v = u + at",
+       "name": "No s",
+       "meaning_md": "",
+       "symbols": [
+        {
+         "symbol": "v",
+         "meaning": "final velocity",
+         "unit": "m/s"
+        },
+        {
+         "symbol": "u",
+         "meaning": "initial velocity",
+         "unit": "m/s"
+        },
+        {
+         "symbol": "a",
+         "meaning": "acceleration",
+         "unit": "m/s²"
+        },
+        {
+         "symbol": "t",
+         "meaning": "time",
+         "unit": "s"
+        }
+       ],
+       "when_to_use_md": "When $s$ is not involved."
+      },
+      {
+       "latex": "s = ut + \\tfrac12 a t^2",
+       "name": "No v",
+       "meaning_md": "",
+       "symbols": [
+        {
+         "symbol": "s",
+         "meaning": "displacement",
+         "unit": "m"
+        }
+       ],
+       "when_to_use_md": "When $v$ is not involved, e.g. time to fall from rest."
+      },
+      {
+       "latex": "v^2 = u^2 + 2as",
+       "name": "No t",
+       "meaning_md": "",
+       "symbols": [],
+       "when_to_use_md": "When time is not involved, e.g. braking distance."
+      },
+      {
+       "latex": "s = \\tfrac{(u+v)}{2}t",
+       "name": "No a",
+       "meaning_md": "",
+       "symbols": [],
+       "when_to_use_md": "When acceleration is not involved."
+      }
+     ],
+     "patterns_to_spot": [
+      {
+       "cue": "\"uniform / constant acceleration\", \"freely falling\"",
+       "signals_md": "SUVAT applies."
+      },
+      {
+       "cue": "\"from rest\"",
+       "signals_md": "$u = 0$"
+      },
+      {
+       "cue": "\"comes to rest\"",
+       "signals_md": "$v = 0$"
+      }
+     ],
+     "common_traps": [
+      {
+       "trap_md": "Using SUVAT when acceleration changes.",
+       "fix_md": "Check the word *constant/uniform* or that only gravity acts."
+      },
+      {
+       "trap_md": "Mixing signs (up +, but $g$ entered as +9.8).",
+       "fix_md": "Decide the positive direction once and apply it to every vector."
+      }
+     ],
+     "tips_tricks": [
+      {
+       "tip_md": "The ✗ trick: the equation without the unwanted letter is always the one.",
+       "source": "demo paper 2023 Q2"
+      },
+      {
+       "tip_md": "Check $t$ with average speed: $s = \\frac{u+v}{2}t$.",
+       "source": "general"
+      }
+     ],
+     "mini_example_md": "A car at 25 m/s stops in 50 m. Known: $u = 25$, $v = 0$, $s = 50$; want $a$; ✗ = $t$ → $v^2 = u^2 + 2as$ → $a = -625/100 = -6.25\\ \\text{m s}^{-2}$.",
+     "self_check": [
+      "Which equation would you use if time isn't mentioned?",
+      "Why must acceleration be constant?"
+     ]
+    }
+   },
+   {
+    "id": "c-projectile-motion",
+    "name": "Projectile motion",
+    "topic_id": "t-kinematics",
+    "one_liner": "Split the flight into two independent motions: steady sideways, accelerating downwards.",
+    "prerequisites": [
+     "c-suvat"
+    ],
+    "related": [
+     "c-suvat"
+    ],
+    "importance": "core",
+    "source_refs": [
+     "demo notes"
+    ],
+    "exam_frequency": 2,
+    "detail": {
+     "why_exists_md": "A thrown ball moves sideways and falls at the same time: one curved path that looks hard. Splitting it into two simple straight-line motions makes it solvable with SUVAT.",
+     "what_it_does_md": "Lets you find time of flight, range and impact velocity of anything thrown or launched, ignoring air resistance.\n\n**In one sentence:** horizontal = constant speed, vertical = free fall, and the clock is shared.",
+     "how_it_works_md": "Gravity only pulls **down**, so it only changes vertical velocity. Horizontal velocity stays constant. Solve the vertical motion (usually to get $t$), then use that same $t$ horizontally.",
+     "everyday_analogy_md": "Roll a marble off a table while your friend drops one from the same height at the same moment: they hit the floor together. The sideways roll doesn't make the fall slower or faster. The floor is the \"timer\", and only falling matters for it.",
+     "visualize_md": "Imagine the shadow of the ball on the ground (moves steadily) and its shadow on a wall (falls faster and faster). The real ball is just both shadows at once.",
+     "diagram_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"sans-serif\" font-size=\"12\"><rect x=\"10\" y=\"40\" width=\"50\" height=\"150\" fill=\"none\" stroke=\"#4b5563\" stroke-width=\"2\"/><path d=\"M60 40 Q 170 50 250 190\" fill=\"none\" stroke=\"#6366f1\" stroke-width=\"3\" stroke-dasharray=\"6 4\"/><line x1=\"60\" y1=\"40\" x2=\"110\" y2=\"40\" stroke=\"#4b5563\" stroke-width=\"2\" marker-end=\"url(#a)\"/><defs><marker id=\"a\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L6,3 L0,6 z\" fill=\"#4b5563\"/></marker></defs><text x=\"68\" y=\"32\" fill=\"#4b5563\">u_x (stays the same)</text><line x1=\"210\" y1=\"120\" x2=\"210\" y2=\"160\" stroke=\"#6366f1\" stroke-width=\"2\" marker-end=\"url(#a)\"/><text x=\"216\" y=\"146\" fill=\"#6366f1\">v_y grows</text><text x=\"16\" y=\"120\" fill=\"#4b5563\">h</text><line x1=\"10\" y1=\"190\" x2=\"310\" y2=\"190\" stroke=\"#4b5563\"/><text x=\"120\" y=\"185\" fill=\"#4b5563\">x = u_x t</text></svg>",
+     "atomic_steps": [
+      {
+       "step_md": "Split velocity into horizontal $u_x$ and vertical $u_y$.",
+       "everyday_link": "two separate shadows"
+      },
+      {
+       "step_md": "Horizontal: $a = 0$, so $x = u_x t$.",
+       "everyday_link": "the floor shadow glides steadily"
+      },
+      {
+       "step_md": "Vertical: $a = g$ downwards, use SUVAT.",
+       "everyday_link": "the wall shadow falls like a dropped stone"
+      },
+      {
+       "step_md": "Find $t$ from the vertical motion.",
+       "everyday_link": "the floor is the timer"
+      },
+      {
+       "step_md": "Use the same $t$ in the horizontal equation.",
+       "everyday_link": "both shadows share one clock"
+      },
+      {
+       "step_md": "Recombine components with Pythagoras for speed.",
+       "everyday_link": "diagonal of a rectangle"
+      }
+     ],
+     "formulas": [
+      {
+       "latex": "t = \\sqrt{2h/g}",
+       "name": "Fall time from rest (horizontal launch)",
+       "meaning_md": "From $h = \\tfrac12 g t^2$ with $u_y = 0$.",
+       "symbols": [
+        {
+         "symbol": "h",
+         "meaning": "height",
+         "unit": "m"
+        },
+        {
+         "symbol": "g",
+         "meaning": "gravitational field strength",
+         "unit": "m/s²"
+        }
+       ],
+       "when_to_use_md": "Only when launched horizontally (u_y = 0)."
+      },
+      {
+       "latex": "x = u_x t",
+       "name": "Horizontal distance",
+       "meaning_md": "Constant horizontal velocity.",
+       "symbols": [
+        {
+         "symbol": "x",
+         "meaning": "horizontal distance",
+         "unit": "m"
+        },
+        {
+         "symbol": "u_x",
+         "meaning": "horizontal velocity",
+         "unit": "m/s"
+        }
+       ],
+       "when_to_use_md": "Always, if air resistance is negligible."
+      },
+      {
+       "latex": "v = \\sqrt{v_x^2 + v_y^2}",
+       "name": "Speed from components",
+       "meaning_md": "",
+       "symbols": [],
+       "when_to_use_md": "Impact speed questions."
+      }
+     ],
+     "patterns_to_spot": [
+      {
+       "cue": "\"projected / thrown / kicked horizontally\"",
+       "signals_md": "$u_y = 0$; time comes from height only."
+      },
+      {
+       "cue": "\"lands\", \"hits the ground\"",
+       "signals_md": "Vertical displacement equals the height."
+      },
+      {
+       "cue": "\"speed just before impact\"",
+       "signals_md": "Find both components then Pythagoras."
+      }
+     ],
+     "common_traps": [
+      {
+       "trap_md": "Using the launch speed in the vertical equation.",
+       "fix_md": "For a horizontal launch, $u_y = 0$."
+      },
+      {
+       "trap_md": "Thinking a faster throw stays in the air longer.",
+       "fix_md": "Time depends only on vertical motion."
+      },
+      {
+       "trap_md": "Adding components directly ($v_x + v_y$).",
+       "fix_md": "They're perpendicular: use Pythagoras."
+      }
+     ],
+     "tips_tricks": [
+      {
+       "tip_md": "For horizontal launches you can skip time for impact speed: $v_y^2 = 2gh$.",
+       "source": "demo paper 2023 Q1"
+      },
+      {
+       "tip_md": "Write two columns, H and V, every time.",
+       "source": "general"
+      }
+     ],
+     "mini_example_md": "Kicked horizontally at 12 m/s from 45 m: $t = \\sqrt{90/9.8} = 3.03$ s; $x = 12 \\times 3.03 = 36.4$ m.",
+     "self_check": [
+      "Why doesn't the horizontal speed change?",
+      "What decides the time of flight?",
+      "How do you get the impact speed?"
+     ]
+    }
+   },
+   {
+    "id": "c-newtons-second-law",
+    "name": "Newton's second law",
+    "topic_id": "t-forces",
+    "one_liner": "Resultant force = mass × acceleration: forces change motion, they don't maintain it.",
+    "prerequisites": [
+     "c-acceleration"
+    ],
+    "related": [
+     "c-free-body-diagrams"
+    ],
+    "importance": "core",
+    "source_refs": [
+     "demo notes"
+    ],
+    "exam_frequency": 2,
+    "detail": {
+     "why_exists_md": "People once thought you need a force to keep things moving. Newton showed forces **change** motion. We need a law that says exactly how much a force changes velocity.",
+     "what_it_does_md": "Links the resultant (net) force on an object to its acceleration: $F = ma$.\n\n**In one sentence:** the more unbalanced the push, and the lighter the object, the faster its velocity changes.",
+     "how_it_works_md": "Add all forces as vectors to get the resultant force. That resultant, and only that, causes acceleration in its direction: $a = F_{\\text{net}}/m$. Balanced forces → zero acceleration (constant velocity, possibly zero).",
+     "everyday_analogy_md": "Pushing an empty shopping trolley vs a full one with the same push: the empty one speeds up much faster. Two friends pushing equally from opposite sides: it doesn't move (forces cancel, resultant zero).",
+     "visualize_md": "Draw the object as a dot with force arrows. Imagine the arrows playing tug-of-war; the leftover arrow after cancelling is $ma$.",
+     "diagram_svg": "",
+     "atomic_steps": [
+      {
+       "step_md": "Identify every force on the object.",
+       "everyday_link": "everyone pushing the trolley"
+      },
+      {
+       "step_md": "Pick a positive direction.",
+       "everyday_link": "\"forwards is +\""
+      },
+      {
+       "step_md": "Add forces with signs to get the resultant.",
+       "everyday_link": "who wins the tug-of-war, by how much"
+      },
+      {
+       "step_md": "Set resultant = $ma$.",
+       "everyday_link": "leftover push makes it speed up"
+      },
+      {
+       "step_md": "Solve for the unknown.",
+       "everyday_link": ""
+      }
+     ],
+     "formulas": [
+      {
+       "latex": "F_{\\text{net}} = ma",
+       "name": "Newton's second law",
+       "meaning_md": "Resultant force equals mass times acceleration.",
+       "symbols": [
+        {
+         "symbol": "F_{\\text{net}}",
+         "meaning": "resultant force",
+         "unit": "N"
+        },
+        {
+         "symbol": "m",
+         "meaning": "mass",
+         "unit": "kg"
+        },
+        {
+         "symbol": "a",
+         "meaning": "acceleration",
+         "unit": "m/s²"
+        }
+       ],
+       "when_to_use_md": "Any time forces and acceleration appear together. Apply it along one direction at a time."
+      }
+     ],
+     "patterns_to_spot": [
+      {
+       "cue": "\"resultant force\", \"net force\", \"accelerates\"",
+       "signals_md": "Use $F_{net} = ma$."
+      },
+      {
+       "cue": "\"moves at constant velocity\"",
+       "signals_md": "Resultant force is zero."
+      }
+     ],
+     "common_traps": [
+      {
+       "trap_md": "Using one force instead of the resultant.",
+       "fix_md": "Always sum *all* forces along the direction first."
+      },
+      {
+       "trap_md": "Thinking moving objects need a forward force.",
+       "fix_md": "Constant velocity needs zero resultant force."
+      }
+     ],
+     "tips_tricks": [
+      {
+       "tip_md": "Resolve along the direction of acceleration and perpendicular to it.",
+       "source": "demo paper 2023 Q3"
+      }
+     ],
+     "mini_example_md": "A 2 kg trolley is pushed with 10 N against 4 N friction: $F_{net} = 6$ N, $a = 6/2 = 3\\ \\text{m s}^{-2}$.",
+     "self_check": [
+      "What does a zero resultant force tell you about the motion?",
+      "Which force goes into $F = ma$?"
+     ]
+    }
+   },
+   {
+    "id": "c-free-body-diagrams",
+    "name": "Free-body diagrams & resolving",
+    "topic_id": "t-forces",
+    "one_liner": "Draw the object alone with every force on it, then split forces along useful directions.",
+    "prerequisites": [],
+    "related": [
+     "c-newtons-second-law"
+    ],
+    "importance": "supporting",
+    "source_refs": [
+     "demo notes"
+    ],
+    "exam_frequency": 2,
+    "detail": {
+     "why_exists_md": "Real situations have many things touching and pulling. A free-body diagram strips it down to *one object and the forces on it*, so you don't forget or invent forces.",
+     "what_it_does_md": "Lists every force on one object and lets you resolve them into components along chosen axes.\n\n**In one sentence:** isolate, draw arrows, choose axes, split diagonal arrows.",
+     "how_it_works_md": "Draw the object as a box. Add weight (down), contact forces (normal reaction perpendicular to each surface, friction along it), and tensions/pushes. On a slope choose axes along and perpendicular to the slope; resolve weight into $mg\\sin\\theta$ (along) and $mg\\cos\\theta$ (into the slope).",
+     "everyday_analogy_md": "Like listing who is touching you in a crowd: only people actually in contact (plus gravity pulling everyone) can push you. Nobody far away counts.",
+     "visualize_md": "Tilt your head to make the slope look flat: then the weight arrow is the only one that looks \"slanted\", so it's the only one you need to split.",
+     "diagram_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 320 200\" font-family=\"sans-serif\" font-size=\"12\"><defs><marker id=\"b\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L6,3 L0,6 z\" fill=\"#4b5563\"/></marker></defs><path d=\"M20 180 L300 180 L20 40 z\" fill=\"none\" stroke=\"#4b5563\" stroke-width=\"2\"/><g transform=\"rotate(26.6 140 100)\"><rect x=\"115\" y=\"76\" width=\"50\" height=\"30\" fill=\"#eef0ff\" stroke=\"#6366f1\" stroke-width=\"2\"/></g><line x1=\"140\" y1=\"100\" x2=\"140\" y2=\"165\" stroke=\"#4b5563\" stroke-width=\"2\" marker-end=\"url(#b)\"/><text x=\"145\" y=\"165\" fill=\"#4b5563\">mg</text><line x1=\"140\" y1=\"95\" x2=\"115\" y2=\"45\" stroke=\"#6366f1\" stroke-width=\"2\" marker-end=\"url(#b)\"/><text x=\"88\" y=\"45\" fill=\"#6366f1\">R</text><line x1=\"140\" y1=\"95\" x2=\"95\" y2=\"73\" stroke=\"#d97706\" stroke-width=\"2\" marker-end=\"url(#b)\"/><text x=\"60\" y=\"80\" fill=\"#d97706\">F = μR</text><text x=\"255\" y=\"172\" fill=\"#4b5563\">θ</text></svg>",
+     "atomic_steps": [
+      {
+       "step_md": "Draw the object alone as a box.",
+       "everyday_link": "cut it out of the picture"
+      },
+      {
+       "step_md": "Draw weight $mg$ straight down.",
+       "everyday_link": "gravity pulls everyone"
+      },
+      {
+       "step_md": "Draw normal reaction perpendicular to the surface.",
+       "everyday_link": "the floor pushing back"
+      },
+      {
+       "step_md": "Draw friction along the surface, opposing sliding.",
+       "everyday_link": "rubbing slows you"
+      },
+      {
+       "step_md": "Choose axes along and perpendicular to the motion.",
+       "everyday_link": "tilt your head"
+      },
+      {
+       "step_md": "Resolve forces that aren't on an axis.",
+       "everyday_link": "split the slanted arrow"
+      }
+     ],
+     "formulas": [
+      {
+       "latex": "mg\\sin\\theta",
+       "name": "Weight component along slope",
+       "meaning_md": "",
+       "symbols": [
+        {
+         "symbol": "\\theta",
+         "meaning": "slope angle",
+         "unit": "°"
+        }
+       ],
+       "when_to_use_md": "Slope problems: down-slope pull."
+      },
+      {
+       "latex": "mg\\cos\\theta",
+       "name": "Weight component into slope",
+       "meaning_md": "",
+       "symbols": [],
+       "when_to_use_md": "Slope problems: balances the normal reaction."
+      }
+     ],
+     "patterns_to_spot": [
+      {
+       "cue": "\"inclined plane\", \"slope at θ°\"",
+       "signals_md": "Axes along/perpendicular to the slope; resolve weight."
+      },
+      {
+       "cue": "\"identify the forces\"",
+       "signals_md": "Weight, normal reaction, friction (+ any rope/push)."
+      }
+     ],
+     "common_traps": [
+      {
+       "trap_md": "Adding a \"force of motion\".",
+       "fix_md": "Only things touching it (plus gravity) exert forces."
+      },
+      {
+       "trap_md": "Swapping sin and cos.",
+       "fix_md": "As θ → 0 (flat), the along-slope part must → 0, so it's sin."
+      }
+     ],
+     "tips_tricks": [
+      {
+       "tip_md": "Check sin/cos with θ = 0: flat ground means no down-slope pull.",
+       "source": "general"
+      }
+     ],
+     "mini_example_md": "On a 30° slope, a 5 kg block: along $= 5 \\times 9.8 \\times \\sin 30° = 24.5$ N; into slope $= 42.4$ N.",
+     "self_check": [
+      "Which forces act on a block sliding down a rough slope?",
+      "How can you check sin vs cos quickly?"
+     ]
+    }
+   },
+   {
+    "id": "c-friction-incline",
+    "name": "Friction on an inclined plane",
+    "topic_id": "t-forces",
+    "one_liner": "Friction opposes sliding with size μR, where R = mg cos θ on a slope.",
+    "prerequisites": [
+     "c-newtons-second-law",
+     "c-free-body-diagrams"
+    ],
+    "related": [
+     "c-free-body-diagrams"
+    ],
+    "importance": "core",
+    "source_refs": [
+     "demo notes"
+    ],
+    "exam_frequency": 2,
+    "detail": {
+     "why_exists_md": "Real slopes are rough: blocks slide slower than on ice. We need a model for how big that resistance is.",
+     "what_it_does_md": "Gives the friction force $F = \\mu R$ (sliding) and combines with Newton's second law to find accelerations on rough slopes.\n\n**In one sentence:** friction = roughness × how hard the surfaces press together.",
+     "how_it_works_md": "The harder two surfaces press ($R$), and the rougher they are ($\\mu$), the bigger the friction. On a slope, $R = mg\\cos\\theta$, so $F = \\mu mg\\cos\\theta$, acting up the slope for a block sliding down. Then $ma = mg\\sin\\theta - \\mu mg\\cos\\theta$.",
+     "everyday_analogy_md": "Sliding down a playground slide in shorts vs in rubber boots: boots = bigger μ. A heavier kid presses harder (bigger R), so more friction, but also more pull down the slope, so mass cancels!",
+     "visualize_md": "Picture the slide surface: friction is a hand on the block pushing back up the slide, with strength μ × (how hard the slide pushes back).",
+     "diagram_svg": "",
+     "atomic_steps": [
+      {
+       "step_md": "Find $R = mg\\cos\\theta$.",
+       "everyday_link": "how hard the slide pushes on you"
+      },
+      {
+       "step_md": "Multiply by $\\mu$ to get friction.",
+       "everyday_link": "boots vs shorts"
+      },
+      {
+       "step_md": "Point friction opposite to the sliding.",
+       "everyday_link": "the hand pushes back"
+      },
+      {
+       "step_md": "Find the down-slope pull $mg\\sin\\theta$.",
+       "everyday_link": "steepness of the slide"
+      },
+      {
+       "step_md": "Resultant = pull − friction.",
+       "everyday_link": "who wins"
+      },
+      {
+       "step_md": "Divide by $m$ for $a$.",
+       "everyday_link": "how fast you speed up"
+      }
+     ],
+     "formulas": [
+      {
+       "latex": "F = \\mu R",
+       "name": "Sliding friction",
+       "meaning_md": "",
+       "symbols": [
+        {
+         "symbol": "\\mu",
+         "meaning": "coefficient of friction",
+         "unit": "—"
+        },
+        {
+         "symbol": "R",
+         "meaning": "normal reaction",
+         "unit": "N"
+        }
+       ],
+       "when_to_use_md": "When the object slides (or is about to)."
+      },
+      {
+       "latex": "a = g(\\sin\\theta - \\mu\\cos\\theta)",
+       "name": "Acceleration down a rough slope",
+       "meaning_md": "Mass cancels.",
+       "symbols": [],
+       "when_to_use_md": "Released block sliding down; check $\\tan\\theta > \\mu$ for it to slide."
+      }
+     ],
+     "patterns_to_spot": [
+      {
+       "cue": "\"rough plane\", \"coefficient of friction\"",
+       "signals_md": "$F = \\mu R$ with $R$ from resolving perpendicular."
+      },
+      {
+       "cue": "\"released from rest\"",
+       "signals_md": "$u = 0$; friction acts up the slope."
+      }
+     ],
+     "common_traps": [
+      {
+       "trap_md": "Using $R = mg$ on a slope.",
+       "fix_md": "Resolve: $R = mg\\cos\\theta$."
+      },
+      {
+       "trap_md": "Friction pointing down the slope for a block sliding down.",
+       "fix_md": "Friction opposes the motion."
+      }
+     ],
+     "tips_tricks": [
+      {
+       "tip_md": "Mass cancels in $a = g(\\sin\\theta - \\mu\\cos\\theta)$: a quick check of your answer.",
+       "source": "demo paper 2023 Q3"
+      },
+      {
+       "tip_md": "Calculator in DEGREES mode!",
+       "source": "general"
+      }
+     ],
+     "mini_example_md": "5 kg, 30°, μ = 0.2: $a = 9.8(\\sin 30° - 0.2\\cos 30°) = 3.20\\ \\text{m s}^{-2}$.",
+     "self_check": [
+      "Why does the mass cancel?",
+      "Which way does friction act on a block sliding down?"
+     ]
+    }
+   }
+  ],
+  "patterns": [
+   {
+    "id": "p-horizontal-projectile",
+    "name": "Horizontal launch from a height",
+    "calc": true,
+    "description": "Something leaves a height horizontally; find time of flight, range, impact speed, and explain independence.",
+    "concept_ids": [
+     "c-suvat",
+     "c-projectile-motion"
+    ],
+    "frequency": 2,
+    "source_questions": [
+     {
+      "material_id": "demo",
+      "number": "1",
+      "text_md": "A ball is kicked **horizontally** at $12\\ \\text{m s}^{-1}$ from the top of a cliff $45\\ \\text{m}$ high. Air resistance is negligible. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Calculate the time the ball takes to reach the ground. **(3 marks)**\n\n(b) Calculate the horizontal distance it travels. **(2 marks)**\n\n(c) Calculate its speed just before it hits the ground. **(3 marks)**\n\n(d) Explain why kicking it faster would **not** change your answer to (a). **(2 marks)**",
+      "marks": "",
+      "solution_md": "",
+      "material_label": "Demo final 2023",
+      "is_exam": true
+     },
+     {
+      "material_id": "demo",
+      "number": "1",
+      "text_md": "A stone is thrown **horizontally** at $8\\ \\text{m s}^{-1}$ from the top of a bridge $20\\ \\text{m}$ high. Air resistance is negligible. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Calculate the time the stone takes to reach the ground. **(3 marks)**\n\n(b) Calculate the horizontal distance it travels. **(2 marks)**\n\n(c) Calculate its speed just before it hits the ground. **(3 marks)**\n\n(d) Explain why throwing it faster would **not** change your answer to (a). **(2 marks)**",
+      "marks": "",
+      "solution_md": "",
+      "material_label": "Demo final 2022",
+      "is_exam": true
+     }
+    ],
+    "guide": {
+     "recognition_cues": [
+      "\"thrown / kicked / projected **horizontally**\"",
+      "a height (cliff, table, bridge) is given",
+      "asks for time, horizontal distance or impact speed"
+     ],
+     "recipe": [
+      {
+       "step_md": "Write two columns: **H** (horizontal) and **V** (vertical).",
+       "why_md": "The motions are independent.",
+       "everyday_link": "two shadows of the ball"
+      },
+      {
+       "step_md": "V: $u_y = 0$, $a = g$, $s = h$.",
+       "why_md": "\"Horizontally\" means no vertical launch speed.",
+       "everyday_link": "like dropping it"
+      },
+      {
+       "step_md": "Find $t$ from $h = \\tfrac12 g t^2$.",
+       "why_md": "Time is set by the fall.",
+       "everyday_link": "the floor is the timer"
+      },
+      {
+       "step_md": "H: $x = u_x t$.",
+       "why_md": "No horizontal acceleration.",
+       "everyday_link": "steady glide"
+      },
+      {
+       "step_md": "Impact: $v_y = gt$ (or $\\sqrt{2gh}$), then $v = \\sqrt{u_x^2 + v_y^2}$.",
+       "why_md": "Perpendicular components.",
+       "everyday_link": "diagonal of a rectangle"
+      },
+      {
+       "step_md": "Sanity-check: $v$ is bigger than both components.",
+       "why_md": "Catches Pythagoras slips.",
+       "everyday_link": "hypotenuse is longest"
+      }
+     ],
+     "tricks": [
+      "$v_y^2 = 2gh$ gives impact vertical speed without finding $t$.",
+      "Mass never appears: if you're using it, stop."
+     ],
+     "traps": [
+      "Putting the launch speed into the vertical equation.",
+      "Adding $v_x + v_y$ instead of Pythagoras.",
+      "Forgetting to square-root at the end."
+     ],
+     "examiner_wants_md": "Equation quoted before substitution, $u_y = 0$ stated, units on every answer, 3 s.f. For the *explain* part: independence of components **and** time depends only on vertical quantities."
+    }
+   },
+   {
+    "id": "p-block-on-incline",
+    "name": "Block on a rough incline",
+    "calc": true,
+    "description": "A block on a rough slope: identify forces, find normal reaction, acceleration, then speed after a distance.",
+    "concept_ids": [
+     "c-free-body-diagrams",
+     "c-friction-incline",
+     "c-newtons-second-law",
+     "c-suvat"
+    ],
+    "frequency": 2,
+    "source_questions": [
+     {
+      "material_id": "demo",
+      "number": "3",
+      "text_md": "A block of mass $5\\ \\text{kg}$ is released from rest on a rough plane inclined at $30^\\circ$ to the horizontal. The coefficient of friction between the block and the plane is $0.2$. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Identify the forces acting on the block. **(2 marks)**\n\n(b) Calculate the normal reaction force. **(2 marks)**\n\n(c) Calculate the acceleration of the block down the plane. **(4 marks)**\n\n(d) Calculate the speed of the block after it has slid $3\\ \\text{m}$. **(2 marks)**",
+      "marks": "",
+      "solution_md": "",
+      "material_label": "Demo final 2023",
+      "is_exam": true
+     },
+     {
+      "material_id": "demo",
+      "number": "3",
+      "text_md": "A block of mass $2\\ \\text{kg}$ is released from rest on a rough plane inclined at $25^\\circ$ to the horizontal. The coefficient of friction between the block and the plane is $0.15$. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Identify the forces acting on the block. **(2 marks)**\n\n(b) Calculate the normal reaction force. **(2 marks)**\n\n(c) Calculate the acceleration of the block down the plane. **(4 marks)**\n\n(d) Calculate the speed of the block after it has slid $4\\ \\text{m}$. **(2 marks)**",
+      "marks": "",
+      "solution_md": "",
+      "material_label": "Demo final 2022",
+      "is_exam": true
+     }
+    ],
+    "guide": {
+     "recognition_cues": [
+      "\"rough plane inclined at θ\"",
+      "\"coefficient of friction\"",
+      "\"released from rest\""
+     ],
+     "recipe": [
+      {
+       "step_md": "Draw the free-body diagram: $mg$, $R$, friction up the slope.",
+       "why_md": "Can't sum forces you haven't drawn.",
+       "everyday_link": "list who touches it"
+      },
+      {
+       "step_md": "Resolve perpendicular: $R = mg\\cos\\theta$.",
+       "why_md": "No acceleration into the slope.",
+       "everyday_link": "the slope pushes back"
+      },
+      {
+       "step_md": "Friction: $F = \\mu R$.",
+       "why_md": "Sliding friction model.",
+       "everyday_link": "boots vs shorts"
+      },
+      {
+       "step_md": "Resolve along: $ma = mg\\sin\\theta - F$.",
+       "why_md": "Newton's second law along the motion.",
+       "everyday_link": "tug-of-war leftover"
+      },
+      {
+       "step_md": "Solve for $a$, then use SUVAT for later parts.",
+       "why_md": "Constant force → constant $a$.",
+       "everyday_link": "recipe card"
+      }
+     ],
+     "tricks": [
+      "$a = g(\\sin\\theta - \\mu\\cos\\theta)$: mass cancels, a quick check.",
+      "Calculator in degrees."
+     ],
+     "traps": [
+      "$R = mg$ (forgot to resolve).",
+      "Friction drawn down the slope.",
+      "Swapping sin and cos."
+     ],
+     "examiner_wants_md": "A labelled force diagram, resolving shown in both directions, $F = \\mu R$ quoted, answers to 3 s.f. with units."
+    }
+   },
+   {
+    "id": "p-braking-suvat",
+    "name": "Uniform braking / accelerating vehicle",
+    "calc": true,
+    "description": "A vehicle speeds up or slows uniformly: find acceleration, time or distance with SUVAT.",
+    "concept_ids": [
+     "c-acceleration",
+     "c-suvat"
+    ],
+    "frequency": 1,
+    "source_questions": [
+     {
+      "material_id": "demo",
+      "number": "2",
+      "text_md": "A car travelling at $25\\ \\text{m s}^{-1}$ brakes with uniform deceleration and comes to rest in $50\\ \\text{m}$.\n\n(a) Calculate the deceleration. **(3 marks)**\n\n(b) Calculate the time taken to stop. **(2 marks)**",
+      "marks": "",
+      "solution_md": "",
+      "material_label": "Demo final 2023",
+      "is_exam": true
+     }
+    ],
+    "guide": {
+     "recognition_cues": [
+      "\"uniformly\", \"constant deceleration\"",
+      "\"comes to rest\" / \"from rest\""
+     ],
+     "recipe": [
+      {
+       "step_md": "List s, u, v, a, t with signs.",
+       "why_md": "See what you have.",
+       "everyday_link": "shopping list"
+      },
+      {
+       "step_md": "Cross out the one not given and not wanted.",
+       "why_md": "It picks the equation.",
+       "everyday_link": "skip the missing ingredient"
+      },
+      {
+       "step_md": "Use the equation without that letter.",
+       "why_md": "Each equation omits one.",
+       "everyday_link": "pick the recipe card"
+      },
+      {
+       "step_md": "Check with average speed: $s = \\frac{u+v}{2}t$.",
+       "why_md": "Quick independent check.",
+       "everyday_link": "halfway speed"
+      }
+     ],
+     "tricks": [
+      "Deceleration answers carry a minus sign as $a$; state the magnitude in words."
+     ],
+     "traps": [
+      "Using $v = 0$ as $u$.",
+      "Dropping the sign of $a$."
+     ],
+     "examiner_wants_md": "SUVAT list shown, equation quoted, sign of acceleration interpreted."
+    }
+   }
+  ],
+  "mcqs": [
+   {
+    "id": "q-dv-1",
+    "concept_ids": [
+     "c-displacement-velocity"
+    ],
+    "type": "intuition",
+    "question_md": "You jog one full lap of a 400 m track in 100 s. What is your average velocity?",
+    "options": [
+     "0 m/s",
+     "4 m/s",
+     "400 m/s",
+     "It depends on your mass"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "Right: you end where you started, so displacement is 0.",
+     "That's average *speed* (distance/time), not velocity.",
+     "Units and size are off.",
+     "Mass has nothing to do with velocity."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-dv-2",
+    "concept_ids": [
+     "c-displacement-velocity"
+    ],
+    "type": "misconception",
+    "question_md": "Which statement is true?",
+    "options": [
+     "Velocity can be negative; speed cannot",
+     "Speed and velocity are always equal",
+     "Displacement is always larger than distance",
+     "Velocity has no direction"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "Velocity carries direction (sign); speed is its size.",
+     "Only for straight-line motion in the + direction.",
+     "Displacement is never larger than distance.",
+     "Direction is what makes it velocity."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-acc-1",
+    "concept_ids": [
+     "c-acceleration"
+    ],
+    "type": "intuition",
+    "question_md": "A ball is thrown straight up. At the very top, its velocity is zero. Its acceleration there is…",
+    "options": [
+     "9.8 m/s² downwards",
+     "zero",
+     "9.8 m/s² upwards",
+     "infinite"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "Gravity never switches off; it keeps changing the velocity.",
+     "Classic trap: v = 0 doesn't mean a = 0, or it would stay up there forever.",
+     "Gravity pulls down.",
+     "No."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-acc-2",
+    "concept_ids": [
+     "c-acceleration"
+    ],
+    "type": "application",
+    "question_md": "A bike goes from 2 m/s to 8 m/s in 3 s. Its acceleration is…",
+    "options": [
+     "2 m/s²",
+     "6 m/s²",
+     "3.3 m/s²",
+     "18 m/s²"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "(8 − 2)/3 = 2.",
+     "That's the change in velocity, not per second.",
+     "That's 10/3: you added instead of subtracting.",
+     "You multiplied."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-acc-3",
+    "concept_ids": [
+     "c-acceleration",
+     "c-newtons-second-law"
+    ],
+    "type": "map",
+    "question_md": "Which idea do you need in order to connect forces to changes in motion?",
+    "options": [
+     "Acceleration",
+     "Displacement only",
+     "Distance travelled",
+     "Average speed"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "F = ma: force links to motion through acceleration.",
+     "Displacement alone says nothing about forces.",
+     "Distance doesn't connect to force directly.",
+     "Average speed doesn't either."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-suvat-1",
+    "concept_ids": [
+     "c-suvat"
+    ],
+    "type": "pattern",
+    "question_md": "\"A car travelling at 20 m/s brakes uniformly and stops in 40 m. Find the deceleration.\" Which equation goes first?",
+    "options": [
+     "$v^2 = u^2 + 2as$",
+     "$v = u + at$",
+     "$s = ut + \\tfrac12at^2$",
+     "$F = ma$"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "No time is given or wanted: use the equation without $t$.",
+     "Needs $t$, which you don't have.",
+     "Needs $t$ too.",
+     "No forces or mass given."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-suvat-2",
+    "concept_ids": [
+     "c-suvat"
+    ],
+    "type": "misconception",
+    "question_md": "When can you use the SUVAT equations?",
+    "options": [
+     "Only when acceleration is constant",
+     "For any motion at all",
+     "Only when the object starts from rest",
+     "Only for vertical motion"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "They're derived assuming constant $a$.",
+     "Changing acceleration breaks them.",
+     "$u$ can be anything.",
+     "They work in any straight line."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-suvat-3",
+    "concept_ids": [
+     "c-suvat"
+    ],
+    "type": "intuition",
+    "question_md": "Two balls are dropped from rest; one falls for 2 s, the other for 4 s. The second falls…",
+    "options": [
+     "4 times as far",
+     "2 times as far",
+     "the same distance",
+     "8 times as far"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "$s = \\tfrac12gt^2$: doubling $t$ quadruples $s$.",
+     "Distance isn't proportional to time when accelerating.",
+     "No.",
+     "That would be $t^3$."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-proj-1",
+    "concept_ids": [
+     "c-projectile-motion"
+    ],
+    "type": "intuition",
+    "question_md": "You roll a marble off a table and at the same instant drop another from the same height. Which lands first?",
+    "options": [
+     "They land together",
+     "The rolled marble",
+     "The dropped marble",
+     "Depends on the marbles' masses"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "Vertical motion is identical (u_y = 0, same h, same g).",
+     "Sideways speed doesn't change the fall.",
+     "Same fall for both.",
+     "Mass doesn't affect free fall (no air resistance)."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-proj-2",
+    "concept_ids": [
+     "c-projectile-motion"
+    ],
+    "type": "misconception",
+    "question_md": "During a projectile's flight (no air resistance), the horizontal velocity…",
+    "options": [
+     "stays constant",
+     "decreases steadily",
+     "increases steadily",
+     "becomes zero at the top"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "No horizontal force → no horizontal acceleration.",
+     "Only if air resistance acts.",
+     "Nothing pushes it sideways.",
+     "That's the vertical velocity (for an upward launch)."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-proj-3",
+    "concept_ids": [
+     "c-projectile-motion",
+     "c-suvat"
+    ],
+    "type": "pattern",
+    "question_md": "\"A stone is thrown horizontally from a 20 m cliff…\" To find the time of flight, use…",
+    "options": [
+     "The vertical motion with $u_y = 0$",
+     "The horizontal motion with the throw speed",
+     "Pythagoras on the two speeds",
+     "Energy conservation only"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "Time is set by falling 20 m.",
+     "Horizontal motion doesn't set the time.",
+     "That gives impact speed, not time.",
+     "Possible for speed, not for time."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-n2-1",
+    "concept_ids": [
+     "c-newtons-second-law"
+    ],
+    "type": "misconception",
+    "question_md": "A hockey puck slides across smooth ice at constant velocity. The resultant force on it is…",
+    "options": [
+     "zero",
+     "in the direction of motion",
+     "opposite to the motion",
+     "equal to its weight"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "Constant velocity = zero acceleration = zero resultant force.",
+     "No force is needed to *keep* moving.",
+     "That would slow it down.",
+     "Weight is balanced by the normal reaction."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-n2-2",
+    "concept_ids": [
+     "c-newtons-second-law"
+    ],
+    "type": "application",
+    "question_md": "A 4 kg box is pushed with 20 N against 8 N of friction. Its acceleration is…",
+    "options": [
+     "3 m/s²",
+     "5 m/s²",
+     "7 m/s²",
+     "2 m/s²"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "(20 − 8)/4 = 3.",
+     "20/4: you forgot friction.",
+     "(20 + 8)/4: friction opposes, subtract it.",
+     "8/4: wrong force."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-fbd-1",
+    "concept_ids": [
+     "c-free-body-diagrams"
+    ],
+    "type": "misconception",
+    "question_md": "A block slides down a rough slope. Which force does NOT act on it?",
+    "options": [
+     "A \"force of motion\" down the slope",
+     "Weight",
+     "Normal reaction",
+     "Friction"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "There's no such force; motion continues without a force.",
+     "Always acts.",
+     "The slope pushes back.",
+     "Rough → friction."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-fbd-2",
+    "concept_ids": [
+     "c-free-body-diagrams"
+    ],
+    "type": "intuition",
+    "question_md": "On a slope of angle θ, the component of weight pulling the block DOWN the slope is $mg\\sin\\theta$. Quick check?",
+    "options": [
+     "At θ = 0 (flat) it must be zero, and sin 0 = 0",
+     "At θ = 0 it must equal mg",
+     "At θ = 90° it must be zero",
+     "There is no quick check"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "Flat ground doesn't pull you sideways, so the formula must vanish at 0.",
+     "On flat ground nothing pulls you along.",
+     "On a vertical wall, all of the weight is along it.",
+     "Limiting cases are the quick check."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-fi-1",
+    "concept_ids": [
+     "c-friction-incline"
+    ],
+    "type": "application",
+    "question_md": "Block on a 30° slope, μ = 0.2. Normal reaction for a 5 kg block (g = 9.8)?",
+    "options": [
+     "42.4 N",
+     "49 N",
+     "24.5 N",
+     "9.8 N"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "$5 \\times 9.8 \\times \\cos30°$.",
+     "That's $mg$: you forgot to resolve.",
+     "That's $mg\\sin30°$.",
+     "No."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-fi-2",
+    "concept_ids": [
+     "c-friction-incline"
+    ],
+    "type": "intuition",
+    "question_md": "Two identical-material blocks, 1 kg and 10 kg, are released on the same rough slope. Which accelerates faster?",
+    "options": [
+     "Same acceleration",
+     "The 10 kg block",
+     "The 1 kg block",
+     "Neither moves"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "$a = g(\\sin\\theta - \\mu\\cos\\theta)$: no $m$ in it.",
+     "More pull, but also more friction, in the same ratio.",
+     "Mass cancels.",
+     "If tan θ > μ they slide."
+    ],
+    "difficulty": 2
+   },
+   {
+    "id": "q-fi-3",
+    "concept_ids": [
+     "c-friction-incline",
+     "c-newtons-second-law"
+    ],
+    "type": "pattern",
+    "question_md": "\"Released from rest on a rough plane inclined at 25°… find the acceleration.\" The first equation you write is…",
+    "options": [
+     "$R = mg\\cos\\theta$ (resolve perpendicular)",
+     "$v^2 = u^2 + 2as$",
+     "$F = mg$",
+     "$s = ut + \\tfrac12at^2$"
+    ],
+    "correct": 0,
+    "option_explanations": [
+     "You need $R$ before you can get friction $\\mu R$.",
+     "That's for later parts (speed after a distance).",
+     "Not a real relation here.",
+     "Kinematics comes after you have $a$."
+    ],
+    "difficulty": 2
+   }
+  ],
+  "guided": {
+   "c-projectile-motion": [
+    {
+     "question_md": "You drop a ball from your hand. Which way does gravity pull it?",
+     "options": [
+      "Straight down",
+      "Forwards",
+      "Backwards",
+      "Nowhere"
+     ],
+     "correct": 0,
+     "explanation_md": "Gravity always pulls straight **down**."
+    },
+    {
+     "question_md": "Now you throw the ball sideways. Does gravity pull it sideways at all?",
+     "options": [
+      "No, still only down",
+      "Yes, forwards",
+      "Yes, backwards",
+      "It switches off"
+     ],
+     "correct": 0,
+     "explanation_md": "Gravity doesn't care how you threw it: still only down."
+    },
+    {
+     "question_md": "If nothing pushes the ball sideways (no air resistance), what happens to its sideways speed?",
+     "options": [
+      "Stays the same",
+      "Slowly drops",
+      "Grows",
+      "Becomes zero"
+     ],
+     "correct": 0,
+     "explanation_md": "No sideways force → no sideways acceleration → constant sideways speed."
+    },
+    {
+     "question_md": "So does throwing it sideways change how fast it falls?",
+     "options": [
+      "No: falling is a separate motion",
+      "Yes, it falls slower",
+      "Yes, it falls faster",
+      "It doesn't fall"
+     ],
+     "correct": 0,
+     "explanation_md": "**This is projectile motion:** two independent motions, sideways at constant speed and downwards like a dropped ball, sharing one clock."
+    }
+   ],
+   "c-newtons-second-law": [
+    {
+     "question_md": "Same push on an empty trolley and a full one. Which speeds up faster?",
+     "options": [
+      "The empty one",
+      "The full one",
+      "Same",
+      "Neither moves"
+     ],
+     "correct": 0,
+     "explanation_md": "Less mass → bigger change of speed for the same push."
+    },
+    {
+     "question_md": "Two friends push one trolley equally hard from opposite sides. What happens?",
+     "options": [
+      "It doesn't speed up",
+      "It speeds up",
+      "It shoots upwards",
+      "It gets heavier"
+     ],
+     "correct": 0,
+     "explanation_md": "The pushes cancel: the **resultant** force is zero."
+    },
+    {
+     "question_md": "So what decides the acceleration?",
+     "options": [
+      "The leftover (resultant) force and the mass",
+      "Only the biggest single force",
+      "Only the mass",
+      "The speed"
+     ],
+     "correct": 0,
+     "explanation_md": "**Newton's second law:** $F_{net} = ma$. Resultant force, divided by mass, gives acceleration."
+    }
+   ]
+  },
+  "problems": [
+   {
+    "id": "p-horizontal-projectile-1",
+    "pattern_id": "p-horizontal-projectile",
+    "source": "past_paper",
+    "source_ref": "demo Q1 (2023)",
+    "title": "Ball kicked from a cliff",
+    "statement_md": "A ball is kicked **horizontally** at $12\\ \\text{m s}^{-1}$ from the top of a cliff $45\\ \\text{m}$ high. Air resistance is negligible. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Calculate the time the ball takes to reach the ground. **(3 marks)**\n\n(b) Calculate the horizontal distance it travels. **(2 marks)**\n\n(c) Calculate its speed just before it hits the ground. **(3 marks)**\n\n(d) Explain why kicking it faster would **not** change your answer to (a). **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Time to reach the ground",
+      "marks": "3",
+      "final_answer_md": "$t \\approx 3.03\\ \\text{s}$",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "Which of these does the question give you (directly or by its wording)? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "Horizontal launch speed $u_x = 12$ m/s",
+         "Height $h = 45$ m",
+         "$g = 9.8$ m/s²",
+         "Initial vertical velocity $u_y = 0$",
+         "Initial vertical velocity $u_y = 12$ m/s",
+         "Mass of the ball",
+         "Time of flight"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2,
+         3
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Horizontally\" is information too: what does it say about the starting vertical velocity?",
+        "explanation_md": "Given: $u_x=12$, $h=45$, $g=9.8$. The word *horizontally* tells you $u_y = 0$. Mass and time are **not** given (and mass is never needed).",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-0-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "Which motion decides how long the object is in the air?",
+        "answer_type": "choice",
+        "choices": [
+         "The vertical motion only",
+         "The horizontal motion only",
+         "Both combined into one speed",
+         "The mass of the object"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "What has to happen for the flight to end? It has to *fall* 45 m... or whatever the height is.",
+        "explanation_md": "The flight ends when the object has fallen the full height. Falling is vertical motion, controlled only by $u_y$, $g$ and $h$.",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-0-1"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which SUVAT equation links $s$, $u$, $a$ and $t$ (no $v$)?",
+        "answer_type": "choice",
+        "choices": [
+         "$s = ut + \\tfrac12 a t^2$",
+         "$v = u + at$",
+         "$v^2 = u^2 + 2as$",
+         "$s = \\tfrac{(u+v)}{2}t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You know $s$, $u$, $a$ and want $t$. You don't know the final vertical velocity $v$.",
+        "explanation_md": "With $u_y = 0$: $h = \\tfrac12 g t^2$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-1-0-2"
+       },
+       {
+        "kind": "rearrange",
+        "prompt_md": "With $u_y = 0$, rearrange $h = \\tfrac12 g t^2$ for $t$.",
+        "answer_type": "choice",
+        "choices": [
+         "$t = \\sqrt{2h/g}$",
+         "$t = 2h/g$",
+         "$t = \\sqrt{h/(2g)}$",
+         "$t = h/u_x$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Multiply both sides by 2, divide by $g$, then undo the square.",
+        "explanation_md": "$2h = g t^2 \\Rightarrow t^2 = 2h/g \\Rightarrow t = \\sqrt{2h/g}$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-1-0-3"
+       },
+       {
+        "kind": "compute",
+        "prompt_md": "Compute $2h/g$ (the value under the square root).",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 9.183673469387754,
+        "tolerance_pct": 1,
+        "unit": "s²",
+        "text_answer_md": "",
+        "hint_md": "$2 \\times 45 \\div 9.8$",
+        "explanation_md": "$2h/g = 90/9.8 = 9.184\\ \\text{s}^2$",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-1-0-4"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "So what is the time of flight $t$?",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 3.0304576336566322,
+        "tolerance_pct": 1,
+        "unit": "s",
+        "text_answer_md": "",
+        "hint_md": "Square-root your previous answer.",
+        "explanation_md": "$t = \\sqrt{9.184} = 3.030\\ \\text{s}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-0-5"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Horizontal distance",
+      "marks": "2",
+      "final_answer_md": "$x \\approx 36.4\\ \\text{m}$",
+      "steps": [
+       {
+        "kind": "concept",
+        "prompt_md": "What is the horizontal acceleration during the flight?",
+        "answer_type": "choice",
+        "choices": [
+         "$0$: no horizontal force (air resistance negligible)",
+         "$9.8\\ \\text{m s}^{-2}$",
+         "$-9.8\\ \\text{m s}^{-2}$",
+         "$12\\ \\text{m s}^{-2}$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Gravity pulls which way?",
+        "explanation_md": "Gravity is vertical. Horizontally nothing pushes or pulls, so $u_x$ stays constant.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-1-0"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which formula gives the horizontal distance?",
+        "answer_type": "choice",
+        "choices": [
+         "$x = u_x t$",
+         "$x = \\tfrac12 g t^2$",
+         "$x = u_x t + \\tfrac12 g t^2$",
+         "$x = u_x / t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Constant speed: distance = speed × time.",
+        "explanation_md": "Constant velocity, so $x = u_x t$.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-1-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the horizontal distance $x$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 36.36549160387959,
+        "tolerance_pct": 1,
+        "unit": "m",
+        "text_answer_md": "",
+        "hint_md": "$12 \\times t$ using your $t$ from (a).",
+        "explanation_md": "$x = 12 \\times 3.030 = 36.37\\ \\text{m}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-1-2"
+       }
+      ]
+     },
+     {
+      "label": "c",
+      "prompt_md": "Impact speed",
+      "marks": "3",
+      "final_answer_md": "$v \\approx 32.0\\ \\text{m s}^{-1}$",
+      "steps": [
+       {
+        "kind": "compute",
+        "prompt_md": "Find the vertical velocity $v_y$ just before impact.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 29.698484809834998,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$v_y = u_y + g t$ with $u_y = 0$.",
+        "explanation_md": "$v_y = 9.8 \\times 3.030 = 29.70\\ \\text{m s}^{-1}$ (or $v_y^2 = 2gh$).",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-1-2-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "How do you combine the two velocity components into a speed?",
+        "answer_type": "choice",
+        "choices": [
+         "$v = \\sqrt{v_x^2 + v_y^2}$",
+         "$v = v_x + v_y$",
+         "$v = v_y$ only",
+         "$v = \\sqrt{v_y^2 - v_x^2}$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "The components are at right angles, like the two short sides of a right triangle.",
+        "explanation_md": "Perpendicular components add by Pythagoras.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-2-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the impact speed $v$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 32.03123475609393,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$\\sqrt{12^2 + v_y^2}$",
+        "explanation_md": "$v = \\sqrt{144 + 882.0} = 32.03\\ \\text{m s}^{-1}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-2-2"
+       },
+       {
+        "kind": "check",
+        "prompt_md": "Sanity check: the impact speed must be…",
+        "answer_type": "choice",
+        "choices": [
+         "bigger than both 12 and 29.7 m/s",
+         "between 12 and 29.7 m/s",
+         "smaller than 12 m/s",
+         "exactly 41.7 m/s"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "The hypotenuse of a right triangle vs its two sides.",
+        "explanation_md": "A hypotenuse is longer than either side but shorter than their sum.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-2-3"
+       }
+      ]
+     },
+     {
+      "label": "d",
+      "prompt_md": "Explain",
+      "marks": "2",
+      "final_answer_md": "Vertical and horizontal motion are independent; time depends only on $h$ and $g$.",
+      "steps": [
+       {
+        "kind": "explain",
+        "prompt_md": "Explain why launching faster does not change the time of flight.",
+        "answer_type": "text",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "- Horizontal and vertical motions are **independent** (perpendicular). (1)\n- The time is set by the vertical motion only: $u_y = 0$, $h$ and $g$ are unchanged, so $t = \\sqrt{2h/g}$ is unchanged. (1)",
+        "hint_md": "Which quantities appear in $t = \\sqrt{2h/g}$? Does $u_x$?",
+        "explanation_md": "Marks go for (1) independence of components and (2) time depends only on vertical quantities, which are unchanged.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-1-3-0"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   },
+   {
+    "id": "p-horizontal-projectile-2",
+    "pattern_id": "p-horizontal-projectile",
+    "source": "past_paper",
+    "source_ref": "demo Q1 (2022)",
+    "title": "Stone thrown from a bridge",
+    "statement_md": "A stone is thrown **horizontally** at $8\\ \\text{m s}^{-1}$ from the top of a bridge $20\\ \\text{m}$ high. Air resistance is negligible. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Calculate the time the stone takes to reach the ground. **(3 marks)**\n\n(b) Calculate the horizontal distance it travels. **(2 marks)**\n\n(c) Calculate its speed just before it hits the ground. **(3 marks)**\n\n(d) Explain why throwing it faster would **not** change your answer to (a). **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Time to reach the ground",
+      "marks": "3",
+      "final_answer_md": "$t \\approx 2.02\\ \\text{s}$",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "Which of these does the question give you (directly or by its wording)? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "Horizontal launch speed $u_x = 8$ m/s",
+         "Height $h = 20$ m",
+         "$g = 9.8$ m/s²",
+         "Initial vertical velocity $u_y = 0$",
+         "Initial vertical velocity $u_y = 8$ m/s",
+         "Mass of the stone",
+         "Time of flight"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2,
+         3
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Horizontally\" is information too: what does it say about the starting vertical velocity?",
+        "explanation_md": "Given: $u_x=8$, $h=20$, $g=9.8$. The word *horizontally* tells you $u_y = 0$. Mass and time are **not** given (and mass is never needed).",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-0-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "Which motion decides how long the object is in the air?",
+        "answer_type": "choice",
+        "choices": [
+         "The vertical motion only",
+         "The horizontal motion only",
+         "Both combined into one speed",
+         "The mass of the object"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "What has to happen for the flight to end? It has to *fall* 45 m... or whatever the height is.",
+        "explanation_md": "The flight ends when the object has fallen the full height. Falling is vertical motion, controlled only by $u_y$, $g$ and $h$.",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-0-1"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which SUVAT equation links $s$, $u$, $a$ and $t$ (no $v$)?",
+        "answer_type": "choice",
+        "choices": [
+         "$s = ut + \\tfrac12 a t^2$",
+         "$v = u + at$",
+         "$v^2 = u^2 + 2as$",
+         "$s = \\tfrac{(u+v)}{2}t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You know $s$, $u$, $a$ and want $t$. You don't know the final vertical velocity $v$.",
+        "explanation_md": "With $u_y = 0$: $h = \\tfrac12 g t^2$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-2-0-2"
+       },
+       {
+        "kind": "rearrange",
+        "prompt_md": "With $u_y = 0$, rearrange $h = \\tfrac12 g t^2$ for $t$.",
+        "answer_type": "choice",
+        "choices": [
+         "$t = \\sqrt{2h/g}$",
+         "$t = 2h/g$",
+         "$t = \\sqrt{h/(2g)}$",
+         "$t = h/u_x$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Multiply both sides by 2, divide by $g$, then undo the square.",
+        "explanation_md": "$2h = g t^2 \\Rightarrow t^2 = 2h/g \\Rightarrow t = \\sqrt{2h/g}$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-2-0-3"
+       },
+       {
+        "kind": "compute",
+        "prompt_md": "Compute $2h/g$ (the value under the square root).",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 4.081632653061225,
+        "tolerance_pct": 1,
+        "unit": "s²",
+        "text_answer_md": "",
+        "hint_md": "$2 \\times 20 \\div 9.8$",
+        "explanation_md": "$2h/g = 40/9.8 = 4.082\\ \\text{s}^2$",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-2-0-4"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "So what is the time of flight $t$?",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 2.0203050891044216,
+        "tolerance_pct": 1,
+        "unit": "s",
+        "text_answer_md": "",
+        "hint_md": "Square-root your previous answer.",
+        "explanation_md": "$t = \\sqrt{4.082} = 2.020\\ \\text{s}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-0-5"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Horizontal distance",
+      "marks": "2",
+      "final_answer_md": "$x \\approx 16.2\\ \\text{m}$",
+      "steps": [
+       {
+        "kind": "concept",
+        "prompt_md": "What is the horizontal acceleration during the flight?",
+        "answer_type": "choice",
+        "choices": [
+         "$0$: no horizontal force (air resistance negligible)",
+         "$9.8\\ \\text{m s}^{-2}$",
+         "$-9.8\\ \\text{m s}^{-2}$",
+         "$8\\ \\text{m s}^{-2}$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Gravity pulls which way?",
+        "explanation_md": "Gravity is vertical. Horizontally nothing pushes or pulls, so $u_x$ stays constant.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-1-0"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which formula gives the horizontal distance?",
+        "answer_type": "choice",
+        "choices": [
+         "$x = u_x t$",
+         "$x = \\tfrac12 g t^2$",
+         "$x = u_x t + \\tfrac12 g t^2$",
+         "$x = u_x / t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Constant speed: distance = speed × time.",
+        "explanation_md": "Constant velocity, so $x = u_x t$.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-1-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the horizontal distance $x$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 16.162440712835373,
+        "tolerance_pct": 1,
+        "unit": "m",
+        "text_answer_md": "",
+        "hint_md": "$8 \\times t$ using your $t$ from (a).",
+        "explanation_md": "$x = 8 \\times 2.020 = 16.16\\ \\text{m}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-1-2"
+       }
+      ]
+     },
+     {
+      "label": "c",
+      "prompt_md": "Impact speed",
+      "marks": "3",
+      "final_answer_md": "$v \\approx 21.4\\ \\text{m s}^{-1}$",
+      "steps": [
+       {
+        "kind": "compute",
+        "prompt_md": "Find the vertical velocity $v_y$ just before impact.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 19.798989873223334,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$v_y = u_y + g t$ with $u_y = 0$.",
+        "explanation_md": "$v_y = 9.8 \\times 2.020 = 19.80\\ \\text{m s}^{-1}$ (or $v_y^2 = 2gh$).",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-2-2-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "How do you combine the two velocity components into a speed?",
+        "answer_type": "choice",
+        "choices": [
+         "$v = \\sqrt{v_x^2 + v_y^2}$",
+         "$v = v_x + v_y$",
+         "$v = v_y$ only",
+         "$v = \\sqrt{v_y^2 - v_x^2}$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "The components are at right angles, like the two short sides of a right triangle.",
+        "explanation_md": "Perpendicular components add by Pythagoras.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-2-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the impact speed $v$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 21.354156504062626,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$\\sqrt{8^2 + v_y^2}$",
+        "explanation_md": "$v = \\sqrt{64 + 392.0} = 21.35\\ \\text{m s}^{-1}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-2-2"
+       },
+       {
+        "kind": "check",
+        "prompt_md": "Sanity check: the impact speed must be…",
+        "answer_type": "choice",
+        "choices": [
+         "bigger than both 8 and 19.8 m/s",
+         "between 8 and 19.8 m/s",
+         "smaller than 8 m/s",
+         "exactly 27.8 m/s"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "The hypotenuse of a right triangle vs its two sides.",
+        "explanation_md": "A hypotenuse is longer than either side but shorter than their sum.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-2-3"
+       }
+      ]
+     },
+     {
+      "label": "d",
+      "prompt_md": "Explain",
+      "marks": "2",
+      "final_answer_md": "Vertical and horizontal motion are independent; time depends only on $h$ and $g$.",
+      "steps": [
+       {
+        "kind": "explain",
+        "prompt_md": "Explain why launching faster does not change the time of flight.",
+        "answer_type": "text",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "- Horizontal and vertical motions are **independent** (perpendicular). (1)\n- The time is set by the vertical motion only: $u_y = 0$, $h$ and $g$ are unchanged, so $t = \\sqrt{2h/g}$ is unchanged. (1)",
+        "hint_md": "Which quantities appear in $t = \\sqrt{2h/g}$? Does $u_x$?",
+        "explanation_md": "Marks go for (1) independence of components and (2) time depends only on vertical quantities, which are unchanged.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-2-3-0"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   },
+   {
+    "id": "p-horizontal-projectile-3",
+    "pattern_id": "p-horizontal-projectile",
+    "source": "variant",
+    "source_ref": "variant of demo Q1 (2023)",
+    "title": "Parcel thrown from a rooftop",
+    "statement_md": "A parcel is thrown **horizontally** at $15\\ \\text{m s}^{-1}$ from the top of a building $30\\ \\text{m}$ high. Air resistance is negligible. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Calculate the time the parcel takes to reach the ground. **(3 marks)**\n\n(b) Calculate the horizontal distance it travels. **(2 marks)**\n\n(c) Calculate its speed just before it hits the ground. **(3 marks)**\n\n(d) Explain why throwing it faster would **not** change your answer to (a). **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Time to reach the ground",
+      "marks": "3",
+      "final_answer_md": "$t \\approx 2.47\\ \\text{s}$",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "Which of these does the question give you (directly or by its wording)? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "Horizontal launch speed $u_x = 15$ m/s",
+         "Height $h = 30$ m",
+         "$g = 9.8$ m/s²",
+         "Initial vertical velocity $u_y = 0$",
+         "Initial vertical velocity $u_y = 15$ m/s",
+         "Mass of the parcel",
+         "Time of flight"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2,
+         3
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Horizontally\" is information too: what does it say about the starting vertical velocity?",
+        "explanation_md": "Given: $u_x=15$, $h=30$, $g=9.8$. The word *horizontally* tells you $u_y = 0$. Mass and time are **not** given (and mass is never needed).",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-0-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "Which motion decides how long the object is in the air?",
+        "answer_type": "choice",
+        "choices": [
+         "The vertical motion only",
+         "The horizontal motion only",
+         "Both combined into one speed",
+         "The mass of the object"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "What has to happen for the flight to end? It has to *fall* 45 m... or whatever the height is.",
+        "explanation_md": "The flight ends when the object has fallen the full height. Falling is vertical motion, controlled only by $u_y$, $g$ and $h$.",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-0-1"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which SUVAT equation links $s$, $u$, $a$ and $t$ (no $v$)?",
+        "answer_type": "choice",
+        "choices": [
+         "$s = ut + \\tfrac12 a t^2$",
+         "$v = u + at$",
+         "$v^2 = u^2 + 2as$",
+         "$s = \\tfrac{(u+v)}{2}t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You know $s$, $u$, $a$ and want $t$. You don't know the final vertical velocity $v$.",
+        "explanation_md": "With $u_y = 0$: $h = \\tfrac12 g t^2$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-3-0-2"
+       },
+       {
+        "kind": "rearrange",
+        "prompt_md": "With $u_y = 0$, rearrange $h = \\tfrac12 g t^2$ for $t$.",
+        "answer_type": "choice",
+        "choices": [
+         "$t = \\sqrt{2h/g}$",
+         "$t = 2h/g$",
+         "$t = \\sqrt{h/(2g)}$",
+         "$t = h/u_x$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Multiply both sides by 2, divide by $g$, then undo the square.",
+        "explanation_md": "$2h = g t^2 \\Rightarrow t^2 = 2h/g \\Rightarrow t = \\sqrt{2h/g}$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-3-0-3"
+       },
+       {
+        "kind": "compute",
+        "prompt_md": "Compute $2h/g$ (the value under the square root).",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 6.122448979591836,
+        "tolerance_pct": 1,
+        "unit": "s²",
+        "text_answer_md": "",
+        "hint_md": "$2 \\times 30 \\div 9.8$",
+        "explanation_md": "$2h/g = 60/9.8 = 6.122\\ \\text{s}^2$",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-3-0-4"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "So what is the time of flight $t$?",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 2.4743582965269675,
+        "tolerance_pct": 1,
+        "unit": "s",
+        "text_answer_md": "",
+        "hint_md": "Square-root your previous answer.",
+        "explanation_md": "$t = \\sqrt{6.122} = 2.474\\ \\text{s}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-0-5"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Horizontal distance",
+      "marks": "2",
+      "final_answer_md": "$x \\approx 37.1\\ \\text{m}$",
+      "steps": [
+       {
+        "kind": "concept",
+        "prompt_md": "What is the horizontal acceleration during the flight?",
+        "answer_type": "choice",
+        "choices": [
+         "$0$: no horizontal force (air resistance negligible)",
+         "$9.8\\ \\text{m s}^{-2}$",
+         "$-9.8\\ \\text{m s}^{-2}$",
+         "$15\\ \\text{m s}^{-2}$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Gravity pulls which way?",
+        "explanation_md": "Gravity is vertical. Horizontally nothing pushes or pulls, so $u_x$ stays constant.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-1-0"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which formula gives the horizontal distance?",
+        "answer_type": "choice",
+        "choices": [
+         "$x = u_x t$",
+         "$x = \\tfrac12 g t^2$",
+         "$x = u_x t + \\tfrac12 g t^2$",
+         "$x = u_x / t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Constant speed: distance = speed × time.",
+        "explanation_md": "Constant velocity, so $x = u_x t$.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-1-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the horizontal distance $x$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 37.115374447904514,
+        "tolerance_pct": 1,
+        "unit": "m",
+        "text_answer_md": "",
+        "hint_md": "$15 \\times t$ using your $t$ from (a).",
+        "explanation_md": "$x = 15 \\times 2.474 = 37.12\\ \\text{m}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-1-2"
+       }
+      ]
+     },
+     {
+      "label": "c",
+      "prompt_md": "Impact speed",
+      "marks": "3",
+      "final_answer_md": "$v \\approx 28.5\\ \\text{m s}^{-1}$",
+      "steps": [
+       {
+        "kind": "compute",
+        "prompt_md": "Find the vertical velocity $v_y$ just before impact.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 24.24871130596428,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$v_y = u_y + g t$ with $u_y = 0$.",
+        "explanation_md": "$v_y = 9.8 \\times 2.474 = 24.25\\ \\text{m s}^{-1}$ (or $v_y^2 = 2gh$).",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-horizontal-projectile-3-2-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "How do you combine the two velocity components into a speed?",
+        "answer_type": "choice",
+        "choices": [
+         "$v = \\sqrt{v_x^2 + v_y^2}$",
+         "$v = v_x + v_y$",
+         "$v = v_y$ only",
+         "$v = \\sqrt{v_y^2 - v_x^2}$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "The components are at right angles, like the two short sides of a right triangle.",
+        "explanation_md": "Perpendicular components add by Pythagoras.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-2-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the impact speed $v$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 28.513154858766505,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$\\sqrt{15^2 + v_y^2}$",
+        "explanation_md": "$v = \\sqrt{225 + 588.0} = 28.51\\ \\text{m s}^{-1}$",
+        "concept_ids": [
+         "c-suvat",
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-2-2"
+       },
+       {
+        "kind": "check",
+        "prompt_md": "Sanity check: the impact speed must be…",
+        "answer_type": "choice",
+        "choices": [
+         "bigger than both 15 and 24.2 m/s",
+         "between 15 and 24.2 m/s",
+         "smaller than 15 m/s",
+         "exactly 39.2 m/s"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "The hypotenuse of a right triangle vs its two sides.",
+        "explanation_md": "A hypotenuse is longer than either side but shorter than their sum.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-2-3"
+       }
+      ]
+     },
+     {
+      "label": "d",
+      "prompt_md": "Explain",
+      "marks": "2",
+      "final_answer_md": "Vertical and horizontal motion are independent; time depends only on $h$ and $g$.",
+      "steps": [
+       {
+        "kind": "explain",
+        "prompt_md": "Explain why launching faster does not change the time of flight.",
+        "answer_type": "text",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "- Horizontal and vertical motions are **independent** (perpendicular). (1)\n- The time is set by the vertical motion only: $u_y = 0$, $h$ and $g$ are unchanged, so $t = \\sqrt{2h/g}$ is unchanged. (1)",
+        "hint_md": "Which quantities appear in $t = \\sqrt{2h/g}$? Does $u_x$?",
+        "explanation_md": "Marks go for (1) independence of components and (2) time depends only on vertical quantities, which are unchanged.",
+        "concept_ids": [
+         "c-projectile-motion"
+        ],
+        "id": "p-horizontal-projectile-3-3-0"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   },
+   {
+    "id": "p-block-on-incline-1",
+    "pattern_id": "p-block-on-incline",
+    "source": "past_paper",
+    "source_ref": "demo Q3 (2023)",
+    "title": "Block on a rough 30° slope",
+    "statement_md": "A block of mass $5\\ \\text{kg}$ is released from rest on a rough plane inclined at $30^\\circ$ to the horizontal. The coefficient of friction between the block and the plane is $0.2$. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Identify the forces acting on the block. **(2 marks)**\n\n(b) Calculate the normal reaction force. **(2 marks)**\n\n(c) Calculate the acceleration of the block down the plane. **(4 marks)**\n\n(d) Calculate the speed of the block after it has slid $3\\ \\text{m}$. **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Forces on the block",
+      "marks": "2",
+      "final_answer_md": "Weight (down), normal reaction (perpendicular to the plane), friction (up the slope).",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "What does the question give you? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "$m = 5$ kg",
+         "$\\theta = 30^\\circ$",
+         "$\\mu = 0.2$",
+         "Starts from rest, $u = 0$",
+         "The plane is smooth",
+         "A pushing force on the block",
+         "$\\mu = 0.3$"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2,
+         3
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Released from rest\" and \"rough\" are information.",
+        "explanation_md": "Rough = friction acts. Released from rest = $u = 0$. Nothing pushes it.",
+        "concept_ids": [
+         "c-newtons-second-law",
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-1-0-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "Which forces act on the block as it slides down? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "Weight $mg$, vertically down",
+         "Normal reaction, perpendicular to the plane",
+         "Friction, up the slope",
+         "Friction, down the slope",
+         "\"The force of motion\" down the slope",
+         "Centripetal force"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Friction always opposes the sliding. Is there anything *touching* the block besides the plane?",
+        "explanation_md": "Only three forces: weight, normal reaction, and friction opposing motion (so up the slope). \"Force of motion\" doesn't exist: motion needs no force to continue.",
+        "concept_ids": [
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-1-0-1"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Normal reaction",
+      "marks": "2",
+      "final_answer_md": "$R \\approx 42.4\\ \\text{N}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Resolving perpendicular to the plane, the normal reaction is…",
+        "answer_type": "choice",
+        "choices": [
+         "$R = mg\\cos\\theta$",
+         "$R = mg\\sin\\theta$",
+         "$R = mg$",
+         "$R = mg/\\cos\\theta$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "No acceleration perpendicular to the plane, so forces balance in that direction. Which component of weight points into the plane?",
+        "explanation_md": "Perpendicular to the slope: $R - mg\\cos\\theta = 0$.",
+        "concept_ids": [
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-1-1-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $R$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 42.4352447854375,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$5 \\times 9.8 \\times \\cos 30^\\circ$ (calculator in degrees!)",
+        "explanation_md": "$R = 5 \\times 9.8 \\times 0.8660 = 42.44\\ \\text{N}$",
+        "concept_ids": [
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-1-1-1"
+       }
+      ]
+     },
+     {
+      "label": "c",
+      "prompt_md": "Acceleration",
+      "marks": "4",
+      "final_answer_md": "$a \\approx 3.20\\ \\text{m s}^{-2}$",
+      "steps": [
+       {
+        "kind": "compute",
+        "prompt_md": "Component of the weight acting down the slope, $mg\\sin\\theta$:",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 24.499999999999996,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$5 \\times 9.8 \\times \\sin 30^\\circ$",
+        "explanation_md": "$mg\\sin\\theta = 24.50\\ \\text{N}$",
+        "concept_ids": [
+         "c-free-body-diagrams"
+        ],
+        "id": "p-block-on-incline-1-2-0"
+       },
+       {
+        "kind": "compute",
+        "prompt_md": "Friction force $F = \\mu R$:",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 8.4870489570875,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$0.2 \\times R$",
+        "explanation_md": "$F = 0.2 \\times 42.44 = 8.49\\ \\text{N}$",
+        "concept_ids": [
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-1-2-1"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Newton's second law along the slope (down = positive):",
+        "answer_type": "choice",
+        "choices": [
+         "$ma = mg\\sin\\theta - \\mu R$",
+         "$ma = mg\\sin\\theta + \\mu R$",
+         "$ma = mg\\cos\\theta - \\mu R$",
+         "$ma = \\mu R$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Resultant force = (force pulling down the slope) − (force resisting).",
+        "explanation_md": "Resultant force down the slope is $mg\\sin\\theta - F$, and it equals $ma$.",
+        "concept_ids": [
+         "c-newtons-second-law",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-1-2-2"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the acceleration $a$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 3.2025902085824995,
+        "tolerance_pct": 1,
+        "unit": "m/s²",
+        "text_answer_md": "",
+        "hint_md": "(down-slope component − friction) ÷ mass",
+        "explanation_md": "$a = (24.50 - 8.49)/5 = 3.203\\ \\text{m s}^{-2}$",
+        "concept_ids": [
+         "c-newtons-second-law"
+        ],
+        "id": "p-block-on-incline-1-2-3"
+       }
+      ]
+     },
+     {
+      "label": "d",
+      "prompt_md": "Speed after 3 m",
+      "marks": "2",
+      "final_answer_md": "$v \\approx 4.38\\ \\text{m s}^{-1}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Which equation links $u$, $v$, $a$ and $s$ (no $t$)?",
+        "answer_type": "choice",
+        "choices": [
+         "$v^2 = u^2 + 2as$",
+         "$v = u + at$",
+         "$s = ut + \\tfrac12at^2$",
+         "$v = s/t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You don't know the time.",
+        "explanation_md": "$v^2 = u^2 + 2as$ with $u = 0$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-block-on-incline-1-3-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $v$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 4.383553495908884,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$v = \\sqrt{2 \\times a \\times 3}$",
+        "explanation_md": "$v = \\sqrt{2 \\times 3.203 \\times 3} = 4.38\\ \\text{m s}^{-1}$",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-block-on-incline-1-3-1"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   },
+   {
+    "id": "p-block-on-incline-2",
+    "pattern_id": "p-block-on-incline",
+    "source": "past_paper",
+    "source_ref": "demo Q3 (2022)",
+    "title": "Crate on a rough 25° ramp",
+    "statement_md": "A block of mass $2\\ \\text{kg}$ is released from rest on a rough plane inclined at $25^\\circ$ to the horizontal. The coefficient of friction between the block and the plane is $0.15$. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Identify the forces acting on the block. **(2 marks)**\n\n(b) Calculate the normal reaction force. **(2 marks)**\n\n(c) Calculate the acceleration of the block down the plane. **(4 marks)**\n\n(d) Calculate the speed of the block after it has slid $4\\ \\text{m}$. **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Forces on the block",
+      "marks": "2",
+      "final_answer_md": "Weight (down), normal reaction (perpendicular to the plane), friction (up the slope).",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "What does the question give you? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "$m = 2$ kg",
+         "$\\theta = 25^\\circ$",
+         "$\\mu = 0.15$",
+         "Starts from rest, $u = 0$",
+         "The plane is smooth",
+         "A pushing force on the block",
+         "$\\mu = 0.25$"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2,
+         3
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Released from rest\" and \"rough\" are information.",
+        "explanation_md": "Rough = friction acts. Released from rest = $u = 0$. Nothing pushes it.",
+        "concept_ids": [
+         "c-newtons-second-law",
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-2-0-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "Which forces act on the block as it slides down? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "Weight $mg$, vertically down",
+         "Normal reaction, perpendicular to the plane",
+         "Friction, up the slope",
+         "Friction, down the slope",
+         "\"The force of motion\" down the slope",
+         "Centripetal force"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Friction always opposes the sliding. Is there anything *touching* the block besides the plane?",
+        "explanation_md": "Only three forces: weight, normal reaction, and friction opposing motion (so up the slope). \"Force of motion\" doesn't exist: motion needs no force to continue.",
+        "concept_ids": [
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-2-0-1"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Normal reaction",
+      "marks": "2",
+      "final_answer_md": "$R \\approx 17.8\\ \\text{N}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Resolving perpendicular to the plane, the normal reaction is…",
+        "answer_type": "choice",
+        "choices": [
+         "$R = mg\\cos\\theta$",
+         "$R = mg\\sin\\theta$",
+         "$R = mg$",
+         "$R = mg/\\cos\\theta$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "No acceleration perpendicular to the plane, so forces balance in that direction. Which component of weight points into the plane?",
+        "explanation_md": "Perpendicular to the slope: $R - mg\\cos\\theta = 0$.",
+        "concept_ids": [
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-2-1-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $R$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 17.76363262591834,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$2 \\times 9.8 \\times \\cos 25^\\circ$ (calculator in degrees!)",
+        "explanation_md": "$R = 2 \\times 9.8 \\times 0.9063 = 17.76\\ \\text{N}$",
+        "concept_ids": [
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-2-1-1"
+       }
+      ]
+     },
+     {
+      "label": "c",
+      "prompt_md": "Acceleration",
+      "marks": "4",
+      "final_answer_md": "$a \\approx 2.81\\ \\text{m s}^{-2}$",
+      "steps": [
+       {
+        "kind": "compute",
+        "prompt_md": "Component of the weight acting down the slope, $mg\\sin\\theta$:",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 8.28331793011771,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$2 \\times 9.8 \\times \\sin 25^\\circ$",
+        "explanation_md": "$mg\\sin\\theta = 8.28\\ \\text{N}$",
+        "concept_ids": [
+         "c-free-body-diagrams"
+        ],
+        "id": "p-block-on-incline-2-2-0"
+       },
+       {
+        "kind": "compute",
+        "prompt_md": "Friction force $F = \\mu R$:",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 2.664544893887751,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$0.15 \\times R$",
+        "explanation_md": "$F = 0.15 \\times 17.76 = 2.66\\ \\text{N}$",
+        "concept_ids": [
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-2-2-1"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Newton's second law along the slope (down = positive):",
+        "answer_type": "choice",
+        "choices": [
+         "$ma = mg\\sin\\theta - \\mu R$",
+         "$ma = mg\\sin\\theta + \\mu R$",
+         "$ma = mg\\cos\\theta - \\mu R$",
+         "$ma = \\mu R$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Resultant force = (force pulling down the slope) − (force resisting).",
+        "explanation_md": "Resultant force down the slope is $mg\\sin\\theta - F$, and it equals $ma$.",
+        "concept_ids": [
+         "c-newtons-second-law",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-2-2-2"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the acceleration $a$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 2.8093865181149793,
+        "tolerance_pct": 1,
+        "unit": "m/s²",
+        "text_answer_md": "",
+        "hint_md": "(down-slope component − friction) ÷ mass",
+        "explanation_md": "$a = (8.28 - 2.66)/2 = 2.809\\ \\text{m s}^{-2}$",
+        "concept_ids": [
+         "c-newtons-second-law"
+        ],
+        "id": "p-block-on-incline-2-2-3"
+       }
+      ]
+     },
+     {
+      "label": "d",
+      "prompt_md": "Speed after 4 m",
+      "marks": "2",
+      "final_answer_md": "$v \\approx 4.74\\ \\text{m s}^{-1}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Which equation links $u$, $v$, $a$ and $s$ (no $t$)?",
+        "answer_type": "choice",
+        "choices": [
+         "$v^2 = u^2 + 2as$",
+         "$v = u + at$",
+         "$s = ut + \\tfrac12at^2$",
+         "$v = s/t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You don't know the time.",
+        "explanation_md": "$v^2 = u^2 + 2as$ with $u = 0$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-block-on-incline-2-3-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $v$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 4.740790244771417,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$v = \\sqrt{2 \\times a \\times 4}$",
+        "explanation_md": "$v = \\sqrt{2 \\times 2.809 \\times 4} = 4.74\\ \\text{m s}^{-1}$",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-block-on-incline-2-3-1"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   },
+   {
+    "id": "p-block-on-incline-3",
+    "pattern_id": "p-block-on-incline",
+    "source": "variant",
+    "source_ref": "variant of demo Q3 (2023)",
+    "title": "Box on a rough 35° roof",
+    "statement_md": "A block of mass $3\\ \\text{kg}$ is released from rest on a rough plane inclined at $35^\\circ$ to the horizontal. The coefficient of friction between the block and the plane is $0.3$. Take $g = 9.8\\ \\text{m s}^{-2}$.\n\n(a) Identify the forces acting on the block. **(2 marks)**\n\n(b) Calculate the normal reaction force. **(2 marks)**\n\n(c) Calculate the acceleration of the block down the plane. **(4 marks)**\n\n(d) Calculate the speed of the block after it has slid $2.5\\ \\text{m}$. **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Forces on the block",
+      "marks": "2",
+      "final_answer_md": "Weight (down), normal reaction (perpendicular to the plane), friction (up the slope).",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "What does the question give you? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "$m = 3$ kg",
+         "$\\theta = 35^\\circ$",
+         "$\\mu = 0.3$",
+         "Starts from rest, $u = 0$",
+         "The plane is smooth",
+         "A pushing force on the block",
+         "$\\mu = 0.4$"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2,
+         3
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Released from rest\" and \"rough\" are information.",
+        "explanation_md": "Rough = friction acts. Released from rest = $u = 0$. Nothing pushes it.",
+        "concept_ids": [
+         "c-newtons-second-law",
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-3-0-0"
+       },
+       {
+        "kind": "concept",
+        "prompt_md": "Which forces act on the block as it slides down? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "Weight $mg$, vertically down",
+         "Normal reaction, perpendicular to the plane",
+         "Friction, up the slope",
+         "Friction, down the slope",
+         "\"The force of motion\" down the slope",
+         "Centripetal force"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Friction always opposes the sliding. Is there anything *touching* the block besides the plane?",
+        "explanation_md": "Only three forces: weight, normal reaction, and friction opposing motion (so up the slope). \"Force of motion\" doesn't exist: motion needs no force to continue.",
+        "concept_ids": [
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-3-0-1"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Normal reaction",
+      "marks": "2",
+      "final_answer_md": "$R \\approx 24.1\\ \\text{N}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Resolving perpendicular to the plane, the normal reaction is…",
+        "answer_type": "choice",
+        "choices": [
+         "$R = mg\\cos\\theta$",
+         "$R = mg\\sin\\theta$",
+         "$R = mg$",
+         "$R = mg/\\cos\\theta$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "No acceleration perpendicular to the plane, so forces balance in that direction. Which component of weight points into the plane?",
+        "explanation_md": "Perpendicular to the slope: $R - mg\\cos\\theta = 0$.",
+        "concept_ids": [
+         "c-free-body-diagrams",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-3-1-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $R$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 24.08307010209636,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$3 \\times 9.8 \\times \\cos 35^\\circ$ (calculator in degrees!)",
+        "explanation_md": "$R = 3 \\times 9.8 \\times 0.8192 = 24.08\\ \\text{N}$",
+        "concept_ids": [
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-3-1-1"
+       }
+      ]
+     },
+     {
+      "label": "c",
+      "prompt_md": "Acceleration",
+      "marks": "4",
+      "final_answer_md": "$a \\approx 3.21\\ \\text{m s}^{-2}$",
+      "steps": [
+       {
+        "kind": "compute",
+        "prompt_md": "Component of the weight acting down the slope, $mg\\sin\\theta$:",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 16.863147228720756,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$3 \\times 9.8 \\times \\sin 35^\\circ$",
+        "explanation_md": "$mg\\sin\\theta = 16.86\\ \\text{N}$",
+        "concept_ids": [
+         "c-free-body-diagrams"
+        ],
+        "id": "p-block-on-incline-3-2-0"
+       },
+       {
+        "kind": "compute",
+        "prompt_md": "Friction force $F = \\mu R$:",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 7.224921030628908,
+        "tolerance_pct": 1,
+        "unit": "N",
+        "text_answer_md": "",
+        "hint_md": "$0.3 \\times R$",
+        "explanation_md": "$F = 0.3 \\times 24.08 = 7.22\\ \\text{N}$",
+        "concept_ids": [
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-3-2-1"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Newton's second law along the slope (down = positive):",
+        "answer_type": "choice",
+        "choices": [
+         "$ma = mg\\sin\\theta - \\mu R$",
+         "$ma = mg\\sin\\theta + \\mu R$",
+         "$ma = mg\\cos\\theta - \\mu R$",
+         "$ma = \\mu R$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Resultant force = (force pulling down the slope) − (force resisting).",
+        "explanation_md": "Resultant force down the slope is $mg\\sin\\theta - F$, and it equals $ma$.",
+        "concept_ids": [
+         "c-newtons-second-law",
+         "c-friction-incline"
+        ],
+        "id": "p-block-on-incline-3-2-2"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate the acceleration $a$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 3.212742066030616,
+        "tolerance_pct": 1,
+        "unit": "m/s²",
+        "text_answer_md": "",
+        "hint_md": "(down-slope component − friction) ÷ mass",
+        "explanation_md": "$a = (16.86 - 7.22)/3 = 3.213\\ \\text{m s}^{-2}$",
+        "concept_ids": [
+         "c-newtons-second-law"
+        ],
+        "id": "p-block-on-incline-3-2-3"
+       }
+      ]
+     },
+     {
+      "label": "d",
+      "prompt_md": "Speed after 2.5 m",
+      "marks": "2",
+      "final_answer_md": "$v \\approx 4.01\\ \\text{m s}^{-1}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Which equation links $u$, $v$, $a$ and $s$ (no $t$)?",
+        "answer_type": "choice",
+        "choices": [
+         "$v^2 = u^2 + 2as$",
+         "$v = u + at$",
+         "$s = ut + \\tfrac12at^2$",
+         "$v = s/t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You don't know the time.",
+        "explanation_md": "$v^2 = u^2 + 2as$ with $u = 0$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-block-on-incline-3-3-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $v$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 4.0079558792672705,
+        "tolerance_pct": 1,
+        "unit": "m/s",
+        "text_answer_md": "",
+        "hint_md": "$v = \\sqrt{2 \\times a \\times 2.5}$",
+        "explanation_md": "$v = \\sqrt{2 \\times 3.213 \\times 2.5} = 4.01\\ \\text{m s}^{-1}$",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-block-on-incline-3-3-1"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   },
+   {
+    "id": "p-braking-suvat-1",
+    "pattern_id": "p-braking-suvat",
+    "source": "past_paper",
+    "source_ref": "demo Q2 (2023)",
+    "title": "Car braking to rest",
+    "statement_md": "A car travelling at $25\\ \\text{m s}^{-1}$ brakes with uniform deceleration and comes to rest in $50\\ \\text{m}$.\n\n(a) Calculate the deceleration. **(3 marks)**\n\n(b) Calculate the time taken to stop. **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Deceleration",
+      "marks": "3",
+      "final_answer_md": "$a = -6.25\\ \\text{m s}^{-2}$ (deceleration $6.25\\ \\text{m s}^{-2}$)",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "Match the question to SUVAT. Which values are known? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "$u = 25$ m/s",
+         "$v = 0$",
+         "$s = 50$ m",
+         "$t$",
+         "$a$"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Comes to rest\" gives you one of them.",
+        "explanation_md": "$u$, $v=0$ (rest) and $s$ are known; $a$ and $t$ are not.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-1-0-0"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which equation uses $u$, $v$, $s$ and $a$ only?",
+        "answer_type": "choice",
+        "choices": [
+         "$v^2 = u^2 + 2as$",
+         "$v = u + at$",
+         "$s = ut + \\tfrac12at^2$",
+         "$s = \\tfrac{u+v}{2}t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Pick the one without $t$.",
+        "explanation_md": "$0 = u^2 + 2as$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-1-0-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $a$ (include the sign).",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": -6.25,
+        "tolerance_pct": 1,
+        "unit": "m/s²",
+        "text_answer_md": "",
+        "hint_md": "$a = -u^2/(2s)$",
+        "explanation_md": "$a = -625/(2 \\times 50) = -6.25\\ \\text{m s}^{-2}$; negative because it slows down.",
+        "concept_ids": [
+         "c-acceleration",
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-1-0-2"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Stopping time",
+      "marks": "2",
+      "final_answer_md": "$t = 4.00\\ \\text{s}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Quickest equation for $t$ now?",
+        "answer_type": "choice",
+        "choices": [
+         "$v = u + at$",
+         "$v^2 = u^2 + 2as$",
+         "$t = s/u$",
+         "$t = u/s$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You now know $a$.",
+        "explanation_md": "$t = (v-u)/a$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-1-1-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $t$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 4.0,
+        "tolerance_pct": 1,
+        "unit": "s",
+        "text_answer_md": "",
+        "hint_md": "$(0 - 25)/a$",
+        "explanation_md": "$t = -25/(-6.25) = 4.00\\ \\text{s}$. Check: average speed $12.5$ m/s × 4.00 s = 50 m ✓",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-1-1-1"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   },
+   {
+    "id": "p-braking-suvat-2",
+    "pattern_id": "p-braking-suvat",
+    "source": "variant",
+    "source_ref": "variant of demo Q2 (2023)",
+    "title": "Train braking to rest",
+    "statement_md": "A car travelling at $30\\ \\text{m s}^{-1}$ brakes with uniform deceleration and comes to rest in $225\\ \\text{m}$.\n\n(a) Calculate the deceleration. **(3 marks)**\n\n(b) Calculate the time taken to stop. **(2 marks)**",
+    "parts": [
+     {
+      "label": "a",
+      "prompt_md": "Deceleration",
+      "marks": "3",
+      "final_answer_md": "$a = -2.00\\ \\text{m s}^{-2}$ (deceleration $2.00\\ \\text{m s}^{-2}$)",
+      "steps": [
+       {
+        "kind": "given",
+        "prompt_md": "Match the question to SUVAT. Which values are known? Select all.",
+        "answer_type": "multi",
+        "choices": [
+         "$u = 30$ m/s",
+         "$v = 0$",
+         "$s = 225$ m",
+         "$t$",
+         "$a$"
+        ],
+        "correct_choices": [
+         0,
+         1,
+         2
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "\"Comes to rest\" gives you one of them.",
+        "explanation_md": "$u$, $v=0$ (rest) and $s$ are known; $a$ and $t$ are not.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-2-0-0"
+       },
+       {
+        "kind": "formula",
+        "prompt_md": "Which equation uses $u$, $v$, $s$ and $a$ only?",
+        "answer_type": "choice",
+        "choices": [
+         "$v^2 = u^2 + 2as$",
+         "$v = u + at$",
+         "$s = ut + \\tfrac12at^2$",
+         "$s = \\tfrac{u+v}{2}t$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "Pick the one without $t$.",
+        "explanation_md": "$0 = u^2 + 2as$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-2-0-1"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $a$ (include the sign).",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": -2.0,
+        "tolerance_pct": 1,
+        "unit": "m/s²",
+        "text_answer_md": "",
+        "hint_md": "$a = -u^2/(2s)$",
+        "explanation_md": "$a = -900/(2 \\times 225) = -2.00\\ \\text{m s}^{-2}$; negative because it slows down.",
+        "concept_ids": [
+         "c-acceleration",
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-2-0-2"
+       }
+      ]
+     },
+     {
+      "label": "b",
+      "prompt_md": "Stopping time",
+      "marks": "2",
+      "final_answer_md": "$t = 15.00\\ \\text{s}$",
+      "steps": [
+       {
+        "kind": "formula",
+        "prompt_md": "Quickest equation for $t$ now?",
+        "answer_type": "choice",
+        "choices": [
+         "$v = u + at$",
+         "$v^2 = u^2 + 2as$",
+         "$t = s/u$",
+         "$t = u/s$"
+        ],
+        "correct_choices": [
+         0
+        ],
+        "numeric_answer": null,
+        "tolerance_pct": null,
+        "unit": "",
+        "text_answer_md": "",
+        "hint_md": "You now know $a$.",
+        "explanation_md": "$t = (v-u)/a$.",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-2-1-0"
+       },
+       {
+        "kind": "final",
+        "prompt_md": "Calculate $t$.",
+        "answer_type": "numeric",
+        "choices": [],
+        "correct_choices": [],
+        "numeric_answer": 15.0,
+        "tolerance_pct": 1,
+        "unit": "s",
+        "text_answer_md": "",
+        "hint_md": "$(0 - 30)/a$",
+        "explanation_md": "$t = -30/(-2.00) = 15.00\\ \\text{s}$. Check: average speed $15$ m/s × 15.00 s = 225 m ✓",
+        "concept_ids": [
+         "c-suvat"
+        ],
+        "id": "p-braking-suvat-2-1-1"
+       }
+      ]
+     }
+    ],
+    "verified": true,
+    "verify_note": ""
+   }
+  ],
+  "learning_path": [
+   "c-displacement-velocity",
+   "c-acceleration",
+   "c-suvat",
+   "c-projectile-motion",
+   "c-newtons-second-law",
+   "c-free-body-diagrams",
+   "c-friction-incline"
+  ],
+  "uncovered_questions": [],
+  "generated_at": null,
+  "model": "hand-written demo"
+ }
+}
