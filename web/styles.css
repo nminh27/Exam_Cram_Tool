@@ -287,3 +287,17 @@ button.chip:hover { border-color: var(--accent); }
   .topbar .crumb { display: none; }
   .topbar .btn.ghost.sm { padding: 5px 6px; }
 }
+
+/* ---------- how-it-works guide */
+.guide-steps { margin: 6px 0 22px; }
+.steps-strip { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.steps-strip > li { margin: 0; padding: 14px 16px; }
+.steps-strip > li .md { margin-top: 6px; color: var(--muted); }
+.steps-strip > li .md b, .steps-strip > li .md strong { color: var(--text); }
+details.faq { border-top: 1px solid var(--border); padding: 10px 0; margin: 0; }
+details.faq:first-of-type { border-top: 0; }
+details.faq > summary { font-weight: 600; }
+details.faq > .md { margin-top: 8px; }
+.steps-strip > li .row { flex-wrap: nowrap; align-items: flex-start; }
+@media (max-width: 520px) { .topbar .mode-text { display: none; } }

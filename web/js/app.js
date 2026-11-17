@@ -12,6 +12,7 @@ import { PracticePage } from "./pages/practice.js";
 import { QuizPage } from "./pages/quiz.js";
 import { ProblemPage } from "./pages/problem.js";
 import { ProgressPage } from "./pages/progress.js";
+import { GuidePage } from "./pages/guide.js";
 
 const NAV = [
   { sec: "Understand" },
@@ -35,8 +36,9 @@ function TopBar({ courseName }) {
     <span class="spacer"></span>
     ${h && html`<a class="small muted" href="#/settings" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
       <span class="dot" style=${`background:${h.ai_available ? "var(--good)" : "var(--accent)"}`}></span>
-      ${h.static ? "Website" : h.ai_available ? h.model : "Claude Code mode"}
+      <span class="mode-text">${h.static ? "Website" : h.ai_available ? h.model : "Claude Code mode"}</span>
     </a>`}
+    <a class="btn ghost sm" href="#/guide" title="How to use Cramtoolfinal">? Guide</a>
     <a class="btn ghost sm" href="#/settings">⚙ Settings</a>
   </header>`;
 }
@@ -67,6 +69,7 @@ function App() {
   const [a, cid, section, sub] = route.parts;
 
   if (a === "settings") return html`<${TopBar} /><main class="main"><${SettingsPage} /></main>`;
+  if (a === "guide") return html`<${TopBar} /><main class="main"><${GuidePage} /></main>`;
   if (a !== "c" || !cid) return html`<${TopBar} /><main class="main"><${HomePage} /></main>`;
 
   const q = route.query;

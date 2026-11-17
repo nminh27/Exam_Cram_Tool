@@ -1,4 +1,5 @@
 import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC, REPO_URL } from "../lib.js";
+import { GettingStarted, WhatToExpect } from "./guide.js";
 
 export function HomePage() {
   const store = useStore();
@@ -47,6 +48,8 @@ export function HomePage() {
         with intuition MCQs and step-by-step exam problems in the exact form of your past papers.
       </p>
     </div>
+
+    <${GettingStarted} />
 
     ${IS_STATIC ? html`
       <div class="notice accent">
@@ -114,5 +117,7 @@ export function HomePage() {
             </div>
             <div class="tiny muted" style="margin-top:6px">created ${timeAgo(c.created_at)}</div>
           </div>`)}</div>`}
+
+    <div style="margin-top:28px"><${WhatToExpect} /></div>
   `;
 }
