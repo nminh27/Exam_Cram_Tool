@@ -6,7 +6,7 @@ import { html, useState, useEffect, useMemo } from "https://unpkg.com/htm@3.1.1/
 
 // ------------------------------------------------------------------ API
 
-// "server" when served by the FinalForge app; "static" on the GitHub Pages website (set in config.js),
+// "server" when served by the Cramtoolfinal app; "static" on the GitHub Pages website (set in config.js),
 // where a browser-only stand-in answers the API and courses live in this browser's storage.
 export const IS_STATIC = window.FINALFORGE_MODE === "static";
 export const REPO_URL = "https://github.com/nminh27/Exam_Cram_Tool";
@@ -45,7 +45,7 @@ export const fileSlug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-
 // Download a course's knowledge pack (works in both modes).
 export async function exportPack(cid, name) {
   if (!IS_STATIC) { location.href = `/api/courses/${cid}/export`; return; }
-  downloadJson(await api(`/courses/${cid}/export`), `${fileSlug(name)}.finalforge.json`);
+  downloadJson(await api(`/courses/${cid}/export`), `${fileSlug(name)}.cramtoolfinal.json`);
 }
 
 // ------------------------------------------------------------------ markdown + math

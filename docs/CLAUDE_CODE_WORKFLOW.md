@@ -1,6 +1,6 @@
 # Building a course with Claude Code (no API key)
 
-This is the procedure Claude Code follows when the user says "build the FinalForge pack for <course>".
+This is the procedure Claude Code follows when the user says "build the Cramtoolfinal pack for <course>".
 The result must match what the API pipeline would produce: the specification is the prompts in
 `app/prompts.py` (`CONCEPT_TASK`, `PATTERN_TASK`, `SCAFFOLD_RULES`, `BASE_SYSTEM`). Read them first.
 

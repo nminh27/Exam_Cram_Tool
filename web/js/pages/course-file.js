@@ -24,7 +24,7 @@ export function CourseFilePage({ cid, d }) {
     if (!f) return;
     try {
       const data = JSON.parse(await f.text());
-      if (!Array.isArray(data.events)) throw new Error("That file isn't a FinalForge progress backup.");
+      if (!Array.isArray(data.events)) throw new Error("That file isn't a Cramtoolfinal progress backup.");
       if (!confirm(`Replace this course's progress with the ${data.events.length} answers in the backup?`)) return;
       await api(`/courses/${cid}/progress`, { json: { events: data.events, replace: true } });
       await loadCourse(cid, true);
@@ -35,7 +35,7 @@ export function CourseFilePage({ cid, d }) {
     const m = await import("../static-api.js");
     const ok = await m.askPersistence();
     setInfo(await m.storageInfo());
-    say(ok, ok ? "This browser will keep FinalForge's data unless you clear it yourself." : "The browser didn't allow it; keep a progress backup instead.");
+    say(ok, ok ? "This browser will keep Cramtoolfinal's data unless you clear it yourself." : "The browser didn't allow it; keep a progress backup instead.");
   }
   async function remove() {
     if (!confirm(`Remove "${course.name}" and its progress from this browser? Export a backup first if you might want it back.`)) return;
@@ -47,7 +47,7 @@ export function CourseFilePage({ cid, d }) {
     <h1>Course file</h1>
     ${msg && html`<div class=${"notice " + (msg.ok ? "good" : "bad")}>${msg.text}</div>`}
     <div class="notice accent small">
-      This is the FinalForge <b>website</b>. The course and your progress are saved in <b>this browser</b> only: not on GitHub,
+      This is the Cramtoolfinal <b>website</b>. The course and your progress are saved in <b>this browser</b> only: not on GitHub,
       and not on your other devices. Building or changing a course happens in the app on your computer (or with Claude Code);
       then you bring the new pack here.
     </div>
@@ -82,7 +82,7 @@ export function CourseFilePage({ cid, d }) {
 
     <div class="card flat">
       <h3>Want to add files or use AI?</h3>
-      <p class="small">Run the FinalForge app on your computer (see the <a href=${REPO_URL} target="_blank" rel="noopener">GitHub page</a>), or ask Claude Code to build the course.
+      <p class="small">Run the Cramtoolfinal app on your computer (see the <a href=${REPO_URL} target="_blank" rel="noopener">GitHub page</a>), or ask Claude Code to build the course.
         Then export the pack and load it here.</p>
       <button class="btn sm danger" onClick=${remove}>Remove this course from this browser</button>
     </div>`;

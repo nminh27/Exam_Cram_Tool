@@ -1,4 +1,4 @@
-"""FinalForge HTTP API + static web UI.
+"""Cramtoolfinal HTTP API + static web UI.
 
 Run with:  python -m uvicorn app.main:app --port 8000   (or run.bat / run.ps1)
 """
@@ -287,12 +287,12 @@ def export_pack(cid: str):
     pack = {"format": PACK_FORMAT, "version": 1, "name": meta["name"],
             "description": meta.get("description", ""), "knowledge": storage.get_knowledge(cid)}
     return JSONResponse(pack, headers={
-        "Content-Disposition": f'attachment; filename="{storage.slugify(meta["name"])}.finalforge.json"'})
+        "Content-Disposition": f'attachment; filename="{storage.slugify(meta["name"])}.cramtoolfinal.json"'})
 
 
 def _import_pack(pack: dict[str, Any], name: str | None = None) -> dict:
     if pack.get("format") != PACK_FORMAT or "knowledge" not in pack:
-        raise HTTPException(400, "Not a FinalForge knowledge pack")
+        raise HTTPException(400, "Not a Cramtoolfinal knowledge pack")
     errors, _ = packkit.validate(pack)
     if errors:
         raise HTTPException(400, "Pack has errors: " + "; ".join(errors[:5]) + (" …" if len(errors) > 5 else ""))

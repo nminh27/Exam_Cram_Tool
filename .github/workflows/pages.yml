@@ -1,6 +1,6 @@
 name: website
 
-# Publishes the FinalForge study website to GitHub Pages on every push to main.
+# Publishes the Cramtoolfinal study website to GitHub Pages on every push to main.
 # One-time setup: repo Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
 
 on:

@@ -86,7 +86,7 @@ function normalizeKnowledge(kn) {
 
 function checkPack(pack) {
   if (!pack || pack.format !== "finalforge-pack" || !pack.knowledge) {
-    throw new Error("That file isn't a FinalForge knowledge pack (export one from Materials in the app).");
+    throw new Error("That file isn't a Cramtoolfinal knowledge pack (export one from Materials in the app).");
   }
   const kn = pack.knowledge;
   const bad = (kn.mcqs || []).filter((q) => !Array.isArray(q.options) || !(q.correct >= 0 && q.correct < q.options.length));
@@ -117,7 +117,7 @@ async function courseMeta(id) {
   return meta;
 }
 
-const NOT_HERE = "This needs the FinalForge app on your computer. The website can only study and practise courses you import.";
+const NOT_HERE = "This needs the Cramtoolfinal app on your computer. The website can only study and practise courses you import.";
 
 // ------------------------------------------------------------------ the fake API
 

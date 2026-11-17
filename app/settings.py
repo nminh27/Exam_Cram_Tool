@@ -1,6 +1,6 @@
 """AI provider settings.
 
-FinalForge can run in two modes:
+Cramtoolfinal can run in two modes:
   * API mode: one or more AI providers are configured (Anthropic Claude natively, or any
     OpenAI-compatible API: OpenAI, Google Gemini, OpenRouter, Groq, DeepSeek, Mistral, xAI, Together,
     or a local model through Ollama / LM Studio). The app analyzes materials by itself.
@@ -23,7 +23,7 @@ _lock = threading.RLock()
 PRESETS: list[dict] = [
     {"preset": "anthropic", "label": "Anthropic Claude", "type": "anthropic", "base_url": "",
      "model": "claude-opus-5-5", "needs_key": True, "concurrency": 4,
-     "note": "Recommended. FinalForge's prompts are written for Claude, and it reads PDFs (formulas, diagrams) natively."},
+     "note": "Recommended. Cramtoolfinal's prompts are written for Claude, and it reads PDFs (formulas, diagrams) natively."},
     {"preset": "openai", "label": "OpenAI", "type": "openai", "base_url": "https://api.openai.com/v1",
      "needs_key": True, "concurrency": 4, "note": "Use a vision-capable model so scanned pages can be read."},
     {"preset": "gemini", "label": "Google Gemini", "type": "openai",

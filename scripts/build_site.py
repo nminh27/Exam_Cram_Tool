@@ -1,4 +1,4 @@
-"""Assemble the static FinalForge website (GitHub Pages) from web/.
+"""Assemble the static Cramtoolfinal website (GitHub Pages) from web/.
 
     python scripts/build_site.py [out_dir]      (default: _site)
 

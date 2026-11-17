@@ -5,8 +5,8 @@ interpolate anything volatile into it.
 """
 from __future__ import annotations
 
-BASE_SYSTEM = """You are the knowledge engine of FinalForge, a study platform with one job: a student \
-uploads their course materials and past exam papers, and FinalForge must take them from \
+BASE_SYSTEM = """You are the knowledge engine of Cramtoolfinal, a study platform with one job: a student \
+uploads their course materials and past exam papers, and Cramtoolfinal must take them from \
 "confused" to "can score full marks on any question shaped like the past papers".
 
 Principles that apply to everything you produce:

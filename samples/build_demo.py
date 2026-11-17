@@ -1,5 +1,5 @@
 """Builds samples/demo_pack.json: a small hand-written sample course (intro mechanics) that
-exercises every FinalForge feature without an API key. The "past papers" here are sample
+exercises every Cramtoolfinal feature without an API key. The "past papers" here are sample
 questions written for the demo, not real exam papers.
 
     python samples/build_demo.py
@@ -494,7 +494,7 @@ def build() -> dict:
     kn = {
         "version": 1,
         "course": {"title": "Physics 101 (demo): Motion & Forces",
-                   "overview_md": "**This is a sample course** written to show how FinalForge works; its \"past papers\" are sample questions, not real exams.\n\n"
+                   "overview_md": "**This is a sample course** written to show how Cramtoolfinal works; its \"past papers\" are sample questions, not real exams.\n\n"
                                   "The course tells one story: first we learn to **describe** motion (displacement → velocity → acceleration → the SUVAT toolkit → projectiles), "
                                   "then we learn what **causes** changes in motion (Newton's second law, free-body diagrams, friction on slopes).\n\n"
                                   "The sample final has 3 recurring question types: a **horizontal projectile** (≈ 10 marks), a **block on a rough slope** (≈ 10 marks) and a **uniform braking** problem (≈ 5 marks)."},

@@ -1,5 +1,5 @@
 @echo off
-REM FinalForge launcher for Windows: creates the virtualenv on first run, then starts the app.
+REM Cramtoolfinal launcher for Windows: creates the virtualenv on first run, then starts the app.
 cd /d "%~dp0"
 if not exist ".venv\Scripts\python.exe" (
   echo Creating virtual environment...
@@ -10,7 +10,7 @@ if not exist ".venv\Scripts\python.exe" (
 set PORT=8000
 if not "%1"=="" set PORT=%1
 echo.
-echo   FinalForge is starting at http://localhost:%PORT%
+echo   Cramtoolfinal is starting at http://localhost:%PORT%
 echo   Press Ctrl+C to stop.
 echo.
 start "" "http://localhost:%PORT%"

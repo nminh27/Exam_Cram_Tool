@@ -60,7 +60,7 @@ def cmd_validate(a: argparse.Namespace) -> int:
 def cmd_import(a: argparse.Namespace) -> int:
     pack = _load(a.pack)
     if "knowledge" not in pack:
-        print("Not a finalforge pack (no 'knowledge').")
+        print("Not a Cramtoolfinal pack (no 'knowledge').")
         return 1
     kn_new = packkit.finalize(pack["knowledge"])
     if a.into:

@@ -1,9 +1,9 @@
-# FinalForge
+# Cramtoolfinal
 
 Turn your course materials and past papers into an exam-ready training ground.
 
 Upload lecture notes, slides, textbook chapters and **past papers** (plus solutions if you have them).
-FinalForge uses Claude to:
+Cramtoolfinal uses Claude to:
 
 1. **Read everything faithfully.** PDFs are read as page images, so formulas, tables and diagrams survive. Past-paper questions are transcribed verbatim; you can check each transcription in *Materials → view what was read*.
 2. **Build the knowledge map.** Topics → concepts → direct prerequisites, a recommended learning path, and every past-paper question grouped into **exam patterns** (the archetypes examiners reuse). A coverage check makes sure every past-paper question belongs to a pattern.
@@ -21,7 +21,7 @@ Then you train:
 | **Exam problems, step by step** | The question stays pinned on the left like an exam paper; you fill one small box at a time, with hints, targeted nudges (wrong sign, power-of-ten slip, rounding), AI marking for written answers, and "I don't get this step". |
 | **Progress & readiness** | Per-concept mastery (recency-weighted), per-pattern readiness (last 3 attempts), and an exam-readiness estimate weighted by how often each pattern appears in past papers. |
 
-> No tool can promise a 100% mark. What FinalForge does is make the gaps visible: every past-paper question maps to a pattern, every pattern to concepts, and the readiness numbers only go up when you actually solve exam-form problems without help.
+> No tool can promise a 100% mark. What Cramtoolfinal does is make the gaps visible: every past-paper question maps to a pattern, every pattern to concepts, and the readiness numbers only go up when you actually solve exam-form problems without help.
 
 ## Quick start (Windows)
 
@@ -42,7 +42,7 @@ In **Settings → AI providers**, add one or more providers and pick which one d
 
 | Provider | Notes |
 |---|---|
-| **Anthropic Claude** (recommended) | FinalForge's prompts are written for Claude, and it reads PDFs natively (formulas, tables, diagrams). Default model `claude-opus-5-5`. |
+| **Anthropic Claude** (recommended) | Cramtoolfinal's prompts are written for Claude, and it reads PDFs natively (formulas, tables, diagrams). Default model `claude-opus-5-5`. |
 | OpenAI, Google Gemini, OpenRouter, Groq, DeepSeek, Mistral, xAI, Together | Any OpenAI-compatible API. Paste the key, press **Load models**, pick one, press **Test**. |
 | Ollama, LM Studio | Free models running on your own computer, no key. Much weaker results with small models. |
 | Any other OpenAI-compatible endpoint | Give its base URL. |
@@ -50,7 +50,7 @@ In **Settings → AI providers**, add one or more providers and pick which one d
 - **Two roles:** *Analysis* builds the course; *Quick tasks* (marking written answers, "Break it down further") can use a cheaper or local model.
 - **Keys** are stored only in `.env` (git-ignored), one line per provider, and are never shown again or sent anywhere but that provider.
 - **PDFs with non-Claude models:** each page is sent as text; pages without a text layer (scans, handwriting) are sent as page images, so pick a vision model. *Advanced* lets you send every page as an image (best for maths) or text only (for text-only models).
-- **Structured output:** FinalForge asks for strict JSON-schema output, and automatically falls back to plain JSON mode or instructions for APIs that don't support it; missing fields are filled in so the app never breaks.
+- **Structured output:** Cramtoolfinal asks for strict JSON-schema output, and automatically falls back to plain JSON mode or instructions for APIs that don't support it; missing fields are filled in so the app never breaks.
 - Quality varies by model. Keep **Verify generated problems** on, and use **Test** after adding a provider.
 
 ### Claude Code mode: no API key at all
@@ -58,7 +58,7 @@ In **Settings → AI providers**, add one or more providers and pick which one d
 With no provider set, Claude Code builds the course:
 
 1. Create a course and upload its files on the Materials page, or drop them into `inbox/<course name>/`.
-2. In Claude Code, say **"Build the FinalForge pack for <course name>"**. It reads every file, writes the same
+2. In Claude Code, say **"Build the Cramtoolfinal pack for <course name>"**. It reads every file, writes the same
    breakdowns, questions and step-by-step problems the Analyze button would (numbers computed in Python, then
    validated), and loads them into the app. Big courses are built topic by topic ("continue the pack for …").
 3. Everything else works as usual. In this mode the app hides Analyze, "Break it down further", AI marking
@@ -70,7 +70,7 @@ You can switch any time: courses built either way look and work the same.
 
 ## Study website (GitHub Pages)
 
-**https://nminh27.github.io/Exam_Cram_Tool/** is the same FinalForge interface as a website: open it on any
+**https://nminh27.github.io/Exam_Cram_Tool/** is the same Cramtoolfinal interface as a website: open it on any
 device, phone included, with nothing to install.
 
 - It studies and drills courses you **import as knowledge packs**: build the course on your computer (Analyze,
@@ -126,14 +126,12 @@ Run tests: `.venv\Scripts\python -m pytest -q`
 
 ## Working with GitHub
 
-The project is a git repository. To publish it, create an empty GitHub repo and either give Claude Code the URL ("push this to https://github.com/you/finalforge") or run:
+The code lives at https://github.com/nminh27/Exam_Cram_Tool. Changes go on a branch, get tested, and are
+merged into `main`; every push to `main` runs the tests (`.github/workflows/ci.yml`) and republishes the
+study website (`.github/workflows/pages.yml`).
 
-```bash
-git remote add origin https://github.com/<you>/<repo>.git
-```
+`data/`, `inbox/` and `.env` are git-ignored, so your course files, progress and API keys never leave your computer.
 
-```bash
-git push -u origin main
-```
-
-`data/` and `.env` are git-ignored, so your course files, progress and API key never leave your computer. CI (`.github/workflows/ci.yml`) runs the test suite on every push.
+Cramtoolfinal was first called FinalForge. Some technical ids still use the old name on purpose (the pack
+format `finalforge-pack`, the website's browser storage, the `FINALFORGE_*` settings in `.env`), so older
+packs, saved website progress and existing settings keep working.

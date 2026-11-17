@@ -30,7 +30,7 @@ function TopBar({ courseName }) {
   const store = useStore();
   const h = store.health;
   return html`<header class="topbar">
-    <a class="brand" href="#/"><span class="logo">F</span>FinalForge</a>
+    <a class="brand" href="#/"><span class="logo">C</span>Cramtoolfinal</a>
     ${courseName && html`<span class="crumb">/ ${courseName}</span>`}
     <span class="spacer"></span>
     ${h && html`<a class="small muted" href="#/settings" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>

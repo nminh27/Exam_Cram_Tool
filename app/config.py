@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ENV_FILE = ROOT / ".env"
 load_dotenv(ENV_FILE)
 
-APP_NAME = "FinalForge"
+APP_NAME = "Cramtoolfinal"
 
 # Claude model used for every stage. Opus 5.5 is the current default Opus model.
 MODEL = os.environ.get("FINALFORGE_MODEL", "claude-opus-5-5")

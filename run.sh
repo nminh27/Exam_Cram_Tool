@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# FinalForge launcher for macOS / Linux / Git Bash.
+# Cramtoolfinal launcher for macOS / Linux / Git Bash.
 set -e
 cd "$(dirname "$0")"
 PY=".venv/bin/python"
@@ -11,5 +11,5 @@ if [ ! -x "$PY" ]; then
   "$PY" -m pip install -r requirements.txt
 fi
 PORT="${1:-8000}"
-echo "FinalForge: http://localhost:$PORT"
+echo "Cramtoolfinal: http://localhost:$PORT"
 exec "$PY" -m uvicorn app.main:app --port "$PORT"

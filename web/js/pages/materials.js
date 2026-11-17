@@ -163,7 +163,7 @@ export function MaterialsPage({ cid, d }) {
 
 function ClaudeCodeCard({ course, hasPaper }) {
   const [copied, setCopied] = useState(false);
-  const say = `Build the FinalForge pack for the course "${course.name}" (${course.id})`;
+  const say = `Build the Cramtoolfinal pack for the course "${course.name}" (${course.id})`;
   const copy = () => { navigator.clipboard.writeText(say).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500); }).catch(() => {}); };
   return html`<div class="card section-card how">
     <h3>🤖 No AI provider? Let Claude Code build this course</h3>

@@ -115,7 +115,7 @@ function AppSettings() {
         Claude Code builds the course content instead:</p>
       <ol class="md small">
         <li>Create a course and upload its files on the Materials page, or drop them into <span class="kbd">${"inbox/<course name>/"}</span> in the project folder.</li>
-        <li>In Claude Code, say <span class="kbd">${"Build the FinalForge pack for <course name>"}</span>.</li>
+        <li>In Claude Code, say <span class="kbd">${"Build the Cramtoolfinal pack for <course name>"}</span>.</li>
         <li>Refresh the app when it's done. For more questions or a simpler explanation of something, ask Claude Code too.</li>
       </ol>
       <p class="tiny muted">Hidden in this mode: Analyze, "Break it down further", AI marking of written answers (you mark yourself against the model answer), and generating more questions or problems in the app.</p>
@@ -210,7 +210,7 @@ function ProviderForm({ s, init, onCancel, onSaved }) {
         <button class="btn primary" disabled=${busy}>${busy ? "Saving…" : "Save"}</button>
         <button type="button" class="btn ghost" onClick=${onCancel}>Cancel</button>
       </div>
-      ${!isAnthropic && html`<p class="tiny muted">FinalForge's prompts are tuned for Claude. Other models work, but the quality of breakdowns and
+      ${!isAnthropic && html`<p class="tiny muted">Cramtoolfinal's prompts are tuned for Claude. Other models work, but the quality of breakdowns and
         the accuracy of generated problems vary; keep "Verify generated problems" on and use Test after saving.</p>`}
     </div>
   </form>`;
