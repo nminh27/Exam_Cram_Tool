@@ -15,31 +15,31 @@ import { ProgressPage } from "./pages/progress.js";
 import { GuidePage } from "./pages/guide.js";
 
 const NAV = [
-  { sec: "Understand" },
-  { key: "", label: "Dashboard", ico: "◎" },
-  { key: "learn", label: "Learn concepts", ico: "📘" },
-  { key: "map", label: "Knowledge map", ico: "🕸" },
-  { key: "patterns", label: "Exam patterns", ico: "🎯" },
-  { sec: "Train" },
-  { key: "practice", label: "Practice", ico: "🏋" },
-  { key: "progress", label: "Progress", ico: "📈" },
-  { sec: "Setup" },
-  IS_STATIC ? { key: "materials", label: "Course file", ico: "📦" } : { key: "materials", label: "Materials", ico: "📂" },
+  { key: "", label: "Overview" },
+  { key: "learn", label: "Learn" },
+  { key: "map", label: "Map" },
+  { key: "patterns", label: "Exam patterns" },
+  { key: "practice", label: "Practice" },
+  { key: "progress", label: "Progress" },
+  IS_STATIC ? { key: "materials", label: "Course file" } : { key: "materials", label: "Materials" },
 ];
 
-function TopBar({ courseName }) {
+function TopBar({ courseName, children }) {
   const store = useStore();
   const h = store.health;
   return html`<header class="topbar">
-    <a class="brand" href="#/"><span class="logo">C</span>Cramtoolfinal</a>
-    ${courseName && html`<span class="crumb">/ ${courseName}</span>`}
-    <span class="spacer"></span>
-    ${h && html`<a class="small muted" href="#/settings" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
-      <span class="dot" style=${`background:${h.ai_available ? "var(--good)" : "var(--accent)"}`}></span>
-      <span class="mode-text">${h.static ? "Website" : h.ai_available ? h.model : "Claude Code mode"}</span>
-    </a>`}
-    <a class="btn ghost sm" href="#/guide" title="How to use Cramtoolfinal">? Guide</a>
-    <a class="btn ghost sm" href="#/settings">⚙ Settings</a>
+    <div class="topbar-inner">
+      <a class="brand" href="#/">Cramtoolfinal</a>
+      ${courseName && html`<span class="crumb">${courseName}</span>`}
+      <span class="spacer"></span>
+      ${h && html`<a class="mode" href="#/settings" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
+        <span class="dot" style=${`background:${h.ai_available ? "var(--good)" : "var(--warn)"}`}></span>
+        <span class="mode-text">${h.static ? "Website" : h.ai_available ? h.model : "Claude Code mode"}</span>
+      </a>`}
+      <a class="tlink" href="#/guide">Guide</a>
+      <a class="tlink" href="#/settings">Settings</a>
+    </div>
+    ${children}
   </header>`;
 }
 
@@ -47,20 +47,17 @@ function CourseShell({ cid, section, view, wide }) {
   const d = useCourse(cid);
   const name = d && d.course ? d.course.name : "";
   return html`
-    <${TopBar} courseName=${name} />
-    <div class="shell">
-      <nav class="sidebar">
-        ${NAV.map((n) => n.sec
-          ? html`<div class="sec">${n.sec}</div>`
-          : html`<a class=${section === n.key ? "active" : ""} href=${`#/c/${cid}${n.key ? "/" + n.key : ""}`}>
-              <span class="ico">${n.ico}</span>${n.label}</a>`)}
+    <${TopBar} courseName=${name}>
+      <nav class="course-nav" aria-label="Course">
+        ${NAV.map((n) => html`<a class=${section === n.key ? "active" : ""} aria-current=${section === n.key ? "page" : undefined}
+          href=${`#/c/${cid}${n.key ? "/" + n.key : ""}`}>${n.label}</a>`)}
       </nav>
-      <main class=${"main" + (wide ? " wide" : "")}>
-        ${!d ? html`<${Spinner} />`
-          : d.error ? html`<div class="notice bad">${d.error} <a href="#/">Back to courses</a></div>`
-          : view(d)}
-      </main>
-    </div>`;
+    <//>
+    <main class=${"main" + (wide ? " wide" : "")}>
+      ${!d ? html`<${Spinner} />`
+        : d.error ? html`<div class="notice bad">${d.error} <a href="#/">Back to courses</a></div>`
+        : view(d)}
+    </main>`;
 }
 
 function App() {

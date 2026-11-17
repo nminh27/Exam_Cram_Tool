@@ -37,14 +37,14 @@ const STEP1 = {
 };
 
 const STEPS = [
-  { ico: "📂", title: "Bring your course in", body: (mode) => STEP1[mode] },
-  { ico: "📘", title: "Understand it", body: () =>
+  { title: "Bring your course in", body: (mode) => STEP1[mode] },
+  { title: "Understand it", body: () =>
     "Open **Learn concepts** and go in order. Each concept explains why it exists, what it does, how it works, " +
     "an everyday picture, and the exam wording that signals it. Stuck? Try **Discover it yourself** at the bottom of the page." },
-  { ico: "🏋", title: "Train like the exam", body: () =>
+  { title: "Train like the exam", body: () =>
     "In **Practice**, quizzes check your intuition. **Exam problems** are your past papers, solved one small box at a time: " +
     "what's given → what's asked → which formula → calculate → final answer." },
-  { ico: "📈", title: "Track your progress", body: () =>
+  { title: "Track your progress", body: () =>
     "Concepts move from *Not started* to *Weak*, *Getting there* and *Solid* as you answer. " +
     "**Exam readiness** gives the most weight to the question types that appear most in your past papers." },
 ];
@@ -58,7 +58,7 @@ export function GettingStarted({ hideLink }) {
     </div>
     <ol class="steps-strip">
       ${STEPS.map((s, i) => html`<li class="card">
-        <div class="row"><span class="step-num">${i + 1}</span><b>${s.ico} ${s.title}</b></div>
+        <div class="row"><span class="step-num">${i + 1}</span><b>${s.title}</b></div>
         <${Md} text=${s.body(mode)} cls="small" />
       </li>`)}
     </ol>
@@ -91,7 +91,7 @@ function faq(mode, skipCourseFile) {
     "Steps unlock one at a time, in the order a top student writes the solution. The question stays visible next to them.\n\n" +
     "- **Numbers:** type just the number. `12.5`, `1.2e-3`, `1.2×10^-3`, `3/4` and `1,200` all work, units are optional, and small rounding differences are accepted.\n" +
     "- **Wrong answer:** you get a nudge (wrong sign, off by a power of ten, rounding) and can try again.\n" +
-    "- **💡 Hint** helps without giving it away; **Show answer** reveals and explains the step.\n" +
+    "- **Hint** helps without giving it away; **Show answer** reveals and explains the step.\n" +
     "- **Written answers:** " + (mode === "ai" ? "marked by the AI against the marking points." : "compare yours with the model answer and mark yourself honestly.")]);
   items.push(["What do the colours and percentages mean?",
     "- **Not started** (grey): no answers yet. **Weak** (red): under 60%. **Getting there** (amber). **Solid** (green): 85%+ over at least 3 answers.\n" +
@@ -99,7 +99,7 @@ function faq(mode, skipCourseFile) {
     "- **Exam readiness** combines your last 3 attempts at each exam question type, weighted by how often it appears in the past papers, with your mastery of core concepts."]);
   items.push(["Can I trust what it generates?",
     "It is written by AI from your own files, so it is usually right but can make mistakes. Every generated problem is solved a second time " +
-    "independently; a **⚠ check** badge means the two disagreed, so compare with your notes or the official solution. " +
+    "independently; a **Check** badge means the two disagreed, so compare with your notes or the official solution. " +
     (IS_STATIC ? "" : "On the Materials page, **view what was read** shows how each past-paper question was transcribed. ") +
     "When anything conflicts with your lecturer's notes, the notes win."]);
   items.push(["Where are my courses and progress saved?", IS_STATIC

@@ -12,7 +12,7 @@ function WebsiteSettings() {
   return html`
     <h1>Settings</h1>
     <div class="card">
-      <h3>🌐 Website mode</h3>
+      <h3>Website mode</h3>
       <ul class="md small">
         <li>Everything for studying works here: concept breakdowns, knowledge map, exam patterns, quizzes, map drills, the step-by-step solver and progress.</li>
         <li>Courses and progress are stored in <b>this browser on this device</b>. They are not uploaded to GitHub and don't sync between devices;
@@ -110,7 +110,7 @@ function AppSettings() {
     </div>
 
     ${s.mode !== "api" && html`<div class="card section-card how">
-      <h3>🤖 Claude Code mode: no API key needed</h3>
+      <h3>Claude Code mode: no API key needed</h3>
       <p class="small">Everything works without a provider: concept pages, knowledge map, quizzes, drills, the step-by-step solver and progress.
         Claude Code builds the course content instead:</p>
       <ol class="md small">

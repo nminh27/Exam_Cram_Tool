@@ -30,7 +30,7 @@ export function DashboardPage({ cid, d }) {
             Either way Claude reads everything, maps the concepts, finds every exam question pattern and builds practice.</li>
           <li>Learn each concept in atomic steps, then train with MCQs and step-by-step exam problems.</li>
         </ol>
-        <a class="btn primary" href=${`#/c/${cid}/materials`}>Go to materials →</a>
+        <a class="btn primary" href=${`#/c/${cid}/materials`}>Go to materials</a>
         ${course.job && course.job.status === "running" && html`<p class="muted small">Analysis is running…</p>`}
       </div>`;
   }
@@ -50,7 +50,7 @@ export function DashboardPage({ cid, d }) {
   return html`
     <div class="row between">
       <h1>${kn.course.title || course.name}</h1>
-      ${course.job && course.job.status === "running" && html`<a class="badge accent" href=${`#/c/${cid}/materials`}>⏳ analysis running</a>`}
+      ${course.job && course.job.status === "running" && html`<a class="badge accent" href=${`#/c/${cid}/materials`}>Analysis running</a>`}
     </div>
 
     <div class="grid two">
@@ -65,14 +65,14 @@ export function DashboardPage({ cid, d }) {
       <div class="card">
         <h3>Concept status</h3>
         <div class="grid four">
-          ${Object.entries(counts).map(([k, v]) => html`<div class="stat" style=${`border-left:4px solid ${masteryColor(k)}`}>
-            <div class="num">${v}</div><div class="lbl">${STATUS_LABEL[k]}</div></div>`)}
+          ${Object.entries(counts).map(([k, v]) => html`<div class="stat" style="padding-left:0">
+            <div class="num">${v}</div><div class="lbl"><span class="dot" style=${`background:${masteryColor(k)}`}></span>${STATUS_LABEL[k]}</div></div>`)}
         </div>
       </div>
     </div>
 
     <div class="card">
-      <h3>🧭 What to do next</h3>
+      <h3>What to do next</h3>
       <div class="stack">
         ${nextConcept && html`<div class="row between">
           <div><b>Learn:</b> ${nextConcept.name} <span class="muted small">— next in your learning path</span></div>
@@ -87,7 +87,7 @@ export function DashboardPage({ cid, d }) {
       </div>
     </div>
 
-    ${kn.course.overview_md && html`<div class="card"><h3>🗺 The big picture</h3><${Md} text=${kn.course.overview_md} /></div>`}
+    ${kn.course.overview_md && html`<div class="card"><h3>The big picture</h3><${Md} text=${kn.course.overview_md} /></div>`}
 
     <div class="grid four">
       <a class="card stat" href=${`#/c/${cid}/learn`}><div class="num">${kn.concepts.length}</div><div class="lbl">concepts</div></a>

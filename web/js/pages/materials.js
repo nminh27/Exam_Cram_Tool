@@ -91,7 +91,7 @@ export function MaterialsPage({ cid, d }) {
 
   return html`
     <div class="row between"><h1>Materials</h1>
-      <a class="btn sm" href=${`/api/courses/${cid}/export`}>⬇ Export knowledge pack</a></div>
+      <a class="btn sm" href=${`/api/courses/${cid}/export`}>Export knowledge pack</a></div>
     ${err && html`<div class="notice bad">${err}</div>`}
 
     <div class="card">
@@ -99,7 +99,7 @@ export function MaterialsPage({ cid, d }) {
         onDragOver=${(e) => { e.preventDefault(); setOver(true); }}
         onDragLeave=${() => setOver(false)}
         onDrop=${(e) => { e.preventDefault(); setOver(false); upload([...e.dataTransfer.files]); }}>
-        <div style="font-size:2rem">📄</div>
+        
         <p><b>Drop files here</b> or <label class="btn sm">browse<input ref=${fileRef} type="file" multiple style="display:none"
           accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.docx,.pptx,.txt,.md,.tex,.csv"
           onChange=${(e) => upload([...e.target.files])} /></label></p>
@@ -131,7 +131,7 @@ export function MaterialsPage({ cid, d }) {
 
     ${!keyOk && html`<${ClaudeCodeCard} course=${course} hasPaper=${hasPaper} />`}
     ${(keyOk || job) && html`<div class="card">
-      <h3>🧠 Analyze with AI ${store.health && store.health.provider && html`<span class="badge">${store.health.provider} · ${store.health.model}</span>`}</h3>
+      <h3>Analyze with AI ${store.health && store.health.provider && html`<span class="badge">${store.health.provider} · ${store.health.model}</span>`}</h3>
       ${!keyOk && html`<div class="notice warn">Add an AI provider in <a href="#/settings">Settings</a> first.</div>`}
       ${mats.length > 0 && !hasPaper && html`<div class="notice warn">No file is marked as a <b>past paper</b>. Exam patterns and exam-form practice problems come from past papers, so add them if you have any.</div>`}
       <p class="muted small">Reads each file once (cached), builds the knowledge map, writes the atomic breakdown + MCQs for every concept,
@@ -166,7 +166,7 @@ function ClaudeCodeCard({ course, hasPaper }) {
   const say = `Build the Cramtoolfinal pack for the course "${course.name}" (${course.id})`;
   const copy = () => { navigator.clipboard.writeText(say).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500); }).catch(() => {}); };
   return html`<div class="card section-card how">
-    <h3>🤖 No AI provider? Let Claude Code build this course</h3>
+    <h3>No AI provider? Let Claude Code build this course</h3>
     <ol class="md">
       <li>Add your files: upload them above (mark past papers as <b>Past paper</b>),
         or drop them into <span class="kbd">inbox/${course.name}/</span> in the project folder.</li>

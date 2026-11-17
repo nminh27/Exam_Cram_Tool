@@ -59,7 +59,7 @@ export function HomePage() {
       ${err && html`<div class="notice bad">${err}</div>`}
       <div class="grid two">
         <div class="card">
-          <h3>📥 Load a course</h3>
+          <h3>Load a course</h3>
           <p class="muted small">Pick a <span class="kbd">.cramtoolfinal.json</span> knowledge pack, or try the sample course.</p>
           <div class="row">
             <label class="btn primary">Import pack (.json)<input type="file" accept=".json,application/json" style="display:none" onChange=${importPack} /></label>
@@ -67,7 +67,7 @@ export function HomePage() {
           </div>
         </div>
         <div class="card">
-          <h3>🧭 ${COURSE_FILE_TITLE}</h3>
+          <h3>${COURSE_FILE_TITLE}</h3>
           <${Md} text=${COURSE_FILE_MD} cls="small" />
           <p class="tiny muted">Course files you import stay in this browser: they are not uploaded to GitHub.</p>
         </div>
@@ -80,17 +80,17 @@ export function HomePage() {
   
       <div class="grid two">
         <form class="card" onSubmit=${create}>
-          <h3>➕ New course</h3>
+          <h3>New course</h3>
           <div class="stack">
             <div><label class="field">Course name</label>
               <input type="text" placeholder="e.g. MATH1010 Calculus I" value=${name} onInput=${(e) => setName(e.target.value)} /></div>
             <div><label class="field">Notes (optional)</label>
               <input type="text" placeholder="exam date, lecturer…" value=${desc} onInput=${(e) => setDesc(e.target.value)} /></div>
-            <button class="btn primary" disabled=${busy || !name.trim()}>Create and upload materials →</button>
+            <button class="btn primary" disabled=${busy || !name.trim()}>Create and upload materials</button>
           </div>
         </form>
         <div class="card">
-          <h3>🧪 Try it or bring a pack</h3>
+          <h3>Try it or bring a pack</h3>
           <p class="muted small">The demo course (sample physics content) shows every feature without an API key.
             Knowledge packs are exported from Cramtoolfinal or written by Claude Code.</p>
           <div class="row">

@@ -147,7 +147,7 @@ export function QuizPage({ cid, d, query }) {
   if (i >= items.length) {
     const score = results.reduce((a, r) => a + r.score, 0) / results.length;
     const missed = results.filter((r) => r.score < 1);
-    return html`<h1>Done ✔</h1>
+    return html`<h1>Done</h1>
       <div class="card center"><div style="font-size:2.6rem;font-weight:800">${pct(score)}</div>
         <div class="muted">${results.filter((r) => r.score === 1).length} of ${results.length} right</div></div>
       ${missed.length > 0 && html`<div class="card"><h3>Review what you missed</h3>
@@ -167,7 +167,7 @@ export function QuizPage({ cid, d, query }) {
     recordEvents(cid, [{ kind: isMap ? "map" : "mcq", item_id: item.id, concept_ids: item.concept_ids, result: score === 1 ? "correct" : "wrong", score }]);
   };
   return html`
-    <div class="row between"><h1 style="margin:0">${isMap ? "🧩 Map drills" : cName ? `Quiz: ${cName}` : "Concept quiz"}</h1>
+    <div class="row between"><h1 style="margin:0">${isMap ? "Map drills" : cName ? `Quiz: ${cName}` : "Concept quiz"}</h1>
       <span class="muted">${i + 1} / ${items.length}</span></div>
     <div class="bar" style="margin:12px 0 18px"><div style=${`width:${(100 * i) / items.length}%`}></div></div>
     <div class="card" key=${item.id}>
@@ -228,8 +228,8 @@ function Question({ item, onDone, onNext, last }) {
 
     ${!checked ? html`<button class="btn primary" onClick=${check}
         disabled=${item.kind === "single" ? picked === null : item.kind === "multi" ? !picked.length : false}>Check</button>`
-      : html`<div class=${"feedback " + (score === 1 ? "good" : "bad")}>${score === 1 ? "✔ Correct." : "✘ Not quite."}
+      : html`<div class=${"feedback " + (score === 1 ? "good" : "bad")}>${score === 1 ? "Correct." : "Not quite."}
           ${item.explain_md && html`<${Md} text=${item.explain_md} />`}</div>
-        <div class="row" style="margin-top:12px"><button class="btn primary" onClick=${onNext}>${last ? "See results" : "Next →"}</button></div>`}
+        <div class="row" style="margin-top:12px"><button class="btn primary" onClick=${onNext}>${last ? "See results" : "Next"}</button></div>`}
   </div>`;
 }
