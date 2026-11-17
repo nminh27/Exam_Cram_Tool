@@ -18,7 +18,7 @@ export function ExplainButton({ cid, conceptId, snippet, label }) {
       <div class="row"><button class="btn sm primary" onClick=${ask}>Explain it smaller</button>
         <button class="btn sm ghost" onClick=${() => setOpen(false)}>Cancel</button></div></div>`}
     ${state === "loading" && html`<${Spinner} label="Claude is breaking it down…" />`}
-    ${state && state.md && html`<${Md} text=${state.md} /><div class="row" style="margin-top:8px">
+    ${state && state.md && html`<${Md} text=${state.md} /><div class="row mt-2">
       <button class="btn sm" onClick=${() => setState(null)}>Ask again</button><button class="btn sm ghost" onClick=${() => { setOpen(false); setState(null); }}>Close</button></div>`}
     ${state && state.error && html`<div class="notice bad small">${state.error}</div><button class="btn sm" onClick=${() => setState(null)}>Back</button>`}
   </div>`;
@@ -28,7 +28,7 @@ function Section({ id, cls, title, cid, conceptId, snippet, children }) {
   return html`<div class=${"card section-card " + (cls || "")} id=${id}>
     <h3>${title}</h3>
     ${children}
-    ${snippet && html`<div style="margin-top:8px"><${ExplainButton} cid=${cid} conceptId=${conceptId} snippet=${`${title}:\n${snippet}`} /></div>`}
+    ${snippet && html`<div class="mt-2"><${ExplainButton} cid=${cid} conceptId=${conceptId} snippet=${`${title}:\n${snippet}`} /></div>`}
   </div>`;
 }
 
@@ -54,7 +54,7 @@ function Guided({ cid, concept, steps }) {
       onClick=${() => pick(k)}><span class="key">${"ABCDEF"[k]}</span><span><${Md} text=${o} inline /></span></button>`)}</div>
     ${picked !== null && !correct && html`<div class="feedback bad">Not quite. Think about the everyday situation again and try another option.</div>`}
     ${correct && html`<div class="feedback good"><${Md} text=${s.explanation_md} /></div>
-      <div class="row" style="margin-top:10px"><button class="btn primary sm" onClick=${() => {
+      <div class="row mt-3"><button class="btn primary sm" onClick=${() => {
         if (i + 1 >= steps.length) setDone(true); else { setI(i + 1); setPicked(null); setFirstTry(true); }
       }}>${i + 1 >= steps.length ? "Finish" : "Next step"}</button></div>`}
   </div>`;
@@ -83,8 +83,8 @@ export function ConceptPage({ cid, d, conceptId }) {
     <div class="small muted"><a href=${`#/c/${cid}/learn`}>Learn</a> / ${topic ? topic.name : ""}</div>
     <div class="row between" style="align-items:flex-start">
       <div style="flex:1;min-width:260px">
-        <h1 style="margin-top:6px">${c.name}</h1>
-        <p style="font-size:1.08rem;margin-top:-4px">${c.one_liner}</p>
+        <h1 class="mt-2">${c.name}</h1>
+        <p class="lede lg">${c.one_liner}</p>
         <div class="row">
           <span class=${"badge " + (c.importance === "core" ? "accent" : "")}>${c.importance}</span>
           ${c.exam_frequency > 0 && html`<span class="badge">needed in ${c.exam_frequency} past-paper question(s)</span>`}
@@ -95,7 +95,7 @@ export function ConceptPage({ cid, d, conceptId }) {
         <a class="btn primary" href=${`#/c/${cid}/quiz?concept=${c.id}`}>Quiz me (${nMcq})</a>
       </div>
     </div>
-    <div class="stack" style="margin:14px 0">
+    <div class="stack my-4">
       ${chips(c.prerequisites, "Builds on:")}
       ${chips(leadsTo.map((x) => x.id), "Unlocks:")}
       ${chips(c.related, "Often confused / used with:")}
@@ -119,10 +119,10 @@ export function ConceptPage({ cid, d, conceptId }) {
 
       <div class="card" id="s-steps">
         <h3>Atomic steps</h3>
-        <p class="muted small" style="margin-top:-6px">The idea in its smallest pieces. If a step still feels big, break it down further.</p>
+        <p class="muted small lede">The idea in its smallest pieces. If a step still feels big, break it down further.</p>
         <ol class="atomic">${det.atomic_steps.map((s, i) => html`<li>
           <${Md} text=${s.step_md} />${s.everyday_link && html`<div class="everyday">${s.everyday_link}</div>`}
-          <div style="margin-top:4px"><${ExplainButton} cid=${cid} conceptId=${c.id} snippet=${`Atomic step ${i + 1}: ${s.step_md}`} label="This step is still too big" /></div>
+          <div class="mt-1"><${ExplainButton} cid=${cid} conceptId=${c.id} snippet=${`Atomic step ${i + 1}: ${s.step_md}`} label="This step is still too big" /></div>
         </li>`)}</ol>
       </div>
 
@@ -133,7 +133,7 @@ export function ConceptPage({ cid, d, conceptId }) {
           <${Md} text=${f.meaning_md} />
           ${f.symbols.length > 0 && html`<table class="symtab"><tbody>${f.symbols.map((s) => html`<tr>
             <td><${Md} text=${`$${s.symbol}$`} inline /></td><td>${s.meaning}</td><td class="muted">${s.unit}</td></tr>`)}</tbody></table>`}
-          ${f.when_to_use_md && html`<div class="small" style="margin-top:6px"><b>When to use:</b> <${Md} text=${f.when_to_use_md} inline /></div>`}
+          ${f.when_to_use_md && html`<div class="small mt-2"><b>When to use:</b> <${Md} text=${f.when_to_use_md} inline /></div>`}
         </div>`)}</div>`}
 
       <${Section} cid=${cid} conceptId=${c.id} id="s-spot" cls="spot" title="Patterns to look for in exam questions">
@@ -142,7 +142,7 @@ export function ConceptPage({ cid, d, conceptId }) {
         </tbody></table></div>
       <//>
       <${Section} cid=${cid} conceptId=${c.id} id="s-traps" cls="trap" title="Common traps (where marks are lost)">
-        ${det.common_traps.map((t) => html`<div style="margin-bottom:10px"><div>✗ <${Md} text=${t.trap_md} inline /></div><div class="small">✓ <${Md} text=${t.fix_md} inline /></div></div>`)}
+        ${det.common_traps.map((t) => html`<div class="mb-3"><div>✗ <${Md} text=${t.trap_md} inline /></div><div class="small">✓ <${Md} text=${t.fix_md} inline /></div></div>`)}
       <//>
       <${Section} cid=${cid} conceptId=${c.id} id="s-tips" cls="tip" title="Tips & tricks">
         <ul class="md">${det.tips_tricks.map((t) => html`<li><${Md} text=${t.tip_md} inline /> ${t.source && t.source !== "general" && html`<span class="badge">${t.source}</span>`}</li>`)}</ul>
@@ -154,14 +154,14 @@ export function ConceptPage({ cid, d, conceptId }) {
         <ul class="md">${det.self_check.map((s) => html`<li><${Md} text=${s} inline /></li>`)}</ul></div>`}
 
       ${guided.length > 0 && html`<div class="card" id="s-guided"><h3>Discover it yourself</h3>
-        <p class="muted small" style="margin-top:-6px">A chain of small questions that leads you to the idea from everyday experience.</p>
+        <p class="muted small lede">A chain of small questions that leads you to the idea from everyday experience.</p>
         <${Guided} cid=${cid} concept=${c} steps=${guided} /></div>`}
     `}
 
-    <div class="row between" style="margin-top:20px">
+    <div class="row between mt-5">
       ${prev ? html`<a class="btn" href=${`#/c/${cid}/concept/${prev.id}`}>← ${prev.name}</a>` : html`<span></span>`}
       ${next && html`<a class="btn" href=${`#/c/${cid}/concept/${next.id}`}>${next.name} →</a>`}
     </div>
-    <div style="margin-top:10px"><${Progress} value=${idx >= 0 ? (idx + 1) / order.length : 0} /><div class="tiny muted">Concept ${idx + 1} of ${order.length} in the learning path</div></div>
+    <div class="mt-3"><${Progress} value=${idx >= 0 ? (idx + 1) / order.length : 0} /><div class="tiny muted">Concept ${idx + 1} of ${order.length} in the learning path</div></div>
   `;
 }

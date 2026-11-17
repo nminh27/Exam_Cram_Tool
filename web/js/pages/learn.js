@@ -21,7 +21,7 @@ export function LearnPage({ cid, d }) {
   return html`
     <h1>Learn concepts</h1>
     <p class="muted">In recommended order: prerequisites first. Each concept is broken down into why it exists, what it does, how it works, an everyday picture, and the exam cues that call for it.</p>
-    <div class="row" style="margin-bottom:14px">
+    <div class="row mb-4">
       <input type="text" style="max-width:300px" placeholder="Search concepts…" value=${q} onInput=${(e) => setQ(e.target.value)} />
       <select style="width:auto" value=${status} onChange=${(e) => setStatus(e.target.value)}>
         <option value="all">All</option>
@@ -33,7 +33,7 @@ export function LearnPage({ cid, d }) {
       if (!cs.length) return null;
       return html`<div class="card">
         <h3>${t.name}</h3>
-        ${t.summary && html`<p class="muted small" style="margin-top:-4px">${t.summary}</p>`}
+        ${t.summary && html`<p class="muted small lede">${t.summary}</p>`}
         <div class="tbl-wrap"><table class="tbl"><tbody>
           ${cs.map((c) => {
             const m = mastery.concepts[c.id];

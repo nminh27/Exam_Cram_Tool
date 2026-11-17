@@ -53,7 +53,7 @@ export function GettingStarted({ hideLink }) {
   const mode = useMode();
   return html`<section class="guide-steps" aria-label="How Cramtoolfinal works">
     <div class="row between" style="align-items:baseline">
-      <h2 style="margin:0">How it works</h2>
+      <h2 class="m-0">How it works</h2>
       ${!hideLink && html`<a class="small" href="#/guide">Full guide and FAQ →</a>`}
     </div>
     <ol class="steps-strip">
@@ -121,9 +121,9 @@ function faq(mode, skipCourseFile) {
 export function WhatToExpect({ skipCourseFile }) {
   const mode = useMode();
   return html`<section class="card" aria-label="What to expect">
-    <h2 style="margin-top:0">What to expect</h2>
+    <h2 class="mt-0">What to expect</h2>
     ${faq(mode, skipCourseFile).map(([q, a]) => html`<details class="faq"><summary>${q}</summary><${Md} text=${a} cls="small" /></details>`)}
-    <p class="tiny muted" style="margin-bottom:0">More help and the source code: <a href=${REPO_URL} target="_blank" rel="noopener">GitHub</a>.</p>
+    <p class="tiny muted mb-0">More help and the source code: <a href=${REPO_URL} target="_blank" rel="noopener">GitHub</a>.</p>
   </section>`;
 }
 

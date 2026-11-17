@@ -107,7 +107,7 @@ export function MapPage({ cid, d }) {
 
   return html`
     <div class="row between">
-      <div><h1 style="margin-bottom:4px">Knowledge map</h1>
+      <div><h1 class="mb-1">Knowledge map</h1>
         <div class="muted small">Arrows point from what you must know first to what it unlocks. Click a concept to see its neighbourhood.</div></div>
       <div class="row">
         <select style="width:auto" value=${layout} onChange=${(e) => setLayout(e.target.value)}>
@@ -116,7 +116,7 @@ export function MapPage({ cid, d }) {
         <a class="btn primary" href=${`#/c/${cid}/quiz?mode=map`}>Map drills</a>
       </div>
     </div>
-    <div class="legend" style="margin:10px 0">
+    <div class="legend my-3">
       ${Object.entries(STATUS_LABEL).map(([k, v]) => html`<span><span class="dot" style=${`background:var(--${k === "unseen" ? "unseen" : k === "weak" ? "bad" : k === "shaky" ? "warn" : "good"})`}></span>${v}</span>`)}
       <span>thick border = core concept · dashed = peripheral</span>
     </div>
@@ -131,7 +131,7 @@ export function MapPage({ cid, d }) {
         ${c.prerequisites.length > 0 && html`<div class="small"><b>Needs first:</b> ${c.prerequisites.map((p) => byId[p] && html`<span class="chip">${byId[p].name}</span>`)}</div>`}
         ${(() => { const u = kn.concepts.filter((x) => x.prerequisites.includes(c.id)); return u.length > 0 && html`<div class="small"><b>Unlocks:</b> ${u.map((x) => html`<span class="chip">${x.name}</span>`)}</div>`; })()}
         ${(() => { const ps = kn.patterns.filter((p) => p.concept_ids.includes(c.id)); return ps.length > 0 && html`<div class="small"><b>Used in exam patterns:</b> ${ps.map((p) => html`<a class="chip" href=${`#/c/${cid}/pattern/${p.id}`}>${p.name}</a>`)}</div>`; })()}
-        <div class="row" style="margin-top:10px">
+        <div class="row mt-3">
           <a class="btn sm primary" href=${`#/c/${cid}/concept/${c.id}`}>Study</a>
           <a class="btn sm" href=${`#/c/${cid}/quiz?concept=${c.id}`}>Quiz</a>
         </div>

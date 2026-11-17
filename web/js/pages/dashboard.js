@@ -54,7 +54,7 @@ export function DashboardPage({ cid, d }) {
     </div>
 
     <div class="grid two">
-      <div class="card row" style="gap:22px;align-items:center">
+      <div class="card row gap-5">
         <${Ring} value=${mastery.overall} label="exam readiness" />
         <div class="stack small" style="flex:1">
           <div>Exam patterns <b class="right">${pct(mastery.patternReadiness)}</b><${Progress} value=${mastery.patternReadiness} /></div>
@@ -65,7 +65,7 @@ export function DashboardPage({ cid, d }) {
       <div class="card">
         <h3>Concept status</h3>
         <div class="grid four">
-          ${Object.entries(counts).map(([k, v]) => html`<div class="stat" style="padding-left:0">
+          ${Object.entries(counts).map(([k, v]) => html`<div class="stat bare">
             <div class="num">${v}</div><div class="lbl"><span class="dot" style=${`background:${masteryColor(k)}`}></span>${STATUS_LABEL[k]}</div></div>`)}
         </div>
       </div>

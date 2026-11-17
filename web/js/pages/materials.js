@@ -137,7 +137,7 @@ export function MaterialsPage({ cid, d }) {
       <p class="muted small">Reads each file once (cached), builds the knowledge map, writes the atomic breakdown + MCQs for every concept,
         then builds a solving kit and step-by-step problems for every exam pattern, and independently re-solves each generated problem to catch errors.
         Re-running only processes new or changed material unless you tick the boxes below.</p>
-      <div class="row" style="gap:18px">
+      <div class="row gap-4">
         <label class="check small">Variant problems per pattern
           <input type="number" min="0" max="8" style="width:70px" value=${opts.variants}
             onInput=${(e) => setOpts({ ...opts, variants: +e.target.value })} /></label>
@@ -145,7 +145,7 @@ export function MaterialsPage({ cid, d }) {
         <label class="check small"><input type="checkbox" checked=${opts.force_digest} onChange=${(e) => setOpts({ ...opts, force_digest: e.target.checked })} />Re-read all files</label>
         <label class="check small"><input type="checkbox" checked=${opts.force_deep} onChange=${(e) => setOpts({ ...opts, force_deep: e.target.checked })} />Rebuild all breakdowns</label>
       </div>
-      <div class="row" style="margin-top:12px">
+      <div class="row mt-3">
         <button class="btn primary" onClick=${analyze} disabled=${running || !mats.length || !keyOk}>${running ? "Analyzing…" : d.kn.concepts.length ? "Update analysis" : "Analyze materials"}</button>
         ${d.course.analyzed_at && html`<span class="muted small">last full analysis ${timeAgo(d.course.analyzed_at)}</span>`}
       </div>
@@ -171,7 +171,7 @@ function ClaudeCodeCard({ course, hasPaper }) {
       <li>Add your files: upload them above (mark past papers as <b>Past paper</b>),
         or drop them into <span class="kbd">inbox/${course.name}/</span> in the project folder.</li>
       <li>In Claude Code, say:
-        <div class="row" style="margin:6px 0"><span class="kbd" style="padding:6px 10px">${say}</span>
+        <div class="row my-2"><span class="kbd lg">${say}</span>
           <button class="btn sm" onClick=${copy}>${copied ? "Copied ✓" : "Copy"}</button></div></li>
       <li>Claude Code reads every file, writes the concept breakdowns, questions and step-by-step exam problems,
         checks them, and loads them into this course. Refresh this page when it says it's done.</li>
@@ -186,12 +186,12 @@ function JobPanel({ job }) {
   const p = job.progress || { done: 0, total: 0 };
   const u = job.usage || {};
   const statusBadge = { running: "accent", completed: "good", completed_with_errors: "warn", failed: "bad", interrupted: "warn" }[job.status] || "";
-  return html`<div style="margin-top:16px">
+  return html`<div class="mt-4">
     <div class="row between small">
       <div><span class=${"badge " + statusBadge}>${job.status.replace(/_/g, " ")}</span> <b>${job.stage}</b></div>
       <div class="muted">${u.calls || 0} calls · ${((u.input_tokens || 0) + (u.cache_read_tokens || 0)).toLocaleString()} in / ${(u.output_tokens || 0).toLocaleString()} out tokens${u.approx_cost_usd !== null && u.approx_cost_usd !== undefined ? ` · ≈ $${u.approx_cost_usd.toFixed(2)}` : ""}</div>
     </div>
-    ${p.total > 0 && html`<div style="margin:8px 0"><${Progress} value=${p.done / p.total} /><div class="tiny muted">${p.done} / ${p.total}</div></div>`}
+    ${p.total > 0 && html`<div class="my-2"><${Progress} value=${p.done / p.total} /><div class="tiny muted">${p.done} / ${p.total}</div></div>`}
     ${job.error && html`<div class="notice bad small">${job.error}</div>`}
     <div class="log">${(job.log || []).slice(-40).map((l) => html`<div class=${l.level}>${l.msg}</div>`)}</div>
   </div>`;
@@ -205,11 +205,11 @@ function DigestModal({ digest, onClose }) {
       <p class="muted small">${KIND_LABEL[m.kind]} · detected as ${d.kind_detected} ${d.label ? "· " + d.label : ""}</p>
       <p class="small">Check that past-paper questions were transcribed exactly. If something is wrong, tick "Re-read all files" and analyze again.</p>
       <${Md} text=${d.summary} />
-      ${d.questions && d.questions.length > 0 && html`<h3 style="margin-top:16px">Questions (${d.questions.length})</h3>
+      ${d.questions && d.questions.length > 0 && html`<h3 class="mt-4">Questions (${d.questions.length})</h3>
         ${d.questions.map((q) => html`<details><summary>Q${q.number} <span class="muted small">[${q.marks} marks · ${q.question_type}]</span></summary>
-          <div class="paper" style="margin:8px 0"><${Md} text=${q.text_md} /></div>
+          <div class="paper my-2"><${Md} text=${q.text_md} /></div>
           ${q.solution_md && html`<div class="card flat"><b>Solution</b><${Md} text=${q.solution_md} /></div>`}</details>`)}`}
-      ${d.sections && d.sections.length > 0 && html`<h3 style="margin-top:16px">Sections (${d.sections.length})</h3>
+      ${d.sections && d.sections.length > 0 && html`<h3 class="mt-4">Sections (${d.sections.length})</h3>
         ${d.sections.map((s) => html`<details><summary>${s.heading} <span class="muted small">p. ${s.pages}</span></summary><${Md} text=${s.content_md} /></details>`)}`}
     </div></div>`;
 }
