@@ -113,7 +113,7 @@ export function MapPage({ cid, d }) {
         <select style="width:auto" value=${layout} onChange=${(e) => setLayout(e.target.value)}>
           <option value="flow">Learning flow</option><option value="topics">Grouped by topic</option></select>
         <label class="check small"><input type="checkbox" checked=${showRelated} onChange=${(e) => setShowRelated(e.target.checked)} />Show "related"</label>
-        <a class="btn primary" href=${`#/c/${cid}/quiz?mode=map`}>🧩 Map drills</a>
+        <a class="btn primary" href=${`#/c/${cid}/quiz?mode=map`}>Map drills</a>
       </div>
     </div>
     <div class="legend" style="margin:10px 0">

@@ -109,10 +109,10 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
           <button class="btn sm" onClick=${() => onFinish("correct", 0.75, val)}>Had all the points</button>
           <button class="btn sm" onClick=${() => onFinish("revealed", 0.4, val)}>Partly</button>
           <button class="btn sm" onClick=${() => onFinish("revealed", 0, val)}>Missed it</button></div></div>`}
-      ${state.hinted && step.hint_md && html`<div class="feedback info">💡 <${Md} text=${step.hint_md} inline /></div>`}
+      ${state.hinted && step.hint_md && html`<div class="feedback info"><${Md} text=${step.hint_md} inline /></div>`}
 
       <div class="row" style="margin-top:10px">
-        ${step.hint_md && !state.hinted && html`<button class="btn sm ghost" onClick=${() => onChange({ ...state, hinted: true })}>💡 Hint</button>`}
+        ${step.hint_md && !state.hinted && html`<button class="btn sm ghost" onClick=${() => onChange({ ...state, hinted: true })}>Hint</button>`}
         <button class="btn sm ghost" onClick=${() => onFinish("revealed", 0, null)}>Show answer</button>
         ${step.concept_ids[0] && html`<${ExplainButton} cid=${cid} conceptId=${step.concept_ids[0]} label="I don't get this step"
           snippet=${`Exam step: ${step.prompt_md}\nCorrect answer: ${answerText(step)}\nWorking: ${step.explanation_md}`} />`}
@@ -165,7 +165,7 @@ export function ProblemPage({ cid, d, problemId }) {
     <div class="small muted"><a href=${`#/c/${cid}/patterns`}>Exam patterns</a> / ${pattern && html`<a href=${`#/c/${cid}/pattern/${pattern.id}`}>${pattern.name}</a>`}</div>
     <div class="row between"><h1 style="margin-top:6px">${p.title}</h1>
       <div class="row">${p.source === "past_paper" ? html`<span class="badge accent">past paper · ${p.source_ref}</span>` : html`<span class="badge">variant · ${p.source_ref}</span>`}</div></div>
-    ${p.verified === false && html`<div class="notice warn"><b>⚠ An independent re-solve disagreed with this problem's solution.</b> Treat the steps with care.
+    ${p.verified === false && html`<div class="notice warn"><b>An independent re-solve disagreed with this problem's solution.</b> Treat the steps with care.
       ${p.verify_note && html`<details><summary class="small">Details</summary><${Md} text=${p.verify_note} /></details>`}</div>`}
 
     <div class="solver">
@@ -195,7 +195,7 @@ export function ProblemPage({ cid, d, problemId }) {
       <div style="font-size:2.4rem;font-weight:800">${pct(totalScore)}</div>
       <div class="muted">${flat.filter(({ s }) => st(s.id).score === 1).length} of ${flat.length} steps right first time</div>
       <div class="row" style="justify-content:center;margin-top:14px">
-        ${nextProblem && html`<button class="btn primary" onClick=${() => go(`/c/${cid}/problem/${nextProblem.id}`)}>Next problem like this →</button>`}
+        ${nextProblem && html`<button class="btn primary" onClick=${() => go(`/c/${cid}/problem/${nextProblem.id}`)}>Next problem like this</button>`}
         <button class="btn" onClick=${() => go(`/c/${cid}/problem/${p.id}?n=${Date.now()}`)}>Retry this one</button>
         <a class="btn" href=${`#/c/${cid}/pattern/${p.pattern_id}`}>Back to pattern</a>
       </div>

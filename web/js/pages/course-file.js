@@ -54,24 +54,24 @@ export function CourseFilePage({ cid, d }) {
 
     <div class="grid two">
       <div class="card">
-        <h3>📦 This course</h3>
+        <h3>This course</h3>
         <p class="small muted">${kn.concepts.length} concepts · ${kn.patterns.length} exam patterns · ${kn.mcqs.length} MCQs · ${kn.problems.length} problems
           ${course.created_at ? html`<br />added ${timeAgo(course.created_at)}` : ""}</p>
         <div class="stack">
-          <div class="row"><button class="btn" onClick=${() => exportPack(cid, course.name)}>⬇ Download knowledge pack</button></div>
-          <div class="row"><label class="btn">⟳ Update with a newer pack<input type="file" accept=".json,application/json" style="display:none" onChange=${replacePack} /></label></div>
+          <div class="row"><button class="btn" onClick=${() => exportPack(cid, course.name)}>Download knowledge pack</button></div>
+          <div class="row"><label class="btn">Update with a newer pack<input type="file" accept=".json,application/json" style="display:none" onChange=${replacePack} /></label></div>
           <p class="tiny muted">Rebuilt or extended the course on your computer? Export it there (Materials → Export knowledge pack) and load it here.
             Your progress is kept as long as the concept and question ids didn't change.</p>
         </div>
       </div>
       <div class="card">
-        <h3>💾 Progress backup</h3>
+        <h3>Progress backup</h3>
         <p class="small muted">${progress.events.length} answers recorded. Clearing this site's data in your browser erases them, so keep a backup,
           or move your progress to another device with it.</p>
         <div class="row">
           <button class="btn" onClick=${() => downloadJson({ format: "finalforge-progress", course: course.name, events: progress.events },
-            `${fileSlug(course.name)}.progress.json`)}>⬇ Download backup</button>
-          <label class="btn">⟲ Restore backup<input type="file" accept=".json,application/json" style="display:none" onChange=${restoreProgress} /></label>
+            `${fileSlug(course.name)}.progress.json`)}>Download backup</button>
+          <label class="btn">Restore backup<input type="file" accept=".json,application/json" style="display:none" onChange=${restoreProgress} /></label>
         </div>
         ${info && html`<p class="tiny muted" style="margin-top:10px">
           ${info.indexedDb ? "" : html`<b>Warning:</b> this browser blocks site storage (private window?), so everything is lost when the tab closes. `}

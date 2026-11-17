@@ -36,7 +36,7 @@ export function PracticePage({ cid, d }) {
     <h1>Practice</h1>
     <div class="grid two">
       <div class="card">
-        <h3>🧠 Concept quiz (MCQ)</h3>
+        <h3>Concept quiz (MCQ)</h3>
         <p class="muted small">Tests understanding and intuition, not memory. Every option comes with an explanation of why it's right or wrong.</p>
         <div class="stack">
           <div><label class="field">Topic</label>
@@ -59,7 +59,7 @@ export function PracticePage({ cid, d }) {
 
       <div class="stack">
         <div class="card">
-          <h3>📝 Exam problems, step by step</h3>
+          <h3>Exam problems, step by step</h3>
           <p class="muted small">The exact form of your past papers. You fill in one small box per step: what's given → what's asked → which formula → rearrange → substitute → compute → final answer.</p>
           <div class="row">
             <button class="btn primary" onClick=${randomProblem} disabled=${!kn.problems.length}>Random exam problem</button>
@@ -68,11 +68,11 @@ export function PracticePage({ cid, d }) {
           <p class="tiny muted">${kn.problems.length} problems · ${untried.length} not tried yet</p>
         </div>
         <div class="card">
-          <h3>🧩 Knowledge-map drills</h3>
+          <h3>Knowledge-map drills</h3>
           <p class="muted small">Big-picture questions built from your concept graph: what must come first, what a concept unlocks, which concepts a question type needs, and putting solution recipes in order.</p>
           <a class="btn" href=${`#/c/${cid}/quiz?mode=map`}>Start map drills</a>
         </div>
-        ${wrongCount > 0 && html`<div class="card"><h3>🔁 Review mistakes</h3>
+        ${wrongCount > 0 && html`<div class="card"><h3>Review mistakes</h3>
           <p class="muted small">${wrongCount} MCQ(s) you got wrong last time.</p>
           <a class="btn" href=${`#/c/${cid}/quiz?mode=mistakes&n=50`}>Review them</a></div>`}
       </div>

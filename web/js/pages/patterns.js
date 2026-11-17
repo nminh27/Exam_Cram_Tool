@@ -21,7 +21,7 @@ export function PatternsPage({ cid, d }) {
         const r = mastery.patterns[p.id];
         const nProb = kn.problems.filter((x) => x.pattern_id === p.id).length;
         return html`<a class="card course-card" style="display:block;color:inherit" href=${`#/c/${cid}/pattern/${p.id}`}>
-          <div class="row between"><h3 style="margin:0">🎯 ${p.name}</h3>
+          <div class="row between"><h3 style="margin:0">${p.name}</h3>
             ${p.calc ? html`<span class="badge accent">calculation</span>` : html`<span class="badge">theory</span>`}</div>
           <p class="small muted">${p.description}</p>
           <div class="row small">
@@ -67,8 +67,8 @@ export function PatternPage({ cid, d, patternId }) {
 
   return html`
     <div class="small muted"><a href=${`#/c/${cid}/patterns`}>Exam patterns</a></div>
-    <div class="row between"><h1 style="margin-top:6px">🎯 ${p.name}</h1>
-      ${probs.length > 0 && html`<a class="btn primary" href=${`#/c/${cid}/problem/${probs.find((x) => problemStats(d, x.id).attempts === 0)?.id || probs[0].id}`}>Start practising →</a>`}</div>
+    <div class="row between"><h1 style="margin-top:6px">${p.name}</h1>
+      ${probs.length > 0 && html`<a class="btn primary" href=${`#/c/${cid}/problem/${probs.find((x) => problemStats(d, x.id).attempts === 0)?.id || probs[0].id}`}>Start practising</a>`}</div>
     <p>${p.description}</p>
     <div class="row small" style="margin-bottom:14px">
       <span class="badge">${p.frequency} past-paper question(s)</span>
@@ -77,23 +77,23 @@ export function PatternPage({ cid, d, patternId }) {
     </div>
     ${!g ? html`<div class="notice warn">The solving kit for this pattern hasn't been built yet. Run (or resume) analysis from <a href=${`#/c/${cid}/materials`}>Materials</a>.</div>` : html`
       <div class="grid two">
-        <div class="card section-card spot"><h3>🔎 Recognise it in 10 seconds</h3>
+        <div class="card section-card spot"><h3>Recognise it in 10 seconds</h3>
           <ul class="md">${g.recognition_cues.map((x) => html`<li><${Md} text=${x} inline /></li>`)}</ul></div>
-        <div class="card section-card tip"><h3>🏆 What the examiner wants</h3><${Md} text=${g.examiner_wants_md} /></div>
+        <div class="card section-card tip"><h3>What the examiner wants</h3><${Md} text=${g.examiner_wants_md} /></div>
       </div>
-      <div class="card"><h3>🪜 The recipe</h3>
+      <div class="card"><h3>The recipe</h3>
         <ol class="atomic">${g.recipe.map((s) => html`<li><${Md} text=${s.step_md} />
           ${s.why_md && html`<div class="small muted">Why: <${Md} text=${s.why_md} inline /></div>`}
           ${s.everyday_link && html`<div class="everyday">${s.everyday_link}</div>`}</li>`)}</ol>
-        <a class="btn sm" href=${`#/c/${cid}/quiz?mode=map&pattern=${p.id}`}>🧩 Drill the recipe order</a>
+        <a class="btn sm" href=${`#/c/${cid}/quiz?mode=map&pattern=${p.id}`}>Drill the recipe order</a>
       </div>
       <div class="grid two">
-        <div class="card section-card tip"><h3>💡 Tricks</h3><ul class="md">${g.tricks.map((x) => html`<li><${Md} text=${x} inline /></li>`)}</ul></div>
-        <div class="card section-card trap"><h3>⚠ Traps</h3><ul class="md">${g.traps.map((x) => html`<li><${Md} text=${x} inline /></li>`)}</ul></div>
+        <div class="card section-card tip"><h3>Tricks</h3><ul class="md">${g.tricks.map((x) => html`<li><${Md} text=${x} inline /></li>`)}</ul></div>
+        <div class="card section-card trap"><h3>Traps</h3><ul class="md">${g.traps.map((x) => html`<li><${Md} text=${x} inline /></li>`)}</ul></div>
       </div>`}
 
     <div class="card">
-      <div class="row between"><h3 style="margin:0">🏋 Practice problems (${probs.length})</h3>
+      <div class="row between"><h3 style="margin:0">Practice problems (${probs.length})</h3>
         ${hasKey ? html`<button class="btn sm" onClick=${more} disabled=${running}>${running ? "Generating…" : "+ 3 more like these"}</button>`
           : html`<span class="tiny muted" title="No AI provider: ask Claude Code instead">Want more? Ask Claude Code: "make 3 more problems for ${p.name}"</span>`}</div>
       ${err && html`<div class="notice bad small" style="margin-top:8px">${err}</div>`}
@@ -104,7 +104,7 @@ export function PatternPage({ cid, d, patternId }) {
           return html`<tr>
             <td>${x.source === "past_paper" ? html`<span class="badge accent">past paper</span>` : html`<span class="badge">variant</span>`}</td>
             <td><b>${x.title}</b><div class="tiny muted">${x.source_ref}</div></td>
-            <td>${x.verified === false ? html`<span class="badge warn" title="Independent re-solve disagreed">⚠ check</span>` : x.verified ? html`<span class="badge good">✓ verified</span>` : ""}</td>
+            <td>${x.verified === false ? html`<span class="badge warn" title="Independent re-solve disagreed">Check</span>` : x.verified ? html`<span class="badge good">✓ verified</span>` : ""}</td>
             <td class="small muted">${st.attempts ? `best ${pct(st.best)} · ${st.attempts}×` : "not tried"}</td>
             <td style="width:1%"><a class="btn sm" href=${`#/c/${cid}/problem/${x.id}`}>${st.attempts ? "Retry" : "Solve"}</a></td>
           </tr>`;
@@ -112,7 +112,7 @@ export function PatternPage({ cid, d, patternId }) {
       </tbody></table></div>
     </div>
 
-    <div class="card"><h3>📜 Source questions (verbatim)</h3>
+    <div class="card"><h3>Source questions (verbatim)</h3>
       ${p.source_questions.length === 0 && html`<p class="muted small">No past-paper questions linked.</p>`}
       ${p.source_questions.map((q) => html`<details><summary>${q.material_label || q.material_id} — Q${q.number} <span class="muted small">${q.marks ? `[${q.marks} marks]` : ""}</span></summary>
         <div class="paper" style="margin:8px 0"><${Md} text=${q.text_md} /></div>
