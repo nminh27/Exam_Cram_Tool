@@ -68,16 +68,16 @@ export function MapPage({ cid, d }) {
         { selector: "node", style: {
           shape: "round-rectangle", label: "data(label)", "text-wrap": "wrap", "text-max-width": "130px",
           "font-size": "12px", "font-weight": "data(weight)", color: cssVar("--text"), "text-valign": "center", "text-halign": "center",
-          "background-color": cssVar("--panel"), "border-width": 3, "border-color": "data(color)",
+          "background-color": cssVar("--panel-solid"), "border-width": 3, "border-color": "data(color)",
           width: "label", height: "label", padding: "10px" } },
         { selector: "node.core", style: { "border-width": 4 } },
         { selector: "node.peripheral", style: { "border-style": "dashed" } },
         { selector: "node.topic", style: {
-          shape: "round-rectangle", "background-color": cssVar("--panel-2"), "background-opacity": 0.6, "border-width": 1,
-          "border-color": cssVar("--border"), label: "data(label)", "text-valign": "top", "text-halign": "center",
+          shape: "round-rectangle", "background-color": cssVar("--panel-solid"), "background-opacity": 0.6, "border-width": 1,
+          "border-color": cssVar("--unseen"), label: "data(label)", "text-valign": "top", "text-halign": "center",
           "font-size": "14px", "font-weight": 700, color: cssVar("--muted"), padding: "18px" } },
         { selector: "edge.prereq", style: {
-          width: 2, "line-color": cssVar("--border"), "target-arrow-color": cssVar("--muted"),
+          width: 2, "line-color": cssVar("--unseen"), "target-arrow-color": cssVar("--muted"),
           "target-arrow-shape": "triangle", "curve-style": "bezier", "arrow-scale": 1.1 } },
         { selector: "edge.related", style: { width: 1.5, "line-style": "dashed", "line-color": cssVar("--accent"), "curve-style": "bezier", opacity: 0.6 } },
         { selector: ".faded", style: { opacity: 0.15 } },
