@@ -1,6 +1,8 @@
-// Website mode replacement for the Materials page: the course lives in this browser as an imported
-// knowledge pack, so this page exports it, swaps in a newer pack, and backs up / restores progress.
-import { html, useState, useEffect, api, loadCourse, exportPack, downloadJson, fileSlug, timeAgo, REPO_URL } from "../lib.js";
+// Website mode replacement for the Materials page: the course lives in this browser as a course file
+// (knowledge pack) written by the student's own AI. This page adds the next part from the AI, saves the
+// course file, swaps in a newer one, and backs up / restores progress.
+import { html, useState, useEffect, api, loadCourse, exportPack, downloadJson, fileSlug, timeAgo } from "../lib.js";
+import { AiBuilder } from "./ai-build.js";
 
 export function CourseFilePage({ cid, d }) {
   const { course, kn, progress } = d;
@@ -46,11 +48,13 @@ export function CourseFilePage({ cid, d }) {
   return html`
     <h1>Course file</h1>
     ${msg && html`<div class=${"notice " + (msg.ok ? "good" : "bad")}>${msg.text}</div>`}
-    <div class="notice accent small">
-      This is the Cramtoolfinal <b>website</b>. The course and your progress are saved in <b>this browser</b> only: not on GitHub,
-      and not on your other devices. Building or changing a course happens in the app on your computer (or with Claude Code);
-      then you bring the new pack here.
-    </div>
+    <p class="lede muted">The course and your progress are saved in <b>this browser</b> only. Nothing is uploaded, and other devices
+      don't see it until you open the course file there.</p>
+
+    <section class="card">
+      <div class="sec-head"><h2>Add more with your AI</h2><span class="muted small">same chat you built it in</span></div>
+      <${AiBuilder} mode="add" cid=${cid} onAdded=${() => loadCourse(cid, true)} />
+    </section>
 
     <div class="grid two">
       <div class="card">
@@ -58,10 +62,10 @@ export function CourseFilePage({ cid, d }) {
         <p class="small muted">${kn.concepts.length} concepts · ${kn.patterns.length} exam patterns · ${kn.mcqs.length} MCQs · ${kn.problems.length} problems
           ${course.created_at ? html`<br />added ${timeAgo(course.created_at)}` : ""}</p>
         <div class="stack">
-          <div class="row"><button class="btn" onClick=${() => exportPack(cid, course.name)}>Download knowledge pack</button></div>
-          <div class="row"><label class="btn">Update with a newer pack<input type="file" accept=".json,application/json" style="display:none" onChange=${replacePack} /></label></div>
-          <p class="tiny muted">Rebuilt or extended the course on your computer? Export it there (Materials → Export knowledge pack) and load it here.
-            Your progress is kept as long as the concept and question ids didn't change.</p>
+          <div class="row"><button class="btn" onClick=${() => exportPack(cid, course.name)}>Download course file</button></div>
+          <div class="row"><label class="btn">Replace with a newer file<input type="file" accept=".json,application/json" style="display:none" onChange=${replacePack} /></label></div>
+          <p class="tiny muted">Open the downloaded file on another device with <b>Open course file</b> on the home page, or send it to a classmate.
+            Replacing keeps your progress as long as the concept and question ids stay the same.</p>
         </div>
       </div>
       <div class="card">
@@ -80,10 +84,7 @@ export function CourseFilePage({ cid, d }) {
       </div>
     </div>
 
-    <div class="card flat">
-      <h3>Want to add files or use AI?</h3>
-      <p class="small">Run the Cramtoolfinal app on your computer (see the <a href=${REPO_URL} target="_blank" rel="noopener">GitHub page</a>), or ask Claude Code to build the course.
-        Then export the pack and load it here.</p>
-      <button class="btn sm danger" onClick=${remove}>Remove this course from this browser</button>
+    <div class="row">
+      <button class="btn sm ghost danger" onClick=${remove}>Remove this course from this browser</button>
     </div>`;
 }

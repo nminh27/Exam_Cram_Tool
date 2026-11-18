@@ -1,4 +1,4 @@
-import { html, useState, useMemo, api, Md, recordEvents, shuffle, pct, loadCourse, useHasKey } from "../lib.js";
+import { html, useState, useMemo, api, Md, recordEvents, shuffle, pct, loadCourse, useHasKey, IS_STATIC } from "../lib.js";
 
 // ------------------------------------------------------------------ building the question list
 
@@ -141,7 +141,9 @@ export function QuizPage({ cid, d, query }) {
     return html`<h1>${isMap ? "Map drills" : "Quiz"}</h1>
       <div class="notice">${query.get("mode") === "mistakes" ? "No mistakes to review. Nice." : "No questions match these filters yet."}</div>
       ${concept && hasKey && html`<button class="btn" onClick=${genMore} disabled=${busyMore}>${busyMore ? "Generating…" : "Generate questions for this concept"}</button>`}
-      ${concept && !hasKey && html`<p class="muted small">Ask Claude Code: "write 8 MCQs for ${cName}".</p>`}`;
+      ${concept && !hasKey && html`<p class="muted small">${IS_STATIC
+        ? `Ask your AI: "write 8 MCQs for ${cName} in the same JSON format", then add the reply under Course file.`
+        : `Ask Claude Code: "write 8 MCQs for ${cName}".`}</p>`}`;
   }
 
   if (i >= items.length) {

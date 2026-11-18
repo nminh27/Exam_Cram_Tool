@@ -1,5 +1,6 @@
-import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC, Md } from "../lib.js";
-import { GettingStarted, WhatToExpect, COURSE_FILE_TITLE, COURSE_FILE_MD } from "./guide.js";
+import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC } from "../lib.js";
+import { GettingStarted, WhatToExpect } from "./guide.js";
+import { AiBuilder } from "./ai-build.js";
 
 function greeting(now) {
   const h = now.getHours();
@@ -50,7 +51,12 @@ export function HomePage() {
   const latest = sorted[0];
   const hasCourses = sorted.length > 0;
 
-  const importBtn = (primary) => html`<label class=${"btn" + (primary ? " primary" : "")}>Import pack (.json)<input type="file" accept=".json,application/json" style="display:none" onChange=${importPack} /></label>`;
+  const aiCard = html`<section class="card" id="build">
+    <div class="sec-head"><h2>${hasCourses ? "Add another course with your AI" : "Make your course with your own AI"}</h2>
+      <span class="muted small">Free with any AI chat</span></div>
+    <${AiBuilder} mode="new" />
+  </section>`;
+  const importBtn = (primary) => html`<label class=${"btn" + (primary ? " primary" : "")}>${IS_STATIC ? "Open course file" : "Import pack (.json)"}<input type="file" accept=".json,.txt,application/json,text/plain" style="display:none" onChange=${importPack} /></label>`;
 
   return html`
     <header class="dash-head">
@@ -63,8 +69,9 @@ export function HomePage() {
         : html`<button class="btn primary lg" onClick=${demo} disabled=${busy}>Open demo course</button>`}
     </header>
     <p class="lede lg muted home-lede">
-      ${IS_STATIC ? "From your lecture notes, slides and past papers," : "Upload your lecture notes, slides and past papers."} Cramtoolfinal breaks every concept
-      into small everyday steps, finds every exam question pattern, and drills you in the exact form of your past papers.
+      ${IS_STATIC
+        ? "Give your lecture notes, slides and past papers to your own AI (ChatGPT, Claude or Gemini) with our prompt, and paste its reply here. You get every concept in small everyday steps, every exam question pattern, and practice in the exact form of your past papers."
+        : "Upload your lecture notes, slides and past papers. Cramtoolfinal breaks every concept into small everyday steps, finds every exam question pattern, and drills you in the exact form of your past papers."}
     </p>
 
     ${err && html`<div class="notice bad">${err}</div>`}
@@ -73,11 +80,13 @@ export function HomePage() {
       (details on the course's Materials page). Or add Claude, OpenAI, Gemini or another provider in <a href="#/settings">Settings</a> to let the app analyze files by itself.
     </div>`}
 
+    ${IS_STATIC && !hasCourses && courses !== null && aiCard}
+
     <div class="dash-cols">
       <section class="card">
         <div class="sec-head"><h2>Your courses</h2>${hasCourses && html`<span class="muted small">${sorted.length}</span>`}</div>
         ${courses === null ? html`<${Spinner} />`
-          : !hasCourses ? html`<p class="muted mb-0">No courses yet. ${IS_STATIC ? "Import a course file, or open the demo course to look around." : "Create one, or open the demo course to look around."}</p>`
+          : !hasCourses ? html`<p class="muted mb-0">No courses yet. ${IS_STATIC ? "Build one with your AI, or open the demo course to look around." : "Create one, or open the demo course to look around."}</p>`
           : html`<ul class="course-list">${sorted.map((c) => html`<li>
               <a class="course-row" href=${`#/c/${c.id}`}>
                 <div class="plan-body">
@@ -93,11 +102,10 @@ export function HomePage() {
       </section>
 
       ${IS_STATIC ? html`<section class="card">
-        <div class="sec-head"><h2>Load a course</h2></div>
-        <p class="muted small">Pick a <span class="kbd">.cramtoolfinal.json</span> knowledge pack, or try the sample course.</p>
-        <div class="row">${importBtn(true)}<button class="btn" onClick=${demo} disabled=${busy}>Open demo course</button></div>
-        <details class="faq mt-4"><summary>${COURSE_FILE_TITLE}</summary><${Md} text=${COURSE_FILE_MD} cls="small muted" /></details>
-        <p class="tiny muted mb-0 mt-3">This website saves courses and progress in this browser only. Nothing is uploaded to GitHub.</p>
+        <div class="sec-head"><h2>Already have a course file?</h2></div>
+        <p class="muted small">Load a <span class="kbd">.json</span> course file that you or a classmate saved, or try the sample course.</p>
+        <div class="row">${importBtn(false)}<button class="btn" onClick=${demo} disabled=${busy}>Open demo course</button></div>
+        <p class="tiny muted mb-0 mt-4">Courses and progress are saved in this browser only. Nothing is uploaded anywhere.</p>
       </section>` : html`<form class="card" onSubmit=${create}>
         <div class="sec-head"><h2>New course</h2></div>
         <div class="stack">
@@ -114,6 +122,8 @@ export function HomePage() {
         </div>
       </form>`}
     </div>
+
+    ${IS_STATIC && (hasCourses || courses === null) && aiCard}
 
     <${GettingStarted} />
 

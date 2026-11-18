@@ -2,14 +2,24 @@
 
 Turn your course materials and past papers into an exam-ready training ground.
 
-Upload lecture notes, slides, textbook chapters and **past papers** (plus solutions if you have them).
-Cramtoolfinal uses Claude to:
+**Use it in your browser: https://nminh27.github.io/Exam_Cram_Tool/**. Nothing to install and no API key.
+You build each course with **your own AI chat** (ChatGPT, Claude, Gemini…):
 
-1. **Read everything faithfully.** PDFs are read as page images, so formulas, tables and diagrams survive. Past-paper questions are transcribed verbatim; you can check each transcription in *Materials → view what was read*.
+1. On the website, press **Copy prompt**.
+2. Open your AI chat, attach your lecture notes, slides and every past paper (with solutions if you have them), paste the prompt and send.
+3. Paste the AI's reply back into the website and press **Create course**. Big courses come in parts: ask the AI to continue and
+   add each reply on the course's **Course file** page.
+
+The website fixes small mistakes in the reply on its own, keeps everything in your browser, and never uploads your files.
+(The [computer app](#optional-the-computer-app) can do the same with an API key, or with Claude Code.)
+
+From your materials, the course contains:
+
+1. **Everything read faithfully.** Past-paper questions are copied word for word into the exam pattern they belong to. (In the computer app, PDFs are read as page images and you can check each transcription in *Materials → view what was read*.)
 2. **Build the knowledge map.** Topics → concepts → direct prerequisites, a recommended learning path, and every past-paper question grouped into **exam patterns** (the archetypes examiners reuse). A coverage check makes sure every past-paper question belongs to a pattern.
-3. **Break every concept down to atoms.** For each concept: *why it exists, what it does, how it works, an everyday picture a child would get, how to visualize it (with a diagram), the smallest possible steps, every formula with each symbol explained, the exam cues that signal it, the traps that lose marks, tips and tricks from the past papers, a worked mini-example, and self-check questions.* Any section or step has a **"Break it down further"** button that asks Claude to explain it even smaller.
+3. **Every concept broken down to atoms.** For each concept: *why it exists, what it does, how it works, an everyday picture a child would get, how to visualize it, the smallest possible steps, every formula with each symbol explained, the exam cues that signal it, the traps that lose marks, tips and tricks from the past papers, a worked mini-example, and self-check questions.* In the computer app with an API key, any section or step also has a **"Break it down further"** button.
 4. **Build a solving kit per exam pattern.** How to recognise it in 10 seconds, the universal recipe, tricks, traps and what the examiner rewards.
-5. **Generate practice in the exact form of the past papers.** Every past-paper question, plus new variants with the same parts, wording style, data and mark allocation, is **scaffolded into small answer boxes**: *what's given → what's asked → which principle → which formula → rearrange → substitute → calculate → sanity check → final answer.* A second, independent Claude pass re-solves every generated problem and flags disagreements.
+5. **Practice in the exact form of the past papers.** Every past-paper question, plus new variants with the same parts, wording style, data and mark allocation, is **scaffolded into small answer boxes**: *what's given → what's asked → which principle → which formula → rearrange → substitute → calculate → sanity check → final answer.* (The computer app also re-solves every generated problem independently and flags disagreements.)
 
 Then you train:
 
@@ -18,15 +28,37 @@ Then you train:
 | **Concept quiz (MCQ)** | Intuition (everyday scenarios), misconception, application, "spot the approach" and concept-relationship questions, each option explained. Smart mode serves unseen and previously-missed questions first. |
 | **Discover it yourself** | A Socratic chain of small questions on each concept page that leads you from an everyday observation to the formal idea. |
 | **Knowledge-map drills** | Built from your concept graph: what must come first, what a concept unlocks, which concepts a question type needs, putting a recipe in order. |
-| **Exam problems, step by step** | The question stays pinned on the left like an exam paper; you fill one small box at a time, with hints, targeted nudges (wrong sign, power-of-ten slip, rounding), AI marking for written answers, and "I don't get this step". |
+| **Exam problems, step by step** | The question stays pinned on the left like an exam paper; you fill one small box at a time, with hints and targeted nudges (wrong sign, power-of-ten slip, rounding). Written answers are compared with the model answer (or AI-marked in the app with an API key). |
 | **Progress & readiness** | Per-concept mastery (recency-weighted), per-pattern readiness (last 3 attempts), and an exam-readiness estimate weighted by how often each pattern appears in past papers. |
 
 > No tool can promise a 100% mark. What Cramtoolfinal does is make the gaps visible: every past-paper question maps to a pattern, every pattern to concepts, and the readiness numbers only go up when you actually solve exam-form problems without help.
 
-## Get the app on your computer
+## Study website (GitHub Pages)
 
-You need the app (not just the [study website](https://nminh27.github.io/Exam_Cram_Tool/)) to turn your own notes and past
-papers into a course. It's free and runs on your own computer.
+**https://nminh27.github.io/Exam_Cram_Tool/** works on any device, phone included, with nothing to install.
+
+- **New course:** home page → *Make your course with your own AI* → **Copy prompt**, give it to your AI chat with your files,
+  paste the reply, **Create course**. The prompt (`web/js/ai-prompt.js`) asks for the [knowledge pack format](docs/PACK_FORMAT.md);
+  `web/js/pack-clean.js` repairs small mistakes (missing fields, clashing ids, out-of-range answers) and lists what it changed.
+- **Big course:** the AI builds a topic or two per reply. On the course's **Course file** page, **Copy "continue" message**, send it
+  to the same chat, and paste each new reply under *Add more with your AI*. You can add more questions the same way at any time.
+- **Already have a file?** **Open course file** loads a `.json` course file you or a classmate saved; the demo course is built in.
+- Courses and progress are kept **in that browser** (IndexedDB). Nothing is uploaded: you talk to your AI yourself, and the website
+  never calls an AI or needs a key. **Course file → Download course file** and **Progress backup** move or protect them;
+  **Replace with a newer file** refreshes a course without losing progress.
+- Not on the website: uploading files to Cramtoolfinal itself, "Break it down further", AI marking of written answers and
+  one-click "generate more". Ask your AI chat for more instead, or use the computer app.
+- The site is public, so only the app and the demo are published. Never commit your own course files to the repo.
+
+Publishing is automatic: every push to `main` runs `.github/workflows/pages.yml`, which builds the site with
+`python scripts/build_site.py` and deploys it. One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
+Preview locally with `python scripts/build_site.py` and any static server.
+
+## Optional: the computer app
+
+You don't need it to study: the [website](https://nminh27.github.io/Exam_Cram_Tool/) builds courses with your own AI chat.
+The app is for people who prefer to upload files once and let an API key (or Claude Code) do the whole build, with the extra
+AI features (independent re-solving of problems, "Break it down further", AI marking). It's free and runs on your own computer.
 
 1. **Install Python** 3.11 or newer from [python.org/downloads](https://www.python.org/downloads/).
    On Windows, tick **"Add python.exe to PATH"** on the first screen of the installer.
@@ -40,12 +72,12 @@ papers into a course. It's free and runs on your own computer.
 macOS / Linux: open a terminal in the folder and run `./run.sh`.
 
 **To study on your phone:** in the app, open the course's **Materials** page and press **Export knowledge pack**. That
-downloads a course file (`.cramtoolfinal.json`); put it on your phone and press **Import pack** on the
+downloads a course file (`.cramtoolfinal.json`); put it on your phone and press **Open course file** on the
 [study website](https://nminh27.github.io/Exam_Cram_Tool/).
 
 Manual: `python -m venv .venv && .venv\Scripts\pip install -r requirements.txt && .venv\Scripts\python -m uvicorn app.main:app --port 8000`
 
-## Two ways to build a course
+## Two ways to build a course in the app
 
 ### API mode: the app does it, with the AI of your choice
 
@@ -79,33 +111,18 @@ Details: [docs/CLAUDE_CODE_WORKFLOW.md](docs/CLAUDE_CODE_WORKFLOW.md). Tools: `p
 
 You can switch any time: courses built either way look and work the same.
 
-## Study website (GitHub Pages)
-
-**https://nminh27.github.io/Exam_Cram_Tool/** is the same Cramtoolfinal interface as a website: open it on any
-device, phone included, with nothing to install.
-
-- It studies and drills courses you **import as knowledge packs**: build the course on your computer (Analyze,
-  or Claude Code mode), press **Materials → Export knowledge pack**, get the file onto the device, and press
-  **Import pack** on the website. The demo course is built in.
-- Courses and progress are kept **in that browser** (IndexedDB). They are never uploaded to GitHub and don't
-  sync between devices; **Course file → Progress backup** moves or protects your progress, and **Update with a
-  newer pack** refreshes a course without losing it.
-- Uploading files and the AI features (Analyze, "Break it down further", AI marking, generating more) need the app on your computer.
-- The site is public, so only the app and the demo are published. Never commit your own course packs to the repo.
-
-Publishing is automatic: every push to `main` runs `.github/workflows/pages.yml`, which builds the site with
-`python scripts/build_site.py` and deploys it. One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
-Preview locally with `python scripts/build_site.py` and any static server.
-
 ## Cost
 
-With Claude Opus 5.5 (`claude-opus-5-5`, about $4 / $20 per million input / output tokens) the course corpus is prompt-cached (1 h), so the many per-concept and per-pattern calls reuse it cheaply. A typical course of a few hundred pages plus 5–10 past papers costs a few dollars. For other providers, enter their prices under *Advanced* to get a cost estimate. The job panel shows live token counts. Re-running an analysis only processes new material unless you tick the rebuild boxes.
+On the website it costs nothing beyond your AI chat plan; a free plan works for a small course but may cut long replies short,
+so build big courses topic by topic. In the app with an API key: with Claude Opus 5.5 (`claude-opus-5-5`, about $4 / $20 per million input / output tokens) the course corpus is prompt-cached (1 h), so the many per-concept and per-pattern calls reuse it cheaply. A typical course of a few hundred pages plus 5–10 past papers costs a few dollars. For other providers, enter their prices under *Advanced* to get a cost estimate. The job panel shows live token counts. Re-running an analysis only processes new material unless you tick the rebuild boxes.
 
 Other knobs live in `.env` (see `.env.example`): Claude effort per stage, refusal fallback, PDF chunk size.
 
 ## Knowledge packs
 
-A course's entire knowledge base (concepts, patterns, MCQs, problems) can be exported as a single JSON **knowledge pack** (*Materials → Export*), and imported on another machine (*Home → Import pack*). Packs contain no API key and no uploaded files. The format is documented in [docs/PACK_FORMAT.md](docs/PACK_FORMAT.md), so Claude Code can also write a pack directly from your materials.
+A course's entire knowledge base (concepts, patterns, MCQs, problems) is one JSON **knowledge pack**, also called the course file.
+Any AI chat can write one from the website's prompt; the app exports one with *Materials → Export*; both load with *Open course file* /
+*Import pack*. Packs contain no API key and no uploaded files. The format is documented in [docs/PACK_FORMAT.md](docs/PACK_FORMAT.md).
 
 ## Project layout
 
@@ -125,6 +142,8 @@ app/                FastAPI backend
 web/                no-build UI (Preact + htm, KaTeX, marked, Cytoscape from CDNs)
   js/pages/*.js     one file per screen
   js/static-api.js  website mode: answers the API in the browser (IndexedDB)
+  js/ai-prompt.js   the prompt students give their own AI chat to write a course file
+  js/pack-clean.js  repairs and merges AI-written course files before they are stored
   config.js         "server" here; "static" in the built website
 scripts/build_site.py  builds the GitHub Pages website into _site/
 samples/            demo course (build_demo.py → demo_pack.json)

@@ -32,6 +32,9 @@ The user may still say "FinalForge" for the app or "build the FinalForge pack".
   GitHub Pages build from `scripts/build_site.py`). In static mode `lib.api()` routes to `web/js/static-api.js`
   (IndexedDB); any new API route the study screens use needs a static equivalent there, and server-only
   features must be hidden or explained when `IS_STATIC`.
+- The website builds courses with the student's own AI chat: `web/js/ai-prompt.js` is the prompt they copy, and every
+  imported or added pack goes through `cleanPack` in `web/js/pack-clean.js` (the website's `clean_problem` / `clean_mcq`).
+  Keep the prompt in step with docs/PACK_FORMAT.md. Website copy should never require installing the app.
 - `data/` and `.env` are git-ignored: never commit course materials, progress or keys.
 
 ## GitHub workflow

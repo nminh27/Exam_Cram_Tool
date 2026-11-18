@@ -9,22 +9,18 @@ function useMode() {
   return s.health && s.health.ai_available ? "ai" : "cc";
 }
 
-// Where a website visitor's course file comes from: the step new users are most likely to miss.
-export const INSTALL_URL = `${REPO_URL}#get-the-app-on-your-computer`;
-export const COURSE_FILE_TITLE = "Where does the course file come from?";
+// Where a website visitor's course comes from: their own AI chat, given the prompt in ai-prompt.js.
+export const COURSE_FILE_TITLE = "Where does the course come from?";
 export const COURSE_FILE_MD = [
-  "A **course file** (`.cramtoolfinal.json`) is one of your courses after AI has read your notes and past papers and turned them " +
-    "into concept breakdowns, quizzes and step-by-step exam problems. You make it **once, on a computer**, then open it on any device.",
+  "Your own AI builds it. The website gives you a ready-made prompt; ChatGPT, Claude or Gemini reads your notes and past papers " +
+    "and replies with the whole course (concept breakdowns, quizzes and step-by-step exam problems) as one block of JSON. Nothing to install.",
   "",
-  `1. **Get the Cramtoolfinal app on a computer** (free): on the [GitHub page](${INSTALL_URL}) press **Code → Download ZIP**, unzip it, ` +
-    "and double-click `run.bat`. It needs Python; the GitHub page walks you through it.",
-  "2. **Create a course** in the app and upload your lecture notes, slides and every past paper.",
-  "3. **Let AI build it:** add an AI key in the app's Settings and press **Analyze** (Google Gemini gives free keys with usage limits; " +
-    "Claude gives the best results), or, if you use Claude Code, ask it to build the course with no key at all.",
-  "4. On the course's **Materials** page, press **Export knowledge pack**. That downloads the course file.",
-  "5. Put the file on this device (cloud drive, email, USB…) and press **Import pack** here.",
+  "1. On the home page, press **Copy prompt** under *Make your course with your own AI*.",
+  "2. Open your AI chat, attach your lecture notes, slides and every past paper (with solutions if you have them), paste the prompt and send.",
+  "3. Copy the AI's whole reply, paste it into the box and press **Create course**. Small mistakes in the reply are fixed automatically.",
+  "4. Big course? The AI builds it in parts. Ask it to continue, then paste each new reply on the course's **Course file** page under *Add more with your AI*.",
   "",
-  "A classmate who has already built the course can also just send you their file.",
+  "The course is saved in this browser. **Course file → Download course file** saves it as a `.json` file you can open on another device or send to a classmate.",
 ].join("\n");
 
 const STEP1 = {
@@ -32,8 +28,8 @@ const STEP1 = {
     "Press **Analyze** on the Materials page. It takes several minutes, longer for big courses; the page shows live progress.",
   cc: "Create a course and upload your notes, slides and **every past paper** on its Materials page. " +
     "Then ask Claude Code: *\"Build the Cramtoolfinal pack for (course name)\"*. It builds the course and loads it here.",
-  web: "Your course comes as one **course file** (`.cramtoolfinal.json`), which AI makes from your notes and past papers on a " +
-    "computer (see *Where does the course file come from?*). Press **Import pack** to load it, or **Open demo course** to look around first.",
+  web: "Press **Copy prompt**, give it to your own AI (ChatGPT, Claude or Gemini) together with your notes, slides and **every past paper**, " +
+    "then paste its reply back here. Or press **Open demo course** to look around first.",
 };
 
 const STEPS = [
@@ -81,10 +77,12 @@ function faq(mode, skipCourseFile) {
       "the parts that are finished. Running Analyze again only processes new files.",
     cc: "Claude Code reads every file and writes the course, which takes a while; a big course is built topic by topic over " +
       "several sessions (say *\"continue the pack for (course name)\"*). Refresh the app when it says it's done.",
-    web: "Importing a pack is instant. Building the pack happens beforehand in the Cramtoolfinal app on a computer.",
+    web: "Your AI usually needs a few minutes to write the reply; loading it here is instant. A big course comes in several parts: " +
+      "ask the AI to continue and add each reply on the course's **Course file** page.",
   }[mode]]);
   items.push(["What should I upload?", IS_STATIC
-    ? "Nothing here: the website can't read files. On a computer, upload lecture notes, slides, textbook chapters and every past paper, then export the pack."
+    ? "Give your AI chat your lecture notes, slides, textbook chapters, tutorial sheets and **every past paper you have**, with solutions or mark schemes if available. " +
+      "Exam question types and exam-style practice come from the past papers. The website itself never sees your files."
     : "Lecture notes, slides, textbook chapters, tutorial sheets, and **every past paper you have**, with solutions or mark schemes if available. " +
       "PDF works best. Mark past papers as *Past paper* (the type menu next to each file): exam question types and exam-style practice come from them."]);
   items.push(["How do the answer boxes in exam problems work?",
@@ -99,11 +97,13 @@ function faq(mode, skipCourseFile) {
     "- **Exam readiness** combines your last 3 attempts at each exam question type, weighted by how often it appears in the past papers, with your mastery of core concepts."]);
   items.push(["Can I trust what it generates?",
     "It is written by AI from your own files, so it is usually right but can make mistakes. Every generated problem is solved a second time " +
-    "independently; a **Check** badge means the two disagreed, so compare with your notes or the official solution. " +
+    "independently when it's built in the app; a **Check** badge means the two disagreed, so compare with your notes or the official solution. " +
+    (IS_STATIC ? "Courses from your own AI chat aren't double-checked, so if a step looks wrong, ask the AI to re-solve that question. " : "") +
     (IS_STATIC ? "" : "On the Materials page, **view what was read** shows how each past-paper question was transcribed. ") +
     "When anything conflicts with your lecturer's notes, the notes win."]);
   items.push(["Where are my courses and progress saved?", IS_STATIC
-    ? "In **this browser on this device** only: not on GitHub and not on your other devices. Clearing this site's data erases them, so use **Course file → Progress backup** now and then."
+    ? "In **this browser on this device** only: nothing is uploaded, not even to the AI (you talk to your AI yourself). Clearing this site's data erases them, " +
+      "so use **Course file → Download course file** and **Progress backup** now and then."
     : "On this computer, in the project's `data` folder. Files are only sent to the AI provider you chose in Settings (none in Claude Code mode). " +
       "To study on your phone, export the course (Materials → Export knowledge pack) and import it on the [study website](https://nminh27.github.io/Exam_Cram_Tool/)."]);
   items.push(["A good way to study with it",
