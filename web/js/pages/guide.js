@@ -51,15 +51,15 @@ const STEPS = [
 
 export function GettingStarted({ hideLink }) {
   const mode = useMode();
-  return html`<section class="guide-steps" aria-label="How Cramtoolfinal works">
-    <div class="row between" style="align-items:baseline">
-      <h2 class="m-0">How it works</h2>
-      ${!hideLink && html`<a class="small" href="#/guide">Full guide and FAQ →</a>`}
+  return html`<section class="card guide-steps" aria-label="How Cramtoolfinal works">
+    <div class="sec-head">
+      <h2>How it works</h2>
+      ${!hideLink && html`<a class="small" href="#/guide">Full guide and FAQ</a>`}
     </div>
-    <ol class="steps-strip">
-      ${STEPS.map((s, i) => html`<li class="card">
-        <div class="row"><span class="step-num">${i + 1}</span><b>${s.title}</b></div>
-        <${Md} text=${s.body(mode)} cls="small" />
+    <ol class="plan how">
+      ${STEPS.map((s, i) => html`<li>
+        <span class="plan-n">${String(i + 1).padStart(2, "0")}</span>
+        <div class="plan-body"><div class="plan-name">${s.title}</div><${Md} text=${s.body(mode)} cls="small muted" /></div>
       </li>`)}
     </ol>
   </section>`;

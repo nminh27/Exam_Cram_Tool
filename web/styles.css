@@ -540,3 +540,16 @@ ol.plan li:first-child .plan-n { color: var(--accent); }
   .lesson-side { grid-column: auto; }
   .lesson-head { margin-bottom: var(--s-5); }
 }
+
+/* ---------- home: greeting, course list + add-a-course, numbered how-it-works */
+.home-lede { max-width: 46rem; margin: calc(-1 * var(--s-3)) 0 var(--s-6); }
+ul.course-list { list-style: none; margin: 0; padding: 0; }
+ul.course-list li + li { border-top: 1px solid var(--line); }
+.course-row { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-4) var(--s-3); margin: 0 calc(-1 * var(--s-3)); border-radius: 12px; color: var(--text); transition: background-color .15s; }
+.course-row:hover { text-decoration: none; background: var(--panel-2); }
+.course-age { flex: none; }
+.pt-line { padding-top: var(--s-4); border-top: 1px solid var(--line); }
+section.guide-steps { margin-bottom: var(--gap); }
+ol.plan.how li { align-items: flex-start; }
+ol.plan.how .plan-n { padding-top: 2px; }
+ol.plan.how .md { margin-top: var(--s-1); }
