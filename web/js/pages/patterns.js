@@ -1,4 +1,4 @@
-import { html, useState, useEffect, api, Md, pct, Progress, loadCourse, useHasKey } from "../lib.js";
+import { html, useState, useEffect, api, Md, pct, Progress, loadCourse, useHasKey, IS_STATIC } from "../lib.js";
 
 export function problemStats(d, problemId) {
   const evs = d.progress.events.filter((e) => e.kind === "problem" && e.item_id === problemId);
@@ -95,6 +95,7 @@ export function PatternPage({ cid, d, patternId }) {
     <div class="card">
       <div class="row between"><h3 class="m-0">Practice problems (${probs.length})</h3>
         ${hasKey ? html`<button class="btn sm" onClick=${more} disabled=${running}>${running ? "Generating…" : "+ 3 more like these"}</button>`
+          : IS_STATIC ? html`<span class="tiny muted">Want more? Ask your AI: "make 3 more problems for ${p.name} in the same JSON format", then add the reply under Course file.</span>`
           : html`<span class="tiny muted" title="No AI provider: ask Claude Code instead">Want more? Ask Claude Code: "make 3 more problems for ${p.name}"</span>`}</div>
       ${err && html`<div class="notice bad small mt-2">${err}</div>`}
       ${job && html`<div class="small muted mt-2">${job.stage} — ${job.status}${job.error ? `: ${job.error}` : ""}</div>`}

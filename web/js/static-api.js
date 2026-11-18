@@ -1,6 +1,7 @@
 // Website mode (GitHub Pages): no server. This module answers the same /api paths the app uses,
-// keeping courses and progress in this browser's IndexedDB. Only studying and practising work here;
-// building courses (uploads, AI analysis) happens in the app on your computer or with Claude Code.
+// keeping courses and progress in this browser's IndexedDB. Courses arrive as course files (knowledge packs)
+// that the student's own AI chat writes from the prompt in ai-prompt.js; pack-clean.js repairs them on import.
+import { cleanPack, mergeKnowledge, extractJson } from "./pack-clean.js";
 
 const DB_NAME = "finalforge";
 const STORE = "kv";
@@ -84,31 +85,25 @@ function normalizeKnowledge(kn) {
   return out;
 }
 
-function checkPack(pack) {
-  if (!pack || pack.format !== "finalforge-pack" || !pack.knowledge) {
-    throw new Error("That file isn't a Cramtoolfinal knowledge pack (export one from Materials in the app).");
-  }
-  const kn = pack.knowledge;
-  const bad = (kn.mcqs || []).filter((q) => !Array.isArray(q.options) || !(q.correct >= 0 && q.correct < q.options.length));
-  if (bad.length) throw new Error(`The pack has ${bad.length} broken question(s); rebuild it and export again.`);
-  return normalizeKnowledge(kn);
+// Any pack goes through cleanPack: exported ones pass unchanged in substance, AI-written ones get repaired.
+function checkPack(pack, base = null) {
+  return cleanPack(pack, base);
 }
 
 async function readJsonBody(opts) {
   if (opts.json !== undefined) return opts.json;
   const f = opts.body && opts.body.get ? opts.body.get("file") : null;
   if (!f) throw new Error("No file chosen.");
-  try { return JSON.parse(await f.text()); } catch (_) { throw new Error("Could not read that file as JSON."); }
+  return extractJson(await f.text());
 }
 
 async function importPack(pack) {
-  const kn = checkPack(pack);
-  const name = pack.name || kn.course.title || "Imported course";
-  const meta = { id: `${slugify(name)}-${rand()}`, name, description: pack.description || "", created_at: Date.now() / 1000, materials: [] };
+  const { name, description, knowledge, notes } = checkPack(pack);
+  const meta = { id: `${slugify(name)}-${rand()}`, name, description, created_at: Date.now() / 1000, materials: [] };
   await put(`course:${meta.id}`, meta);
-  await put(`kn:${meta.id}`, kn);
+  await put(`kn:${meta.id}`, knowledge);
   await put(`progress:${meta.id}`, { events: [] });
-  return meta;
+  return { ...meta, notes };
 }
 
 async function courseMeta(id) {
@@ -117,7 +112,7 @@ async function courseMeta(id) {
   return meta;
 }
 
-const NOT_HERE = "This needs the Cramtoolfinal app on your computer. The website can only study and practise courses you import.";
+const NOT_HERE = "The website doesn't do this. Build or extend the course with your own AI (Course file page) and load the reply here.";
 
 // ------------------------------------------------------------------ the fake API
 
@@ -166,9 +161,21 @@ export async function staticApi(path, opts = {}) {
     const id = decodeURIComponent(m[1]);
     const meta = await courseMeta(id);
     const pack = await readJsonBody(opts);
-    await put(`kn:${id}`, checkPack(pack));
-    if (pack.name && pack.name !== meta.name) await put(`course:${id}`, { ...meta, name: pack.name });
-    return { replaced: id };
+    const { name, knowledge, notes } = checkPack(pack);
+    await put(`kn:${id}`, knowledge);
+    if (pack.name && name !== meta.name) await put(`course:${id}`, { ...meta, name });
+    return { replaced: id, notes };
+  }
+  if ((m = path.match(/^\/courses\/([^/]+)\/add-part$/)) && method === "POST") {
+    // Add another part written by the student's AI (more topics, more questions) to this course.
+    const id = decodeURIComponent(m[1]);
+    await courseMeta(id);
+    const base = normalizeKnowledge((await get(`kn:${id}`)) || {});
+    const { knowledge, notes } = checkPack(await readJsonBody(opts), base);
+    const merged = mergeKnowledge(base, knowledge);
+    await put(`kn:${id}`, merged);
+    const k = knowledge;
+    return { added: `${k.concepts.length} concept(s), ${k.mcqs.length} quiz question(s) and ${k.problems.length} exam problem(s)`, concepts: merged.concepts.length, notes };
   }
   if ((m = path.match(/^\/courses\/([^/]+)\/progress$/))) {
     const id = decodeURIComponent(m[1]);

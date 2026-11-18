@@ -16,11 +16,13 @@ function WebsiteSettings() {
       <ul class="md small">
         <li>Everything for studying works here: concept breakdowns, knowledge map, exam patterns, quizzes, map drills, the step-by-step solver and progress.</li>
         <li>Courses and progress are stored in <b>this browser on this device</b>. They are not uploaded to GitHub and don't sync between devices;
-          use <b>Course file → Progress backup</b> to move or protect your progress.</li>
-        <li>Written answers are marked by comparing with the model answer. AI features (analysing files, "Break it down further", AI marking,
-          generating more questions) need the app on your computer.</li>
+          use <b>Course file → Download course file</b> and <b>Progress backup</b> to move or protect them.</li>
+        <li>Courses come from your own AI chat (ChatGPT, Claude, Gemini…): copy the prompt on the home page, give it your files, paste the reply.
+          The website never calls an AI itself and needs no key.</li>
+        <li>Written answers are marked by comparing with the model answer. For more questions or a simpler explanation, ask the AI you built
+          the course with, in the same JSON format, and add its reply under <b>Course file → Add more with your AI</b>.</li>
       </ul>
-      <p class="small">Get the app and instructions on <a href=${REPO_URL} target="_blank" rel="noopener">GitHub</a>.</p>
+      <p class="small">Source code and the optional computer app: <a href=${REPO_URL} target="_blank" rel="noopener">GitHub</a>.</p>
     </div>`;
 }
 
