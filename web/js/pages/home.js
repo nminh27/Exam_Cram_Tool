@@ -83,7 +83,7 @@ export function HomePage() {
     ${IS_STATIC && !hasCourses && courses !== null && aiCard}
 
     <div class="dash-cols">
-      <section class="card">
+      <section class="card courses-card">
         <div class="sec-head"><h2>Your courses</h2>${hasCourses && html`<span class="muted small">${sorted.length}</span>`}</div>
         ${courses === null ? html`<${Spinner} />`
           : !hasCourses ? html`<p class="muted mb-0">No courses yet. ${IS_STATIC ? "Build one with your AI, or open the demo course to look around." : "Create one, or open the demo course to look around."}</p>`
