@@ -1,4 +1,4 @@
-import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC } from "../lib.js";
+import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC, courseTone } from "../lib.js";
 import { GettingStarted, WhatToExpect } from "./guide.js";
 import { AiBuilder } from "./ai-build.js";
 
@@ -88,7 +88,7 @@ export function HomePage() {
         ${courses === null ? html`<${Spinner} />`
           : !hasCourses ? html`<p class="muted mb-0">No courses yet. ${IS_STATIC ? "Build one with your AI, or open the demo course to look around." : "Create one, or open the demo course to look around."}</p>`
           : html`<ul class="course-list">${sorted.map((c) => html`<li>
-              <a class="course-row" href=${`#/c/${c.id}`}>
+              <a class=${"course-row " + courseTone(c.id)} href=${`#/c/${c.id}`}>
                 <div class="plan-body">
                   <div class="plan-name">${c.name}</div>
                   <div class="muted small">

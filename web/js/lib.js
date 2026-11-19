@@ -73,6 +73,14 @@ export function mdToHtml(src, inline = false) {
 
 // Short labels from a course pack (concept names, one-liners, pattern names, problem titles): plain text,
 // unless an AI wrote LaTeX into them, in which case they are rendered like inline Markdown so $k_d$ shows as maths.
+// Each course keeps one colour everywhere (its home-page tile and its lesson titles): picked from the course id,
+// so it never changes when courses are added, removed or re-sorted.
+export function courseTone(id) {
+  let h = 0;
+  for (const ch of String(id || "")) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return "tone-" + (h % 4);
+}
+
 export function Tx({ text }) {
   const s = text == null ? "" : String(text);
   return s.includes("$") || s.includes("\\(") ? html`<${Md} text=${s} inline />` : s;

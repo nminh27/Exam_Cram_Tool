@@ -614,11 +614,13 @@ h1 { font-size: 1.85rem; }
 .courses-card .course-row:active { transform: scale(.99); }
 
 /* Bright tiles: each course gets its own vivid colour (cycling four), with text colours chosen to stay readable (4.5:1 or better) */
-.courses-card .course-row { --tile: linear-gradient(120deg, #6a2cff, #b026ff); --ink: #ffffff; --ink-soft: rgba(255, 255, 255, .88);
+/* Course colours: one per course (lib.js courseTone), shared by its home tile and its lesson titles */
+.tone-0 { --tile: linear-gradient(120deg, #6a2cff, #b026ff); --ink: #ffffff; --ink-soft: rgba(255, 255, 255, .88); }
+.tone-1 { --tile: linear-gradient(120deg, #b4009e, #d1106f); --ink: #ffffff; --ink-soft: rgba(255, 255, 255, .88); }
+.tone-2 { --tile: linear-gradient(120deg, #ffc46b, #ff8a3d); --ink: #1a0b33; --ink-soft: rgba(26, 11, 51, .82); }
+.tone-3 { --tile: linear-gradient(120deg, #2950ff, #0a74a4); --ink: #ffffff; --ink-soft: rgba(255, 255, 255, .88); }
+.courses-card .course-row {
   background: var(--tile); border-color: transparent; color: var(--ink); box-shadow: 0 6px 18px rgba(5, 0, 25, .45); }
-.courses-card li:nth-child(4n+2) .course-row { --tile: linear-gradient(120deg, #b4009e, #d1106f); }
-.courses-card li:nth-child(4n+3) .course-row { --tile: linear-gradient(120deg, #ffc46b, #ff8a3d); --ink: #1a0b33; --ink-soft: rgba(26, 11, 51, .82); }
-.courses-card li:nth-child(4n+4) .course-row { --tile: linear-gradient(120deg, #2950ff, #0a74a4); }
 .courses-card .course-row .plan-name { color: var(--ink); font-weight: 700; }
 .courses-card .course-row .muted { color: var(--ink-soft); }
 .courses-card .course-row:hover { background: var(--tile); border-color: transparent; filter: brightness(1.08) saturate(1.1); box-shadow: 0 8px 24px rgba(5, 0, 25, .55), 0 0 0 2px rgba(255, 255, 255, .55); }
@@ -626,9 +628,9 @@ h1 { font-size: 1.85rem; }
 /* ---------- Lesson title on a solid bright tile (same violet as the course tiles) so it's easy to find.
    The tile wraps only the title and summary; the Quiz button stays outside it. */
 .lesson-head { align-items: center; }
-.lesson-head-text { flex: 0 1 auto; width: fit-content; background: linear-gradient(120deg, #6a2cff, #b026ff); color: #fff; border-radius: var(--radius);
+.lesson-head-text { flex: 0 1 auto; width: fit-content; background: var(--tile, linear-gradient(120deg, #6a2cff, #b026ff)); color: var(--ink, #fff); border-radius: var(--radius);
   padding: var(--s-5) var(--s-6); box-shadow: 0 10px 30px rgba(5, 0, 25, .5); position: relative; overflow: hidden; }
 .lesson-head-text::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--rainbow); }
-.lesson-head h1 { color: #fff; margin-bottom: var(--s-2); }
-.lesson-head .lede { color: rgba(255, 255, 255, .92); margin-bottom: 0; }
+.lesson-head h1 { color: var(--ink, #fff); margin-bottom: var(--s-2); }
+.lesson-head .lede { color: var(--ink-soft, rgba(255, 255, 255, .92)); margin-bottom: 0; }
 @media (max-width: 820px) { .lesson-head-text { padding: var(--s-4); } }
