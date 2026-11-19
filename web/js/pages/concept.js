@@ -24,6 +24,15 @@ export function ExplainButton({ cid, conceptId, snippet, label }) {
   </div>`;
 }
 
+// "How to visualise it": the concept's figure stays folded away until the student asks for it.
+function FigureToggle({ svg }) {
+  const [open, setOpen] = useState(false);
+  return html`<div class="mt-3">
+    <button class="btn sm" aria-expanded=${open} onClick=${() => setOpen(!open)}>${open ? "Hide figure" : "Show figure"}</button>
+    ${open && html`<div class="diagram"><img alt="Figure for this concept" src=${"data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg)} /></div>`}
+  </div>`;
+}
+
 function Section({ id, cls, title, cid, conceptId, snippet, children }) {
   return html`<section class=${"lesson-sec " + (cls || "")} id=${id}>
     <h2>${title}</h2>
@@ -121,8 +130,7 @@ export function ConceptPage({ cid, d, conceptId }) {
           <${Section} cid=${cid} conceptId=${c.id} id="s-analogy" title="The everyday picture" snippet=${det.everyday_analogy_md}><${Md} text=${det.everyday_analogy_md} /><//>
           <${Section} cid=${cid} conceptId=${c.id} id="s-visual" title="How to visualise it" snippet=${det.visualize_md}>
             <${Md} text=${det.visualize_md} />
-            ${det.diagram_svg && det.diagram_svg.trim().startsWith("<svg") && html`<div class="diagram">
-              <img alt="diagram" src=${"data:image/svg+xml;charset=utf-8," + encodeURIComponent(det.diagram_svg)} /></div>`}
+            ${det.diagram_svg && det.diagram_svg.trim().startsWith("<svg") && html`<${FigureToggle} svg=${det.diagram_svg} />`}
           <//>
 
           <section class="lesson-sec" id="s-steps">

@@ -652,3 +652,7 @@ h1 { font-size: 1.85rem; }
 .feedback a { color: inherit; text-decoration: underline; }
 .step.done-correct { border-color: #6ee7b7; }
 .step.done-revealed { border-color: #ffc46b; }
+
+/* Concept figures carry their own dark background */
+.diagram { background: transparent; border: 0; padding: 0; }
+.diagram img { max-height: 360px; border-radius: 10px; }
