@@ -1,4 +1,4 @@
-import { html, useState, go, pct } from "../lib.js";
+import { html, useState, go, pct, Tx } from "../lib.js";
 import { problemStats } from "./patterns.js";
 
 const TYPES = [
@@ -81,7 +81,7 @@ export function PracticePage({ cid, d }) {
     <div class="card">
       <h3>Patterns at a glance</h3>
       <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Pattern</th><th>In past papers</th><th>Problems</th><th>Readiness</th><th></th></tr></thead><tbody>
-        ${kn.patterns.map((p) => html`<tr><td>${p.name}</td><td>${p.frequency}</td>
+        ${kn.patterns.map((p) => html`<tr><td><${Tx} text=${p.name} /></td><td>${p.frequency}</td>
           <td>${kn.problems.filter((x) => x.pattern_id === p.id).length}</td><td>${pct(mastery.patterns[p.id].readiness)}</td>
           <td style="width:1%"><a class="btn sm" href=${`#/c/${cid}/pattern/${p.id}`}>Open</a></td></tr>`)}
       </tbody></table></div>

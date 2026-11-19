@@ -1,4 +1,4 @@
-import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey } from "../lib.js";
+import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx } from "../lib.js";
 
 export function ExplainButton({ cid, conceptId, snippet, label }) {
   const hasKey = useHasKey();
@@ -77,12 +77,12 @@ export function ConceptPage({ cid, d, conceptId }) {
   const next = idx >= 0 && idx + 1 < order.length ? byId[order[idx + 1]] : null;
   const prev = idx > 0 ? byId[order[idx - 1]] : null;
 
-  const chips = (ids) => ids.map((x) => byId[x] && html`<a class="chip" href=${`#/c/${cid}/concept/${x}`}>${byId[x].name}</a>`);
+  const chips = (ids) => ids.map((x) => byId[x] && html`<a class="chip" href=${`#/c/${cid}/concept/${x}`}><${Tx} text=${byId[x].name} /></a>`);
   const links = [
     ["Builds on", chips(c.prerequisites), c.prerequisites.length],
     ["Unlocks", chips(leadsTo.map((x) => x.id)), leadsTo.length],
     ["Often confused with", chips(c.related), c.related.length],
-    ["Exam patterns", pats.map((p) => html`<a class="chip" href=${`#/c/${cid}/pattern/${p.id}`}>${p.name}</a>`), pats.length],
+    ["Exam patterns", pats.map((p) => html`<a class="chip" href=${`#/c/${cid}/pattern/${p.id}`}><${Tx} text=${p.name} /></a>`), pats.length],
   ].filter((x) => x[2] > 0);
 
   const toc = det ? [["why", "Why it exists"], ["what", "What it does"], ["how", "How it works"], ["analogy", "Everyday picture"], ["visual", "Visualise it"],
@@ -99,8 +99,8 @@ export function ConceptPage({ cid, d, conceptId }) {
 
     <header class="lesson-head">
       <div class="lesson-head-text">
-        <h1>${c.name}</h1>
-        <p class="lede lg">${c.one_liner}</p>
+        <h1><${Tx} text=${c.name} /></h1>
+        <p class="lede lg"><${Tx} text=${c.one_liner} /></p>
       </div>
       <a class="btn primary" href=${`#/c/${cid}/quiz?concept=${c.id}`}>Quiz me (${nMcq})</a>
     </header>
@@ -165,8 +165,8 @@ export function ConceptPage({ cid, d, conceptId }) {
         `}
 
         <div class="lesson-nav">
-          ${prev ? html`<a class="btn" href=${`#/c/${cid}/concept/${prev.id}`}>Previous: ${prev.name}</a>` : html`<span></span>`}
-          ${next && html`<a class="btn primary" href=${`#/c/${cid}/concept/${next.id}`}>Next: ${next.name}</a>`}
+          ${prev ? html`<a class="btn" href=${`#/c/${cid}/concept/${prev.id}`}>Previous: <${Tx} text=${prev.name} /></a>` : html`<span></span>`}
+          ${next && html`<a class="btn primary" href=${`#/c/${cid}/concept/${next.id}`}>Next: <${Tx} text=${next.name} /></a>`}
         </div>
       </article>
 

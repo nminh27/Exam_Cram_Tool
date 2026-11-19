@@ -71,6 +71,13 @@ export function mdToHtml(src, inline = false) {
   return h.replace(/⟦D⟧/g, "$");
 }
 
+// Short labels from a course pack (concept names, one-liners, pattern names, problem titles): plain text,
+// unless an AI wrote LaTeX into them, in which case they are rendered like inline Markdown so $k_d$ shows as maths.
+export function Tx({ text }) {
+  const s = text == null ? "" : String(text);
+  return s.includes("$") || s.includes("\\(") ? html`<${Md} text=${s} inline />` : s;
+}
+
 export function Md({ text, inline, cls }) {
   const h = useMemo(() => mdToHtml(text, inline), [text, inline]);
   return inline

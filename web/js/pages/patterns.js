@@ -1,4 +1,4 @@
-import { html, useState, useEffect, api, Md, pct, Progress, loadCourse, useHasKey, IS_STATIC } from "../lib.js";
+import { html, useState, useEffect, api, Md, pct, Progress, loadCourse, useHasKey, IS_STATIC, Tx } from "../lib.js";
 
 export function problemStats(d, problemId) {
   const evs = d.progress.events.filter((e) => e.kind === "problem" && e.item_id === problemId);
@@ -21,9 +21,9 @@ export function PatternsPage({ cid, d }) {
         const r = mastery.patterns[p.id];
         const nProb = kn.problems.filter((x) => x.pattern_id === p.id).length;
         return html`<a class="card course-card" style="display:block;color:inherit" href=${`#/c/${cid}/pattern/${p.id}`}>
-          <div class="row between"><h3 class="m-0">${p.name}</h3>
+          <div class="row between"><h3 class="m-0"><${Tx} text=${p.name} /></h3>
             ${p.calc ? html`<span class="badge accent">calculation</span>` : html`<span class="badge">theory</span>`}</div>
-          <p class="small muted">${p.description}</p>
+          <p class="small muted"><${Tx} text=${p.description} /></p>
           <div class="row small">
             <span class="badge">${p.frequency} past question(s)${totalQ ? ` · ${Math.round((100 * p.frequency) / totalQ)}% of exam` : ""}</span>
             <span class="badge">${nProb} practice problems</span>
@@ -67,9 +67,9 @@ export function PatternPage({ cid, d, patternId }) {
 
   return html`
     <div class="small muted"><a href=${`#/c/${cid}/patterns`}>Exam patterns</a></div>
-    <div class="row between"><h1 class="mt-2">${p.name}</h1>
+    <div class="row between"><h1 class="mt-2"><${Tx} text=${p.name} /></h1>
       ${probs.length > 0 && html`<a class="btn primary" href=${`#/c/${cid}/problem/${probs.find((x) => problemStats(d, x.id).attempts === 0)?.id || probs[0].id}`}>Start practising</a>`}</div>
-    <p>${p.description}</p>
+    <p><${Tx} text=${p.description} /></p>
     <div class="row small mb-4">
       <span class="badge">${p.frequency} past-paper question(s)</span>
       <span class="badge good">readiness ${pct(mastery.patterns[p.id].readiness)}</span>
@@ -104,7 +104,7 @@ export function PatternPage({ cid, d, patternId }) {
           const st = problemStats(d, x.id);
           return html`<tr>
             <td>${x.source === "past_paper" ? html`<span class="badge accent">past paper</span>` : html`<span class="badge">variant</span>`}</td>
-            <td><b>${x.title}</b><div class="tiny muted">${x.source_ref}</div></td>
+            <td><b><${Tx} text=${x.title} /></b><div class="tiny muted">${x.source_ref}</div></td>
             <td>${x.verified === false ? html`<span class="badge warn" title="Independent re-solve disagreed">Check</span>` : x.verified ? html`<span class="badge good">✓ verified</span>` : ""}</td>
             <td class="small muted">${st.attempts ? `best ${pct(st.best)} · ${st.attempts}×` : "not tried"}</td>
             <td style="width:1%"><a class="btn sm" href=${`#/c/${cid}/problem/${x.id}`}>${st.attempts ? "Retry" : "Solve"}</a></td>

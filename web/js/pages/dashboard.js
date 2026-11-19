@@ -1,4 +1,4 @@
-import { html, Md, pct, STATUS_LABEL, Progress } from "../lib.js";
+import { html, Md, pct, STATUS_LABEL, Progress, Tx } from "../lib.js";
 
 export function Ring({ value, label }) {
   const r = 56, c = 2 * Math.PI * r;
@@ -118,7 +118,7 @@ export function DashboardPage({ cid, d }) {
         ${plan.length ? html`<ol class="plan">
           ${plan.map((p, i) => html`<li>
             <span class="plan-n">${String(i + 1).padStart(2, "0")}</span>
-            <div class="plan-body"><div class="plan-name">${p.kind}: ${p.name}</div>${p.sub && html`<div class="muted small">${p.sub}</div>`}</div>
+            <div class="plan-body"><div class="plan-name">${p.kind}: <${Tx} text=${p.name} /></div>${p.sub && html`<div class="muted small"><${Tx} text=${p.sub} /></div>`}</div>
             <a class=${"btn sm" + (i === 0 ? " primary" : "")} href=${p.href}>${p.action}</a>
           </li>`)}
         </ol>` : html`<p class="muted mb-0">Everything looks solid. Run a mixed quiz from <a href=${`#/c/${cid}/practice`}>Practice</a> to keep it fresh.</p>`}
