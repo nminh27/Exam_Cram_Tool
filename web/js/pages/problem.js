@@ -1,4 +1,4 @@
-import { html, useState, useRef, useEffect, api, Md, recordEvents, numericMatches, parseNumber, pct, go, useStore, Tx } from "../lib.js";
+import { html, useState, useMemo, useRef, useEffect, api, Md, recordEvents, numericMatches, parseNumber, pct, go, useStore, Tx, optionOrder } from "../lib.js";
 import { ExplainButton } from "./concept.js";
 import { problemStats } from "./patterns.js";
 
@@ -30,6 +30,7 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
   const store = useStore();
   const [val, setVal] = useState("");
   const [sel, setSel] = useState(step.answer_type === "multi" ? [] : null);
+  const order = useMemo(() => optionOrder((step.choices || []).length), [step.id]); // shuffled once per step
   const [fb, setFb] = useState(null);
   const [grading, setGrading] = useState(false);
   const [selfGrade, setSelfGrade] = useState(false);
@@ -90,12 +91,12 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
         <input type="text" inputmode="decimal" placeholder="your answer" value=${val} onInput=${(e) => setVal(e.target.value)} autofocus />
         ${step.unit && html`<span class="unit"><${Md} text=${step.unit} inline /></span>`}
         <button class="btn primary" disabled=${!val.trim()}>Check</button></form>`}
-      ${step.answer_type === "choice" && html`<div class="q-opts">${step.choices.map((c, k) => html`<button class=${"q-opt" + (sel === k ? " selected" : "")} onClick=${() => setSel(k)}>
-        <span class="key">${"ABCDEFGH"[k]}</span><span><${Md} text=${c} inline /></span></button>`)}</div>
+      ${step.answer_type === "choice" && html`<div class="q-opts">${order.map((k, pos) => html`<button class=${"q-opt" + (sel === k ? " selected" : "")} onClick=${() => setSel(k)}>
+        <span class="key">${"ABCDEFGH"[pos]}</span><span><${Md} text=${step.choices[k]} inline /></span></button>`)}</div>
         <button class="btn primary" onClick=${check} disabled=${sel === null}>Check</button>`}
       ${step.answer_type === "multi" && html`<div class="tiny muted mt-2">Select all that apply.</div>
-        <div class="q-opts">${step.choices.map((c, k) => { const on = sel.includes(k); return html`<button class=${"q-opt" + (on ? " selected" : "")}
-          onClick=${() => setSel(on ? sel.filter((x) => x !== k) : [...sel, k])}><span class="key">${on ? "✓" : ""}</span><span><${Md} text=${c} inline /></span></button>`; })}</div>
+        <div class="q-opts">${order.map((k) => { const on = sel.includes(k); return html`<button class=${"q-opt" + (on ? " selected" : "")}
+          onClick=${() => setSel(on ? sel.filter((x) => x !== k) : [...sel, k])}><span class="key">${on ? "✓" : ""}</span><span><${Md} text=${step.choices[k]} inline /></span></button>`; })}</div>
         <button class="btn primary" onClick=${check} disabled=${!sel.length}>Check</button>`}
       ${step.answer_type === "text" && html`<div class="mt-2">
         <textarea placeholder="Write your answer as you would in the exam…" value=${val} onInput=${(e) => setVal(e.target.value)}></textarea>

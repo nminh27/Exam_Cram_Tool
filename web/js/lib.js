@@ -248,6 +248,13 @@ export function shuffle(a) {
   return arr;
 }
 
+// Display order for answer options: shuffled once per question so the right answer isn't always in the same
+// slot. Two options (Yes/No, True/False) keep their natural order.
+export function optionOrder(n) {
+  const idx = Array.from({ length: n }, (_, k) => k);
+  return n > 2 ? shuffle(idx) : idx;
+}
+
 export const pct = (x) => `${Math.round((x || 0) * 100)}%`;
 
 export function fmtBytes(n) {

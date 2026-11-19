@@ -1,4 +1,4 @@
-import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx, useCourseTone } from "../lib.js";
+import { html, useState, useMemo, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx, useCourseTone, optionOrder } from "../lib.js";
 
 export function ExplainButton({ cid, conceptId, snippet, label }) {
   const hasKey = useHasKey();
@@ -38,6 +38,7 @@ function Guided({ cid, concept, steps }) {
   const [firstTry, setFirstTry] = useState(true);
   const [done, setDone] = useState(false);
   const s = steps[i];
+  const order = useMemo(() => optionOrder(s ? s.options.length : 0), [i, s]); // shuffled once per step
   if (done) return html`<div class="notice good">You discovered it yourself. <button class="btn sm" onClick=${() => { setI(0); setPicked(null); setDone(false); setFirstTry(true); }}>Walk through again</button></div>`;
   const correct = picked === s.correct;
   function pick(k) {
@@ -50,8 +51,8 @@ function Guided({ cid, concept, steps }) {
   return html`<div>
     <div class="tiny muted">Step ${i + 1} of ${steps.length}</div>
     <${Md} text=${s.question_md} />
-    <div class="q-opts">${s.options.map((o, k) => html`<button class=${"q-opt " + (picked === k ? (k === s.correct ? "correct" : "wrong") : "")}
-      onClick=${() => pick(k)}><span class="key">${"ABCDEF"[k]}</span><span><${Md} text=${o} inline /></span></button>`)}</div>
+    <div class="q-opts">${order.map((k, pos) => html`<button class=${"q-opt " + (picked === k ? (k === s.correct ? "correct" : "wrong") : "")}
+      onClick=${() => pick(k)}><span class="key">${"ABCDEF"[pos]}</span><span><${Md} text=${s.options[k]} inline /></span></button>`)}</div>
     ${picked !== null && !correct && html`<div class="feedback bad">Not quite. Think about the everyday situation again and try another option.</div>`}
     ${correct && html`<div class="feedback good"><${Md} text=${s.explanation_md} /></div>
       <div class="row mt-3"><button class="btn primary sm" onClick=${() => {
