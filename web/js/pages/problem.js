@@ -1,4 +1,4 @@
-import { html, useState, useRef, useEffect, api, Md, recordEvents, numericMatches, parseNumber, pct, go, useStore } from "../lib.js";
+import { html, useState, useRef, useEffect, api, Md, recordEvents, numericMatches, parseNumber, pct, go, useStore, Tx } from "../lib.js";
 import { ExplainButton } from "./concept.js";
 import { problemStats } from "./patterns.js";
 
@@ -162,8 +162,8 @@ export function ProblemPage({ cid, d, problemId }) {
   const totalScore = finished ? flat.reduce((a, { s }) => a + (st(s.id).score || 0), 0) / flat.length : 0;
 
   return html`
-    <div class="small muted"><a href=${`#/c/${cid}/patterns`}>Exam patterns</a> / ${pattern && html`<a href=${`#/c/${cid}/pattern/${pattern.id}`}>${pattern.name}</a>`}</div>
-    <div class="row between"><h1 class="mt-2">${p.title}</h1>
+    <div class="small muted"><a href=${`#/c/${cid}/patterns`}>Exam patterns</a> / ${pattern && html`<a href=${`#/c/${cid}/pattern/${pattern.id}`}><${Tx} text=${pattern.name} /></a>`}</div>
+    <div class="row between"><h1 class="mt-2"><${Tx} text=${p.title} /></h1>
       <div class="row">${p.source === "past_paper" ? html`<span class="badge accent">past paper · ${p.source_ref}</span>` : html`<span class="badge">variant · ${p.source_ref}</span>`}</div></div>
     ${p.verified === false && html`<div class="notice warn"><b>An independent re-solve disagreed with this problem's solution.</b> Treat the steps with care.
       ${p.verify_note && html`<details><summary class="small">Details</summary><${Md} text=${p.verify_note} /></details>`}</div>`}

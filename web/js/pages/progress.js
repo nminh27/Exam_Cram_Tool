@@ -1,4 +1,4 @@
-import { html, api, loadCourse, STATUS_LABEL, masteryColor, pct, Progress, timeAgo } from "../lib.js";
+import { html, api, loadCourse, STATUS_LABEL, masteryColor, pct, Progress, timeAgo, Tx } from "../lib.js";
 import { Ring } from "./dashboard.js";
 
 export function ProgressPage({ cid, d }) {
@@ -42,7 +42,7 @@ export function ProgressPage({ cid, d }) {
       <h3>Exam patterns</h3>
       <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Pattern</th><th>Past-paper weight</th><th>Attempts</th><th style="width:30%">Readiness (last 3)</th></tr></thead><tbody>
         ${kn.patterns.map((p) => { const r = mastery.patterns[p.id]; return html`<tr>
-          <td><a href=${`#/c/${cid}/pattern/${p.id}`}>${p.name}</a></td><td>${p.frequency}</td><td>${r.attempts}</td>
+          <td><a href=${`#/c/${cid}/pattern/${p.id}`}><${Tx} text=${p.name} /></a></td><td>${p.frequency}</td><td>${r.attempts}</td>
           <td><${Progress} value=${r.readiness} color="var(--good)" /><span class="tiny muted">${pct(r.readiness)}</span></td></tr>`; })}
       </tbody></table></div>
     </div>
@@ -52,7 +52,7 @@ export function ProgressPage({ cid, d }) {
       if (!cs.length) return null;
       return html`<div class="card"><h3>${t.name}</h3>
         <div class="tbl-wrap"><table class="tbl"><tbody>${cs.map((c) => { const m = mastery.concepts[c.id]; return html`<tr>
-          <td><a href=${`#/c/${cid}/concept/${c.id}`}>${c.name}</a></td>
+          <td><a href=${`#/c/${cid}/concept/${c.id}`}><${Tx} text=${c.name} /></a></td>
           <td style="width:120px"><span class="badge" style=${`color:${masteryColor(m.status)}`}>● ${STATUS_LABEL[m.status]}</span></td>
           <td class="small muted" style="width:90px">${m.attempts} answers</td>
           <td style="width:30%"><${Progress} value=${m.mastery || 0} color=${masteryColor(m.status)} /></td></tr>`; })}</tbody></table></div></div>`;

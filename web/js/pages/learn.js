@@ -1,4 +1,4 @@
-import { html, useState, STATUS_LABEL, masteryColor, pct } from "../lib.js";
+import { html, useState, STATUS_LABEL, masteryColor, pct, Tx } from "../lib.js";
 
 export function LearnPage({ cid, d }) {
   const { kn, mastery } = d;
@@ -39,7 +39,7 @@ export function LearnPage({ cid, d }) {
             const m = mastery.concepts[c.id];
             return html`<tr>
               <td style="width:16px"><span class="dot" style=${`background:${masteryColor(m.status)}`} title=${STATUS_LABEL[m.status]}></span></td>
-              <td><a href=${`#/c/${cid}/concept/${c.id}`}><b>${c.name}</b></a><div class="small muted">${c.one_liner}</div></td>
+              <td><a href=${`#/c/${cid}/concept/${c.id}`}><b><${Tx} text=${c.name} /></b></a><div class="small muted"><${Tx} text=${c.one_liner} /></div></td>
               <td class="small">${c.importance === "core" ? html`<span class="badge accent">core</span>` : html`<span class="badge">${c.importance}</span>`}</td>
               <td class="small muted" title="Past-paper questions that need it">${c.exam_frequency ? `${c.exam_frequency}× in exams` : ""}</td>
               <td class="small" style="width:90px">${m.mastery === null ? html`<span class="muted">—</span>` : pct(m.mastery)}</td>

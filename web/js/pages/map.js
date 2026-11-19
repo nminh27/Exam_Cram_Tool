@@ -1,4 +1,4 @@
-import { html, useState, useEffect, useRef, STATUS_LABEL, pct } from "../lib.js";
+import { html, useState, useEffect, useRef, STATUS_LABEL, pct, Tx } from "../lib.js";
 
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
@@ -123,14 +123,14 @@ export function MapPage({ cid, d }) {
     <div class="map-wrap">
       <div id="cy" ref=${ref}></div>
       ${c && html`<div class="card map-side">
-        <h3>${c.name}</h3>
-        <p class="small">${c.one_liner}</p>
+        <h3><${Tx} text=${c.name} /></h3>
+        <p class="small"><${Tx} text=${c.one_liner} /></p>
         <p class="small"><span class="badge">${STATUS_LABEL[mastery.concepts[c.id].status]}</span>
           ${mastery.concepts[c.id].mastery !== null && html` <span class="badge">${pct(mastery.concepts[c.id].mastery)}</span>`}
           ${c.exam_frequency > 0 && html` <span class="badge">${c.exam_frequency}× in exams</span>`}</p>
         ${c.prerequisites.length > 0 && html`<div class="small"><b>Needs first:</b> ${c.prerequisites.map((p) => byId[p] && html`<span class="chip">${byId[p].name}</span>`)}</div>`}
-        ${(() => { const u = kn.concepts.filter((x) => x.prerequisites.includes(c.id)); return u.length > 0 && html`<div class="small"><b>Unlocks:</b> ${u.map((x) => html`<span class="chip">${x.name}</span>`)}</div>`; })()}
-        ${(() => { const ps = kn.patterns.filter((p) => p.concept_ids.includes(c.id)); return ps.length > 0 && html`<div class="small"><b>Used in exam patterns:</b> ${ps.map((p) => html`<a class="chip" href=${`#/c/${cid}/pattern/${p.id}`}>${p.name}</a>`)}</div>`; })()}
+        ${(() => { const u = kn.concepts.filter((x) => x.prerequisites.includes(c.id)); return u.length > 0 && html`<div class="small"><b>Unlocks:</b> ${u.map((x) => html`<span class="chip"><${Tx} text=${x.name} /></span>`)}</div>`; })()}
+        ${(() => { const ps = kn.patterns.filter((p) => p.concept_ids.includes(c.id)); return ps.length > 0 && html`<div class="small"><b>Used in exam patterns:</b> ${ps.map((p) => html`<a class="chip" href=${`#/c/${cid}/pattern/${p.id}`}><${Tx} text=${p.name} /></a>`)}</div>`; })()}
         <div class="row mt-3">
           <a class="btn sm primary" href=${`#/c/${cid}/concept/${c.id}`}>Study</a>
           <a class="btn sm" href=${`#/c/${cid}/quiz?concept=${c.id}`}>Quiz</a>
