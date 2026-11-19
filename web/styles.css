@@ -635,20 +635,20 @@ h1 { font-size: 1.85rem; }
 .lesson-head .lede { color: var(--ink-soft, rgba(255, 255, 255, .92)); margin-bottom: 0; }
 @media (max-width: 820px) { .lesson-head-text { padding: var(--s-4); } }
 
-/* ---------- Answer states: solid fills instead of see-through tints, so right and wrong are obvious at a glance.
+/* ---------- Answer states: strong fills (about 75% opaque, so the background softly shows through), so right and wrong are obvious at a glance.
    Green = right, red = wrong, violet = your pick before checking; text colours keep at least 4.5:1 contrast. */
-.q-opt.selected { background: #4f22c9; border-color: #a98bff; color: #fff; }
-.q-opt.correct, .order-item.correct { background: #0d7a52; border-color: #6ee7b7; color: #fff; box-shadow: 0 0 0 3px rgba(110, 231, 183, .25); }
-.q-opt.wrong, .order-item.wrong { background: #b3204a; border-color: #ff8fa8; color: #fff; box-shadow: 0 0 0 3px rgba(255, 107, 139, .22); }
+.q-opt.selected { background: rgba(79, 34, 201, .72); border-color: #a98bff; color: #fff; }
+.q-opt.correct, .order-item.correct { background: rgba(13, 122, 82, .75); border-color: #6ee7b7; color: #fff; box-shadow: 0 0 0 3px rgba(110, 231, 183, .25); }
+.q-opt.wrong, .order-item.wrong { background: rgba(179, 32, 74, .75); border-color: #ff8fa8; color: #fff; box-shadow: 0 0 0 3px rgba(255, 107, 139, .22); }
 .q-opt.selected .key, .q-opt.correct .key, .q-opt.wrong .key { background: rgba(255, 255, 255, .92); }
 .q-opt.selected .key { color: #4f22c9; }
 .q-opt.correct .key { color: #0d7a52; }
 .q-opt.wrong .key { color: #b3204a; }
 .q-opt.correct .why, .q-opt.wrong .why, .order-item.correct .n, .order-item.wrong .n { color: rgba(255, 255, 255, .9); }
-.feedback.good { background: #0d7a52; color: #fff; }
-.feedback.bad { background: #b3204a; color: #fff; }
-.feedback.warn { background: #ffc46b; color: #1a0b33; }
-.feedback.info { background: #2a1868; color: #f4effe; }
+.feedback.good { background: rgba(13, 122, 82, .75); color: #fff; }
+.feedback.bad { background: rgba(179, 32, 74, .75); color: #fff; }
+.feedback.warn { background: rgba(255, 196, 107, .85); color: #1a0b33; }
+.feedback.info { background: rgba(42, 24, 104, .75); color: #f4effe; }
 .feedback a { color: inherit; text-decoration: underline; }
 .step.done-correct { border-color: #6ee7b7; }
 .step.done-revealed { border-color: #ffc46b; }
