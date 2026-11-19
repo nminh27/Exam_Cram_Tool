@@ -24,20 +24,26 @@ const NAV = [
   IS_STATIC ? { key: "materials", label: "Course file" } : { key: "materials", label: "Materials" },
 ];
 
-function TopBar({ courseName, children }) {
+// page: "home" | "guide" | "settings" | "course", so the matching link is marked as the current page.
+function TopBar({ courseName, page, children }) {
   const store = useStore();
   const h = store.health;
+  const link = (key, href, label) => html`<a class=${"tlink" + (page === key ? " active" : "")} href=${href}
+    aria-current=${page === key ? "page" : undefined}>${label}</a>`;
   return html`<header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#/">Cramtoolfinal</a>
       ${courseName && html`<span class="crumb">${courseName}</span>`}
       <span class="spacer"></span>
-      ${h && html`<a class="mode" href="#/settings" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
+      ${h && html`<span class="mode" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
         <span class="dot" style=${`background:${h.ai_available ? "var(--good)" : "var(--warn)"}`}></span>
         <span class="mode-text">${h.static ? "Website" : h.ai_available ? h.model : "Claude Code mode"}</span>
-      </a>`}
-      <a class="tlink" href="#/guide">Guide</a>
-      <a class="tlink" href="#/settings">Settings</a>
+      </span>`}
+      <nav class="top-links" aria-label="Main">
+        ${link("home", "#/", page === "course" ? "All courses" : "Home")}
+        ${link("guide", "#/guide", "Guide")}
+        ${link("settings", "#/settings", "Settings")}
+      </nav>
     </div>
     ${children}
   </header>`;
@@ -47,7 +53,7 @@ function CourseShell({ cid, section, view, wide }) {
   const d = useCourse(cid);
   const name = d && d.course ? d.course.name : "";
   return html`
-    <${TopBar} courseName=${name}>
+    <${TopBar} courseName=${name} page="course">
       <nav class="course-nav" aria-label="Course">
         ${NAV.map((n) => html`<a class=${section === n.key ? "active" : ""} aria-current=${section === n.key ? "page" : undefined}
           href=${`#/c/${cid}${n.key ? "/" + n.key : ""}`}>${n.label}</a>`)}
@@ -65,9 +71,9 @@ function App() {
   useEffect(() => { loadHealth().catch(() => {}); }, []);
   const [a, cid, section, sub] = route.parts;
 
-  if (a === "settings") return html`<${TopBar} /><main class="main"><${SettingsPage} /></main>`;
-  if (a === "guide") return html`<${TopBar} /><main class="main"><${GuidePage} /></main>`;
-  if (a !== "c" || !cid) return html`<${TopBar} /><main class="main"><${HomePage} /></main>`;
+  if (a === "settings") return html`<${TopBar} page="settings" /><main class="main"><${SettingsPage} /></main>`;
+  if (a === "guide") return html`<${TopBar} page="guide" /><main class="main"><${GuidePage} /></main>`;
+  if (a !== "c" || !cid) return html`<${TopBar} page="home" /><main class="main"><${HomePage} /></main>`;
 
   const q = route.query;
   const pages = {
