@@ -83,14 +83,14 @@ body::before { /* cool body of the orb: violet-magenta core, indigo shoulder */
     radial-gradient(32% 30% at 50% 45%, rgba(200, 20, 230, .7), transparent 70%),
     radial-gradient(30% 34% at 36% 52%, rgba(80, 30, 240, .6), transparent 70%),
     radial-gradient(38% 40% at 20% 30%, rgba(40, 12, 170, .45), transparent 70%);
-  animation: orb-drift 40s ease-in-out infinite alternate;
+  animation: orb-drift 22s ease-in-out infinite alternate;
 }
 body::after { /* warm rim light and rust corner */
   background:
     radial-gradient(30% 14% at 50% 70%, rgba(255, 170, 110, .32), transparent 70%),
     radial-gradient(22% 26% at 64% 60%, rgba(255, 55, 125, .48), transparent 70%),
     radial-gradient(34% 38% at 82% 80%, rgba(190, 55, 15, .5), transparent 70%);
-  animation: rim-drift 26s ease-in-out infinite alternate;
+  animation: rim-drift 15s ease-in-out infinite alternate;
 }
 @keyframes orb-drift {
   0%   { transform: translate3d(-5%, -3%, 0) rotate(-6deg) scale(1); }
@@ -102,6 +102,23 @@ body::after { /* warm rim light and rust corner */
   50%  { transform: translate3d(-5%, -2%, 0) scale(.96); opacity: 1; }
   100% { transform: translate3d(2%, -5%, 0) scale(1.08); opacity: .85; }
 }
+/* Separate orbs wander across the screen on their own paths and speeds (14-24s), so the glow never moves in step.
+   Soft radial blobs moved with transform only: no blur filter, no repaints. */
+.orbs { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.orbs i { position: absolute; width: 38vmax; height: 38vmax; margin: -19vmax 0 0 -19vmax; border-radius: 50%;
+  mix-blend-mode: screen; will-change: transform; animation: ease-in-out infinite alternate; }
+.orbs i:nth-child(1) { left: 18%; top: 22%; background: radial-gradient(circle, rgba(120, 60, 255, .5), transparent 62%); animation-name: orb-a; animation-duration: 17s; }
+.orbs i:nth-child(2) { left: 78%; top: 30%; background: radial-gradient(circle, rgba(220, 30, 210, .42), transparent 62%); animation-name: orb-b; animation-duration: 21s; }
+.orbs i:nth-child(3) { left: 60%; top: 82%; background: radial-gradient(circle, rgba(255, 70, 130, .4), transparent 62%); animation-name: orb-c; animation-duration: 15s; }
+.orbs i:nth-child(4) { left: 10%; top: 78%; background: radial-gradient(circle, rgba(255, 140, 60, .3), transparent 62%); animation-name: orb-d; animation-duration: 24s; width: 30vmax; height: 30vmax; margin: -15vmax 0 0 -15vmax; }
+.orbs i:nth-child(5) { left: 45%; top: 45%; background: radial-gradient(circle, rgba(80, 40, 230, .38), transparent 62%); animation-name: orb-e; animation-duration: 19s; width: 46vmax; height: 46vmax; margin: -23vmax 0 0 -23vmax; }
+.orbs i:nth-child(6) { left: 88%; top: 88%; background: radial-gradient(circle, rgba(255, 196, 107, .22), transparent 62%); animation-name: orb-f; animation-duration: 14s; width: 24vmax; height: 24vmax; margin: -12vmax 0 0 -12vmax; }
+@keyframes orb-a { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(28vw, 18vh, 0) scale(1.15); } 100% { transform: translate3d(8vw, 48vh, 0) scale(.9); } }
+@keyframes orb-b { 0% { transform: translate3d(0, 0, 0) scale(1.05); } 50% { transform: translate3d(-34vw, 22vh, 0) scale(.85); } 100% { transform: translate3d(-12vw, -14vh, 0) scale(1.1); } }
+@keyframes orb-c { 0% { transform: translate3d(0, 0, 0) scale(.95); } 50% { transform: translate3d(-22vw, -40vh, 0) scale(1.2); } 100% { transform: translate3d(18vw, -20vh, 0) scale(1); } }
+@keyframes orb-d { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(40vw, -24vh, 0) scale(1.1); } 100% { transform: translate3d(20vw, -56vh, 0) scale(.9); } }
+@keyframes orb-e { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-18vw, 16vh, 0) scale(.9); } 100% { transform: translate3d(14vw, -12vh, 0) scale(1.08); } }
+@keyframes orb-f { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-46vw, -30vh, 0) scale(1.25); } 100% { transform: translate3d(-24vw, -64vh, 0) scale(1); } }
 
 a { color: var(--accent); text-decoration: none; }
 @media (hover: hover) { a:hover { text-decoration: underline; text-underline-offset: 3px; } }
@@ -448,7 +465,7 @@ details.faq > .md { margin-top: var(--s-2); }
   .btn:active, .q-opt:active, .chip:active, .course-nav a:active, .course-card:active, a.stat:active { transform: none !important; }
   .modal { animation: fade-in .2s ease; }
   .bar > div { transition: none; }
-  body::before, body::after { animation: none; }
+  body::before, body::after, .orbs i { animation: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
   .topbar { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
