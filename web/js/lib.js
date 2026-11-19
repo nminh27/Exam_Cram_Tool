@@ -71,15 +71,27 @@ export function mdToHtml(src, inline = false) {
   return h.replace(/⟦D⟧/g, "$");
 }
 
+// Course colours follow the home-page list (newest first): violet, magenta, gold, blue, then repeat, so neighbours
+// always differ. A course's lesson titles use the colour of its tile in that list.
+export function sortCourses(list) {
+  return [...(list || [])].sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+}
+export function toneAt(index) {
+  return "tone-" + (Math.max(0, index) % 4);
+}
+export function useCourseTone(cid) {
+  const [tone, setTone] = useState("");
+  useEffect(() => {
+    let live = true;
+    api("/courses").then((list) => { if (live) setTone(toneAt(sortCourses(list).findIndex((c) => c.id === cid))); })
+      .catch(() => { if (live) setTone(toneAt(0)); });
+    return () => { live = false; };
+  }, [cid]);
+  return tone;
+}
+
 // Short labels from a course pack (concept names, one-liners, pattern names, problem titles): plain text,
 // unless an AI wrote LaTeX into them, in which case they are rendered like inline Markdown so $k_d$ shows as maths.
-// Each course keeps one colour everywhere (its home-page tile and its lesson titles): picked from the course id,
-// so it never changes when courses are added, removed or re-sorted.
-export function courseTone(id) {
-  let h = 0;
-  for (const ch of String(id || "")) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return "tone-" + (h % 4);
-}
 
 export function Tx({ text }) {
   const s = text == null ? "" : String(text);

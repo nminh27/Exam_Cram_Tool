@@ -1,4 +1,4 @@
-import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx, courseTone } from "../lib.js";
+import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx, useCourseTone } from "../lib.js";
 
 export function ExplainButton({ cid, conceptId, snippet, label }) {
   const hasKey = useHasKey();
@@ -61,6 +61,7 @@ function Guided({ cid, concept, steps }) {
 }
 
 export function ConceptPage({ cid, d, conceptId }) {
+  const tone = useCourseTone(cid); // same colour as this course's tile on the home page
   const { kn, mastery } = d;
   const c = kn.concepts.find((x) => x.id === conceptId);
   if (!c) return html`<div class="notice bad">Concept not found. <a href=${`#/c/${cid}/learn`}>Back</a></div>`;
@@ -98,7 +99,7 @@ export function ConceptPage({ cid, d, conceptId }) {
     </div>
 
     <header class="lesson-head">
-      <div class=${"lesson-head-text " + courseTone(cid)}>
+      <div class=${"lesson-head-text " + tone}>
         <h1><${Tx} text=${c.name} /></h1>
         <p class="lede lg"><${Tx} text=${c.one_liner} /></p>
       </div>
