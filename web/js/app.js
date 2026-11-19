@@ -25,6 +25,30 @@ const NAV = [
 ];
 
 // page: "home" | "guide" | "settings" | "course", so the matching link is marked as the current page.
+// Brand logo: the name over a study timeline. Dots start far apart and crowd in towards the gold finish flag,
+// the rush of revision before the final. Text uses the page font and colour; screen readers get the name.
+const DOTS = [4, 42, 76, 104, 128, 148, 164, 177, 188, 197, 204, 210, 215.5, 220.5];
+function BrandLogo() {
+  // The word is real text at its natural width; the timeline below scales to exactly that width.
+  return html`<span class="brand-logo">
+    <span class="brand-word">Cramtoolfinal</span>
+    <svg class="brand-line" viewBox="0 0 245 26" aria-hidden="true">
+      <defs>
+        <linearGradient id="brand-dots" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#a98bff" /><stop offset=".45" stop-color="#e070ff" />
+          <stop offset=".75" stop-color="#ff6b9a" /><stop offset="1" stop-color="#ffc46b" />
+        </linearGradient>
+        <pattern id="brand-chk" width="6" height="6" patternUnits="userSpaceOnUse">
+          <rect width="3" height="3" fill="currentColor" /><rect x="3" y="3" width="3" height="3" fill="currentColor" />
+        </pattern>
+      </defs>
+      <g fill="url(#brand-dots)">${DOTS.map((x) => html`<circle cx=${x} cy="19" r="4.4" />`)}</g>
+      <rect x="226" y="1" width="3.6" height="25" fill="#ffd98a" />
+      <rect x="229.6" y="1" width="15.4" height="12" fill="url(#brand-chk)" />
+    </svg>
+  </span>`;
+}
+
 function TopBar({ courseName, page, children }) {
   const store = useStore();
   const h = store.health;
@@ -32,7 +56,7 @@ function TopBar({ courseName, page, children }) {
     aria-current=${page === key ? "page" : undefined}>${label}</a>`;
   return html`<header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="#/">Cramtoolfinal</a>
+      <a class="brand" href="#/" title="Cramtoolfinal: all courses"><${BrandLogo} /></a>
       ${courseName && html`<span class="crumb">${courseName}</span>`}
       <span class="spacer"></span>
       ${h && html`<span class="mode" title=${h.static ? "Website: courses and progress are saved in this browser" : h.ai_available ? `API mode: ${h.provider}` : "Claude Code mode: no AI provider set"}>
