@@ -39,7 +39,7 @@ const FORMAT = `{
       "question_md": "<question>", "options": ["<A>", "<B>", "<C>", "<D>"], "correct": 0,
       "option_explanations": ["<why A is right or wrong>", "<B>", "<C>", "<D>"], "difficulty": 2 } ],
     "guided": { "c-<slug>": [ { "question_md": "<small question leading from everyday experience to the idea>",
-      "options": ["<A>", "<B>", "<C>"], "correct": 1, "explanation_md": "<explanation>" } ] },
+      "options": ["<A>", "<B>", "<C>", "<D>"], "correct": 2, "explanation_md": "<explanation>" } ] },
     "problems": [ {
       "id": "pr-<slug>-<n>", "pattern_id": "p-<slug>", "source": "past_paper | variant", "source_ref": "<past paper and question, or 'variant of …'>",
       "title": "<short title>", "statement_md": "<the full question as in the exam>",
@@ -66,7 +66,7 @@ What to build:
 1. Topics, then every concept in them. For each concept, a full "detail" breakdown: why it exists, what it does, how it works, an everyday picture, at least 4 tiny "atomic_steps", every formula with each symbol explained, the exam wording that signals it, the traps that lose marks, tips, a worked mini-example and self-check questions.
 2. Exam patterns: group every past-paper question into the question types the examiner reuses. Copy each past-paper question word for word into "source_questions".
 3. At least 4 multiple-choice questions per core concept ("mcqs"), each option explained. Mix intuition, misconception and application questions.
-4. A "guided" chain of 3 to 5 small questions for the most important concepts.
+4. A "guided" chain of 3 to 5 small questions (4 options each) for the most important concepts.
 5. "problems": every past-paper question, solved as small steps the way a top student writes the solution (what's given, what's asked, which formula, rearrange, substitute, calculate, check, final answer), plus one new variant per pattern with different numbers.
 
 Rules:
@@ -74,6 +74,7 @@ Rules:
 - Text fields ending in _md are Markdown. Write maths in LaTeX: $...$ inline, $$...$$ on its own line. A literal dollar sign is \\$.
 - Ids are lowercase with dashes and must match exactly wherever they are used (topic_id, prerequisites, concept_ids, pattern_id).
 - "correct" and "correct_choices" count from 0. Give one option explanation per option.
+- Every quiz question ("mcqs") and every "guided" step has exactly 4 options: the right one plus 3 believable wrong ones. Put the right answer in a different position each time (not always A or B); the website also shuffles the order.
 - Step answer types: "numeric" needs numeric_answer as a plain number (calculate it carefully, then check it), with choices [] and correct_choices []. "choice" and "multi" need choices and correct_choices. "text" needs text_answer_md. Use null for numeric_answer and tolerance_pct when the step isn't numeric.
 - Leave "diagram_svg" as "".
 - If the course is too big for one reply, build only the first one or two topics completely and say so in "description". I will then ask you to "continue with the next topics in the same format", and add each reply as another part.
