@@ -1,4 +1,4 @@
-import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC, courseTone } from "../lib.js";
+import { html, useState, useEffect, api, go, useStore, Spinner, timeAgo, IS_STATIC, sortCourses, toneAt } from "../lib.js";
 import { GettingStarted, WhatToExpect } from "./guide.js";
 import { AiBuilder } from "./ai-build.js";
 
@@ -47,7 +47,7 @@ export function HomePage() {
   const h = store.health;
   const now = new Date();
   const dateLine = now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
-  const sorted = courses ? [...courses].sort((a, b) => (b.created_at || 0) - (a.created_at || 0)) : [];
+  const sorted = courses ? sortCourses(courses) : [];
   const latest = sorted[0];
   const hasCourses = sorted.length > 0;
 
@@ -87,8 +87,8 @@ export function HomePage() {
         <div class="sec-head"><h2>Your courses</h2>${hasCourses && html`<span class="muted small">${sorted.length}</span>`}</div>
         ${courses === null ? html`<${Spinner} />`
           : !hasCourses ? html`<p class="muted mb-0">No courses yet. ${IS_STATIC ? "Build one with your AI, or open the demo course to look around." : "Create one, or open the demo course to look around."}</p>`
-          : html`<ul class="course-list">${sorted.map((c) => html`<li>
-              <a class=${"course-row " + courseTone(c.id)} href=${`#/c/${c.id}`}>
+          : html`<ul class="course-list">${sorted.map((c, i) => html`<li>
+              <a class=${"course-row " + toneAt(i)} href=${`#/c/${c.id}`}>
                 <div class="plan-body">
                   <div class="plan-name">${c.name}</div>
                   <div class="muted small">
