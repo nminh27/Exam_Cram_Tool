@@ -1,4 +1,4 @@
-import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx } from "../lib.js";
+import { html, useState, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx, courseTone } from "../lib.js";
 
 export function ExplainButton({ cid, conceptId, snippet, label }) {
   const hasKey = useHasKey();
@@ -98,7 +98,7 @@ export function ConceptPage({ cid, d, conceptId }) {
     </div>
 
     <header class="lesson-head">
-      <div class="lesson-head-text">
+      <div class=${"lesson-head-text " + courseTone(cid)}>
         <h1><${Tx} text=${c.name} /></h1>
         <p class="lede lg"><${Tx} text=${c.one_liner} /></p>
       </div>
