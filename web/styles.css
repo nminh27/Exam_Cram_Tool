@@ -400,6 +400,10 @@ ol.atomic li::before { content: counter(s); position: absolute; left: var(--s-4)
 .feedback.bad { background: var(--bad-bg); }
 .feedback.warn { background: var(--warn-bg); }
 .feedback.info { background: var(--panel-2); }
+.feedback .solution { margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+.feedback .solution-h { font-weight: 700; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; opacity: .85; margin-bottom: var(--s-2); }
+.feedback .solution ol { margin: 0; padding-left: 1.4em; }
+.feedback .solution li { margin-bottom: .35em; }
 .answer-row { display: flex; gap: var(--s-2); align-items: center; margin-top: var(--s-3); flex-wrap: wrap; }
 .answer-row input[type=text] { max-width: 260px; }
 .unit { color: var(--muted); font-weight: 600; }

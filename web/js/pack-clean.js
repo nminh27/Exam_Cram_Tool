@@ -183,7 +183,7 @@ export function cleanPack(input, base = null) {
     const expl = strs(q.option_explanations).slice(0, ok.options.length);
     while (expl.length < ok.options.length) expl.push("");
     return { id: uniqueId(q.id, "", "q", usedQ, resQ), concept_ids: cids, type: MCQ_TYPES.includes(q.type) ? q.type : "application",
-      question_md: str(q.question_md), ...ok, option_explanations: expl, difficulty: Math.min(3, Math.max(1, int(q.difficulty, 2))),
+      question_md: str(q.question_md), ...ok, option_explanations: expl, solution_md: str(q.solution_md), difficulty: Math.min(3, Math.max(1, int(q.difficulty, 2))),
       ...svgField(q.figure_svg) };
   }).filter(Boolean);
   note(badMcq, "broken quiz question(s) were left out");

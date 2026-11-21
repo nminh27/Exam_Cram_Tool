@@ -37,7 +37,8 @@ const FORMAT = `{
     } ],
     "mcqs": [ { "id": "q-<n>", "concept_ids": ["c-<slug>"], "type": "intuition | misconception | application | pattern | map",
       "question_md": "<question>", "options": ["<A>", "<B>", "<C>", "<D>"], "correct": 0,
-      "option_explanations": ["<why A is right or wrong>", "<B>", "<C>", "<D>"], "difficulty": 2 } ],
+      "option_explanations": ["<why A is right or wrong>", "<B>", "<C>", "<D>"],
+      "solution_md": "1. <what is given> 2. <which idea or formula applies> 3. <each substitution and result> 4. <why that is the right option, and where the wrong ones go astray>", "difficulty": 2 } ],
     "guided": { "c-<slug>": [ { "question_md": "<small question leading from everyday experience to the idea>",
       "options": ["<A>", "<B>", "<C>", "<D>"], "correct": 2, "explanation_md": "<explanation>" } ] },
     "problems": [ {
@@ -65,7 +66,7 @@ Read every file carefully, then reply with ONE JSON object in ONE \`\`\`json cod
 What to build:
 1. Topics, then every concept in them. For each concept, a full "detail" breakdown: why it exists, what it does, how it works, an everyday picture, at least 4 tiny "atomic_steps", every formula with each symbol explained, the exam wording that signals it, the traps that lose marks, tips, a worked mini-example and self-check questions.
 2. Exam patterns: group every past-paper question into the question types the examiner reuses. Copy each past-paper question word for word into "source_questions".
-3. At least 4 multiple-choice questions per core concept ("mcqs"), each option explained. Mix intuition, misconception and application questions.
+3. At least 4 multiple-choice questions per core concept ("mcqs"), each option explained, plus a "solution_md": a numbered step-by-step working from the question to the right answer (every substitution shown, then why the tempting wrong options fail). Mix intuition, misconception and application questions.
 4. A "guided" chain of 3 to 5 small questions (4 options each) for the most important concepts.
 5. "problems": every past-paper question, solved as small steps the way a top student writes the solution (what's given, what's asked, which formula, rearrange, substitute, calculate, check, final answer), plus one new variant per pattern with different numbers.
 

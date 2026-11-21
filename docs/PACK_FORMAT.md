@@ -48,7 +48,9 @@ SourceQuestion: `{material_id, number, text_md, marks, solution_md, material_lab
 Guide: `{recognition_cues: [str], recipe: [{step_md, why_md, everyday_link}], tricks: [str], traps: [str], examiner_wants_md}`
 
 ### MCQ
-`{id, concept_ids: [id], type: intuition|misconception|application|pattern|map, question_md, options: [str], correct: int (0-based), option_explanations: [str] (one per option), difficulty: 1-3}`
+`{id, concept_ids: [id], type: intuition|misconception|application|pattern|map, question_md, options: [str], correct: int (0-based), option_explanations: [str] (one per option), solution_md, difficulty: 1-3}`
+
+`solution_md` is a numbered step-by-step working from the question to the right option (what is given, the idea or formula, each substitution, the result, then why the tempting wrong options fail). It is shown under "Step by step" once the question is checked. Packs without it still load (empty string).
 
 Optional `figure_svg`: an SVG shown under the explanation once the question is checked (e.g. the spectrum that answers it). Rendered through `<img>` like `diagram_svg`; leave it out when there is no graph.
 

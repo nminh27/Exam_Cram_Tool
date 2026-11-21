@@ -53,9 +53,10 @@ def det(why, what, how, analogy, visual, steps, formulas=(), spot=(), traps=(), 
             "mini_example_md": example, "self_check": list(check)}
 
 
-def mcq(qid, cids, qtype, question, options, correct, explanations, difficulty=2) -> dict:
+def mcq(qid, cids, qtype, question, options, correct, explanations, difficulty=2, solution="") -> dict:
+    """solution: numbered step-by-step working from the question to the right option (shown after Check)."""
     return {"id": qid, "concept_ids": list(cids), "type": qtype, "question_md": question, "options": list(options),
-            "correct": correct, "option_explanations": list(explanations), "difficulty": difficulty}
+            "correct": correct, "option_explanations": list(explanations), "solution_md": solution, "difficulty": difficulty}
 
 
 def guided_step(question, options, correct, explanation) -> dict:
@@ -265,6 +266,9 @@ def validate(pack_or_kn: dict) -> tuple[list[str], list[str]]:
         if not any(pr["pattern_id"] == p["id"] for pr in kn.get("problems", [])):
             warns.append(f"pattern {p['id']}: no practice problems")
 
+    no_sol = [q["id"] for q in kn.get("mcqs", []) if not str(q.get("solution_md") or "").strip()]
+    if no_sol:
+        warns.append(f"{len(no_sol)} mcq(s) have no step-by-step solution_md (e.g. {', '.join(no_sol[:3])})")
     for q in kn.get("mcqs", []):
         n = len(q.get("options", []))
         if n < 2:
