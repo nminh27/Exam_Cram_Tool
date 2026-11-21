@@ -1,4 +1,4 @@
-import { html, useState, useMemo, api, Md, AnswerFigure, recordEvents, shuffle, pct, loadCourse, useHasKey, IS_STATIC } from "../lib.js";
+import { html, useState, useMemo, api, Md, AnswerFigure, recordEvents, shuffle, pct, loadCourse, useHasKey, IS_STATIC, LESSON_QUIZ_N, lessonQuizTiers } from "../lib.js";
 
 // ------------------------------------------------------------------ building the question list
 
@@ -7,10 +7,12 @@ function mcqItems(kn, mastery, query) {
   const topic = query.get("topic");
   const types = query.get("types") ? query.get("types").split(",") : null;
   const mode = query.get("mode") || "smart";
-  const n = Math.max(1, Math.min(60, +(query.get("n") || (concept ? 12 : 10))));
+  const n = Math.max(1, Math.min(60, +(query.get("n") || (concept ? LESSON_QUIZ_N : 10))));
   const topicOf = Object.fromEntries(kn.concepts.map((c) => [c.id, c.topic_id]));
+  const tiers = concept ? lessonQuizTiers(kn, concept) : null;
+  const tier = (q) => (tiers ? tiers.get(q.id) : 0);
   let pool = kn.mcqs.filter((q) =>
-    (!concept || q.concept_ids.includes(concept))
+    (!concept || tiers.has(q.id))
     && (!topic || q.concept_ids.some((c) => topicOf[c] === topic))
     && (!types || types.includes(q.type)));
   if (mode === "mistakes") pool = pool.filter((q) => mastery.lastResult[q.id] && mastery.lastResult[q.id].score < 1);
@@ -23,8 +25,8 @@ function mcqItems(kn, mastery, query) {
       if (last.score < 1) return 1 + cm * 0.5;
       return 2 + cm + Math.max(0, 1 - (Date.now() / 1000 - last.ts) / 86400 / 3);
     };
-    pool = shuffle(pool).sort((a, b) => pri(a) - pri(b));
-  } else pool = shuffle(pool);
+    pool = shuffle(pool).sort((a, b) => tier(a) - tier(b) || pri(a) - pri(b));
+  } else pool = shuffle(pool).sort((a, b) => tier(a) - tier(b));
   return pool.slice(0, n).map((q) => {
     const order = shuffle(q.options.map((_, i) => i));
     return {

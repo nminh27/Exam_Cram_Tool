@@ -330,3 +330,26 @@ export function Spinner({ label }) {
 export function Empty({ title, children }) {
   return html`<div class="empty"><h3>${title}</h3>${children}</div>`;
 }
+
+// "Quiz me" on a lesson: the lesson's own questions first, then (to reach LESSON_QUIZ_N) questions from the
+// lessons it builds on, unlocks or is confused with, then the rest of its topic, then the rest of the course. Returns Map(mcq id -> tier).
+export const LESSON_QUIZ_N = 10;
+export function lessonQuizTiers(kn, conceptId) {
+  const c = kn.concepts.find((x) => x.id === conceptId);
+  const tiers = new Map();
+  if (!c) return tiers;
+  const near = new Set([...(c.prerequisites || []), ...(c.related || []),
+    ...kn.concepts.filter((x) => (x.prerequisites || []).includes(c.id)).map((x) => x.id)]);
+  near.delete(c.id);
+  for (const q of kn.mcqs) {
+    const ids = q.concept_ids || [];
+    if (ids.includes(c.id)) tiers.set(q.id, 0);
+    else if (ids.some((x) => near.has(x))) tiers.set(q.id, 1);
+    else if (c.topic_id && ids.some((x) => (kn.concepts.find((k) => k.id === x) || {}).topic_id === c.topic_id)) tiers.set(q.id, 2);
+    else tiers.set(q.id, 3);
+  }
+  return tiers;
+}
+export function lessonQuizCount(kn, conceptId) {
+  return Math.min(LESSON_QUIZ_N, lessonQuizTiers(kn, conceptId).size);
+}
