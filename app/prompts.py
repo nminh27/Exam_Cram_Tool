@@ -168,7 +168,7 @@ misconceptions), application (small exam-like use), pattern (show an exam-style 
 stem; ask which concept/approach/first step applies), map (how this concept relates to \
 others: prerequisite, consequence, contrast). 4 options each, exactly one correct (`correct` \
 is the 0-based index), `option_explanations` explains for EVERY option why it is right or \
-wrong, `difficulty` 1-3. No "all/none of the above".
+wrong, `solution_md` is a numbered step-by-step working that gets from the question to the right option (what is given, which idea or formula applies, each substitution and result, then why that matches the right option and where the tempting wrong options go astray), `difficulty` 1-3. No "all/none of the above".
 - `guided`: a Socratic chain of 4-7 small multiple-choice questions that lets the student \
 DISCOVER the concept themselves, starting from an everyday observation and ending at the \
 formal idea. Each step builds on the previous one; `explanation_md` reveals the insight."""
@@ -314,7 +314,7 @@ encouraging, say exactly what to add or fix), `missing_points`."""
 
 MORE_MCQS_TASK = """Write {n} NEW multiple-choice questions for this concept (do not repeat the \
 existing ones). Mix types: intuition, misconception, application, pattern, map. 4 options, \
-one correct, explanations for every option, difficulty 1-3, no "all/none of the above".
+one correct, explanations for every option, a numbered step-by-step `solution_md` that works from the question to the right option, difficulty 1-3, no "all/none of the above".
 
 Concept:
 {concept}

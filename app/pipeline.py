@@ -278,6 +278,7 @@ def clean_mcq(q: dict, concept_ids: list[str], qid: str) -> dict | None:
         "options": opts,
         "correct": correct,
         "option_explanations": expl,
+        "solution_md": str(q.get("solution_md") or ""),
         "difficulty": min(3, max(1, int(q.get("difficulty", 2) or 2))),
         **_svg_field(q.get("figure_svg")),
     }

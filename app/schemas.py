@@ -87,6 +87,7 @@ MCQ = obj({
     "options": arr(STR),
     "correct": INT,
     "option_explanations": arr(STR),
+    "solution_md": STR,
     "difficulty": INT,
 })
 

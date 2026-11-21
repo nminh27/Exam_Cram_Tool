@@ -36,6 +36,7 @@ function mcqItems(kn, mastery, query) {
       explanations: order.map((i) => q.option_explanations[i] || ""),
       correct: order.indexOf(q.correct),
       figure_svg: q.figure_svg || "",
+      solution_md: q.solution_md || "",
     };
   });
 }
@@ -159,6 +160,7 @@ export function QuizPage({ cid, d, query }) {
         ${missed.map((r) => html`<div class="mb-3"><${Md} text=${r.item.question_md} />
           <div class="small">Correct: <b>${r.item.kind === "single" ? html`<${Md} text=${r.item.options[r.item.correct]} inline />`
             : r.item.kind === "multi" ? r.item.correctSet.map((k) => r.item.options[k]).join(", ") : "see order above"}</b></div>
+          ${r.item.solution_md && html`<details class="small mt-2"><summary>Step by step</summary><${Md} text=${r.item.solution_md} /></details>`}
           ${r.item.concept_ids.slice(0, 1).map((c) => kn.concepts.find((x) => x.id === c) && html`<a class="small" href=${`#/c/${cid}/concept/${c}`}>Revisit ${kn.concepts.find((x) => x.id === c).name} →</a>`)}
         </div>`)}</div>`}
       <div class="row"><button class="btn primary" onClick=${again}>Another round</button>
@@ -235,6 +237,7 @@ function Question({ item, onDone, onNext, last }) {
         disabled=${item.kind === "single" ? picked === null : item.kind === "multi" ? !picked.length : false}>Check</button>`
       : html`<div class=${"feedback " + (score === 1 ? "good" : "bad")}>${score === 1 ? "Correct." : "Not quite."}
           ${item.explain_md && html`<${Md} text=${item.explain_md} />`}
+          ${item.solution_md && html`<div class="solution"><div class="solution-h">Step by step</div><${Md} text=${item.solution_md} /></div>`}
           <${AnswerFigure} svg=${item.figure_svg} /></div>
         <div class="row mt-3"><button class="btn primary" onClick=${onNext}>${last ? "See results" : "Next"}</button></div>`}
   </div>`;
