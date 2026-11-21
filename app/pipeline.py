@@ -255,6 +255,12 @@ def topo_order(concepts: list[dict], preferred: list[str]) -> list[str]:
     return order
 
 
+def _svg_field(v) -> dict:
+    """Optional answer figure on a quiz question or problem step: kept only when it is an SVG."""
+    v = str(v or "").strip()
+    return {"figure_svg": v} if v.startswith("<svg") else {}
+
+
 def clean_mcq(q: dict, concept_ids: list[str], qid: str) -> dict | None:
     opts = [str(o) for o in q.get("options", []) if str(o).strip()]
     if len(opts) < 2:
@@ -273,6 +279,7 @@ def clean_mcq(q: dict, concept_ids: list[str], qid: str) -> dict | None:
         "correct": correct,
         "option_explanations": expl,
         "difficulty": min(3, max(1, int(q.get("difficulty", 2) or 2))),
+        **_svg_field(q.get("figure_svg")),
     }
 
 
@@ -305,6 +312,7 @@ def clean_problem(p: dict, pattern: dict, pid: str, known_concepts: set[str]) ->
                 "hint_md": s.get("hint_md", ""),
                 "explanation_md": s.get("explanation_md", ""),
                 "concept_ids": cids,
+                **_svg_field(s.get("figure_svg")),
             })
         parts.append({
             "label": part.get("label", ""),
