@@ -255,6 +255,23 @@ export function optionOrder(n) {
   return n > 2 ? shuffle(idx) : idx;
 }
 
+// Colour themes (styles.css). "orb" is the default; the choice is remembered in this browser.
+export const THEMES = [
+  { id: "orb", name: "Orb", desc: "Glowing violet night (default)", bg: "#0a0420", swatch: ["#5b2bff", "#c800b4", "#ff3d7a", "#ffc46b"] },
+  { id: "snow", name: "Snow blue", desc: "Icy white with clear blue", bg: "#f3f7fc", swatch: ["#1d4ed8", "#0e7490", "#4f46e5", "#bfdbfe"] },
+  { id: "paper", name: "Paper white", desc: "Plain white, black ink", bg: "#fafaf9", swatch: ["#292524", "#78716c", "#d6d3d1", "#e7e5e4"] },
+  { id: "sage", name: "Sage", desc: "Soft green, easy on the eyes", bg: "#f2f5f0", swatch: ["#2d6b55", "#6b7a35", "#d2e0cd", "#9a6a3f"] },
+  { id: "midnight", name: "Midnight", desc: "Plain dark blue, no glow", bg: "#0f1420", swatch: ["#2563eb", "#0f766e", "#7c3aed", "#c2410c"] },
+];
+export function currentTheme() {
+  return document.documentElement.dataset.theme || "orb";
+}
+export function setTheme(id) {
+  if (id === "orb") delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = id;
+  try { localStorage.setItem("cramtoolfinal-theme", id); } catch (e) { /* private window: theme lasts this visit only */ }
+}
+
 export const pct = (x) => `${Math.round((x || 0) * 100)}%`;
 
 export function fmtBytes(n) {
