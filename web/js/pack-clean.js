@@ -14,8 +14,11 @@ const MCQ_TYPES = ["intuition", "misconception", "application", "pattern", "map"
 
 // Pull the JSON object out of a chat reply: code fences, text before or after, a pack or bare knowledge.
 export function extractJson(text) {
-  let s = String(text || "").trim();
-  const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  let s = String(text || "").replace(/^﻿/, "").trim();
+  // A course file (or a bare JSON reply) parses as it is. Its text may itself contain ``` code blocks.
+  if (s.startsWith("{")) { try { return JSON.parse(s); } catch (_) { /* fall through to the reply handling */ } }
+  // A chat reply: take the fenced block. A real fence starts a line; ``` inside JSON strings never does.
+  const fence = s.match(/(?:^|\n)[ \t]*```(?:json)?[^\n]*\n([\s\S]*?)\n[ \t]*```/i);
   if (fence) s = fence[1].trim();
   const a = s.indexOf("{"), b = s.lastIndexOf("}");
   if (a < 0) throw new Error("No JSON found. Paste the AI's whole reply, including the part in curly brackets { … }.");
