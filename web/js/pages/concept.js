@@ -1,4 +1,4 @@
-import { html, useState, useMemo, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx, useCourseTone, optionOrder } from "../lib.js";
+import { html, useState, useMemo, api, Md, recordEvents, STATUS_LABEL, Progress, masteryColor, pct, Spinner, useHasKey, Tx, useCourseTone, optionOrder, lessonQuizCount } from "../lib.js";
 
 export function ExplainButton({ cid, conceptId, snippet, label }) {
   const hasKey = useHasKey();
@@ -82,7 +82,7 @@ export function ConceptPage({ cid, d, conceptId }) {
   const pats = kn.patterns.filter((p) => p.concept_ids.includes(c.id));
   const det = c.detail;
   const guided = (kn.guided || {})[c.id] || [];
-  const nMcq = kn.mcqs.filter((q) => q.concept_ids.includes(c.id)).length;
+  const nMcq = lessonQuizCount(kn, c.id);
   const order = kn.learning_path;
   const idx = order.indexOf(c.id);
   const next = idx >= 0 && idx + 1 < order.length ? byId[order[idx + 1]] : null;
