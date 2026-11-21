@@ -1,4 +1,4 @@
-import { html, useState, useMemo, useRef, useEffect, api, Md, recordEvents, numericMatches, parseNumber, pct, go, useStore, Tx, optionOrder } from "../lib.js";
+import { html, useState, useMemo, useRef, useEffect, api, Md, AnswerFigure, recordEvents, numericMatches, parseNumber, pct, go, useStore, Tx, optionOrder } from "../lib.js";
 import { ExplainButton } from "./concept.js";
 import { problemStats } from "./patterns.js";
 
@@ -124,6 +124,7 @@ function Step({ cid, step, n, state, active, onChange, onFinish, context }) {
       <div><b>Answer:</b> <${Md} text=${answerText(step)} inline /></div>
       ${state.aiFeedback && html`<${Md} text=${state.aiFeedback} />`}
       ${step.explanation_md && html`<div class="mt-2"><${Md} text=${step.explanation_md} /></div>`}
+      <${AnswerFigure} svg=${step.figure_svg} />
     </div>`}
   </div>`;
 }

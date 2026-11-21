@@ -98,6 +98,12 @@ export function Tx({ text }) {
   return s.includes("$") || s.includes("\\(") ? html`<${Md} text=${s} inline />` : s;
 }
 
+// A worked-answer figure (SVG from the course file), shown after a question is checked or revealed.
+export function AnswerFigure({ svg }) {
+  if (!svg || !String(svg).trim().startsWith("<svg")) return null;
+  return html`<div class="diagram answer-fig"><img alt="Figure for this answer" src=${"data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg)} /></div>`;
+}
+
 export function Md({ text, inline, cls }) {
   const h = useMemo(() => mdToHtml(text, inline), [text, inline]);
   return inline

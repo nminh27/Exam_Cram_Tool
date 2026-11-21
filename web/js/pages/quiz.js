@@ -1,4 +1,4 @@
-import { html, useState, useMemo, api, Md, recordEvents, shuffle, pct, loadCourse, useHasKey, IS_STATIC } from "../lib.js";
+import { html, useState, useMemo, api, Md, AnswerFigure, recordEvents, shuffle, pct, loadCourse, useHasKey, IS_STATIC } from "../lib.js";
 
 // ------------------------------------------------------------------ building the question list
 
@@ -33,6 +33,7 @@ function mcqItems(kn, mastery, query) {
       options: order.map((i) => q.options[i]),
       explanations: order.map((i) => q.option_explanations[i] || ""),
       correct: order.indexOf(q.correct),
+      figure_svg: q.figure_svg || "",
     };
   });
 }
@@ -231,7 +232,8 @@ function Question({ item, onDone, onNext, last }) {
     ${!checked ? html`<button class="btn primary" onClick=${check}
         disabled=${item.kind === "single" ? picked === null : item.kind === "multi" ? !picked.length : false}>Check</button>`
       : html`<div class=${"feedback " + (score === 1 ? "good" : "bad")}>${score === 1 ? "Correct." : "Not quite."}
-          ${item.explain_md && html`<${Md} text=${item.explain_md} />`}</div>
+          ${item.explain_md && html`<${Md} text=${item.explain_md} />`}
+          <${AnswerFigure} svg=${item.figure_svg} /></div>
         <div class="row mt-3"><button class="btn primary" onClick=${onNext}>${last ? "See results" : "Next"}</button></div>`}
   </div>`;
 }

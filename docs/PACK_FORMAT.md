@@ -50,6 +50,8 @@ Guide: `{recognition_cues: [str], recipe: [{step_md, why_md, everyday_link}], tr
 ### MCQ
 `{id, concept_ids: [id], type: intuition|misconception|application|pattern|map, question_md, options: [str], correct: int (0-based), option_explanations: [str] (one per option), difficulty: 1-3}`
 
+Optional `figure_svg`: an SVG shown under the explanation once the question is checked (e.g. the spectrum that answers it). Rendered through `<img>` like `diagram_svg`; leave it out when there is no graph.
+
 ### GuidedStep
 `{question_md, options: [str], correct: int, explanation_md}`
 
@@ -71,3 +73,4 @@ Step:
 | `text_answer_md` | model answer / marking points for text steps |
 | `hint_md`, `explanation_md` | nudge without giving it away / full working and why |
 | `concept_ids` | concepts this step exercises (drives mastery) |
+| `figure_svg` | optional: an SVG of the worked answer (a sketch, tree, table), shown with the explanation once the step is answered or revealed |

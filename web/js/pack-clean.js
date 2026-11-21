@@ -43,6 +43,9 @@ function uniqueId(given, name, prefix, used, reserved) {
   return out;
 }
 
+// Optional answer figure: kept only when it is an SVG.
+const svgField = (v) => (str(v).trim().startsWith("<svg") ? { figure_svg: str(v).trim() } : {});
+
 function cleanDetail(d) {
   if (!d || typeof d !== "object") return null;
   const svg = str(d.diagram_svg).trim();
@@ -180,7 +183,8 @@ export function cleanPack(input, base = null) {
     const expl = strs(q.option_explanations).slice(0, ok.options.length);
     while (expl.length < ok.options.length) expl.push("");
     return { id: uniqueId(q.id, "", "q", usedQ, resQ), concept_ids: cids, type: MCQ_TYPES.includes(q.type) ? q.type : "application",
-      question_md: str(q.question_md), ...ok, option_explanations: expl, difficulty: Math.min(3, Math.max(1, int(q.difficulty, 2))) };
+      question_md: str(q.question_md), ...ok, option_explanations: expl, difficulty: Math.min(3, Math.max(1, int(q.difficulty, 2))),
+      ...svgField(q.figure_svg) };
   }).filter(Boolean);
   note(badMcq, "broken quiz question(s) were left out");
 
@@ -226,7 +230,7 @@ export function cleanPack(input, base = null) {
           numeric_answer: at === "numeric" ? num : null,
           tolerance_pct: at === "numeric" ? Math.max(0.1, Number(s.tolerance_pct) || 1) : null,
           unit: str(s.unit), text_answer_md: textAns, hint_md: str(s.hint_md), explanation_md: str(s.explanation_md),
-          concept_ids: cids.length ? cids : pattern.concept_ids.slice(0, 3),
+          concept_ids: cids.length ? cids : pattern.concept_ids.slice(0, 3), ...svgField(s.figure_svg),
         };
       }).filter((s) => s.prompt_md.trim()),
     })).filter((part) => part.steps.length);
