@@ -1,7 +1,23 @@
-import { html, useState, useEffect, api, loadHealth, Spinner, IS_STATIC, REPO_URL } from "../lib.js";
+import { html, useState, useEffect, api, loadHealth, Spinner, IS_STATIC, REPO_URL, THEMES, currentTheme, setTheme } from "../lib.js";
 
 const BLANK = { preset: "anthropic", label: "", base_url: "", model: "", api_key: "", pdf_mode: "auto",
   reasoning: false, max_output_tokens: 0, concurrency: 0, price_in: 0, price_out: 0 };
+
+export function ThemePicker() {
+  const [theme, setThemeState] = useState(currentTheme());
+  const pick = (id) => { setTheme(id); setThemeState(id); };
+  return html`<section class="card" aria-label="Appearance">
+    <h3>Appearance</h3>
+    <p class="muted small mb-0">Pick a colour theme. It's saved in this browser.</p>
+    <div class="theme-grid">
+      ${THEMES.map((t) => html`<button type="button" class="theme-swatch" aria-pressed=${theme === t.id ? "true" : "false"} onClick=${() => pick(t.id)}>
+        <span class="preview" style=${`background:${t.bg}`}>${t.swatch.map((c) => html`<i style=${`background:${c}`}></i>`)}</span>
+        <span class="name">${t.name}${theme === t.id ? " ✓" : ""}</span>
+        <span class="desc">${t.desc}</span>
+      </button>`)}
+    </div>
+  </section>`;
+}
 
 export function SettingsPage() {
   if (IS_STATIC) return html`<${WebsiteSettings} />`; // constant per page load, so hook order is stable
@@ -11,6 +27,7 @@ export function SettingsPage() {
 function WebsiteSettings() {
   return html`
     <h1>Settings</h1>
+    <${ThemePicker} />
     <div class="card">
       <h3>Website mode</h3>
       <ul class="md small">
@@ -54,6 +71,7 @@ function AppSettings() {
 
   return html`
     <h1>Settings</h1>
+    <${ThemePicker} />
     ${err && html`<div class="notice bad">${err}</div>`}
 
     <div class=${"notice " + (s.mode === "api" ? "good" : "accent")}>
