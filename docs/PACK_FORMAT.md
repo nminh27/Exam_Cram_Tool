@@ -39,6 +39,9 @@ atomic_steps: [{step_md, everyday_link}], formulas: [{latex, name, meaning_md, s
 patterns_to_spot: [{cue, signals_md}], common_traps: [{trap_md, fix_md}], tips_tricks: [{tip_md, source}], mini_example_md, self_check: [str]`
 
 `diagram_svg` is rendered through an `<img>` tag (scripts can't run); keep it small and self-contained.
+House style for every SVG (`diagram_svg`, `figure_svg`): about 520×240, a first `<rect>` filling it in `#170b3a` with `rx` 10,
+text `#f4effe` / `#b6aad8` in a monospace font at 11-14 px, accents `#c977ff #ff6b9a #ffc46b #6ee7b7 #7aa2ff`
+(the palette of `inbox/figures.py`). The website's AI prompt asks for the same.
 
 ### Pattern
 `{id, name, description, calc: bool, concept_ids: [id], frequency: int, source_questions: [SourceQuestion], guide: Guide|null}`
