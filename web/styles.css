@@ -587,6 +587,25 @@ ol.plan.how li { align-items: flex-start; }
 ol.plan.how .plan-n { padding-top: 2px; }
 ol.plan.how .md { margin-top: var(--s-1); }
 
+/* ---------- practice: train topic by topic */
+.topic-train { margin-bottom: var(--gap); }
+ol.topic-list { list-style: none; margin: 0; padding: 0; }
+.topic-item { padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
+.topic-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.topic-head { display: flex; align-items: center; gap: var(--s-4); }
+.topic-body { flex: 1; min-width: 0; }
+.topic-actions { flex: none; gap: var(--s-2); }
+.topic-lessons { margin: var(--s-2) 0 0 calc(1.75rem + var(--s-4)); }
+.topic-lessons > summary { color: var(--muted); cursor: pointer; }
+.topic-lessons ul.plain { list-style: none; margin: var(--s-2) 0 0; padding: 0; }
+.topic-lessons ul.plain li { padding: var(--s-1) 0; gap: var(--s-3); }
+.btn.disabled { opacity: .5; pointer-events: none; }
+@media (max-width: 640px) {
+  .topic-head { flex-wrap: wrap; }
+  .topic-actions { width: 100%; margin-left: calc(1.75rem + var(--s-4)); }
+  .topic-lessons { margin-left: 0; }
+}
+
 /* ---------- build a course with your own AI (website) */
 textarea.ai-reply { min-height: 9rem; font-family: var(--mono); font-size: .8rem; line-height: 1.45; }
 .prompt-peek > summary { font-weight: 500; color: var(--muted); padding: var(--s-2) 0; }

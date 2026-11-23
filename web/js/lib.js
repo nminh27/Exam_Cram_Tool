@@ -353,3 +353,23 @@ export function lessonQuizTiers(kn, conceptId) {
 export function lessonQuizCount(kn, conceptId) {
   return Math.min(LESSON_QUIZ_N, lessonQuizTiers(kn, conceptId).size);
 }
+
+// Topics in teaching order (first appearance of their lessons on the learning path), each with its lessons in order,
+// its quiz questions and the exam problems whose patterns use its lessons. Used by Practice → Train topic by topic.
+export function topicsInOrder(kn) {
+  const path = kn.learning_path && kn.learning_path.length ? kn.learning_path : kn.concepts.map((c) => c.id);
+  const rank = Object.fromEntries(path.map((id, i) => [id, i]));
+  const byTopic = {};
+  for (const c of kn.concepts) (byTopic[c.topic_id] ||= []).push(c);
+  return kn.topics
+    .map((t) => {
+      const concepts = (byTopic[t.id] || []).slice().sort((a, b) => (rank[a.id] ?? 1e9) - (rank[b.id] ?? 1e9));
+      const ids = new Set(concepts.map((c) => c.id));
+      const mcqs = kn.mcqs.filter((q) => (q.concept_ids || []).some((x) => ids.has(x)));
+      const pats = new Set(kn.patterns.filter((p) => (p.concept_ids || []).some((x) => ids.has(x))).map((p) => p.id));
+      const problems = kn.problems.filter((x) => pats.has(x.pattern_id));
+      return { topic: t, concepts, mcqs, problems, first: Math.min(...concepts.map((c) => rank[c.id] ?? 1e9)) };
+    })
+    .filter((x) => x.concepts.length)
+    .sort((a, b) => a.first - b.first);
+}

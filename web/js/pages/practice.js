@@ -1,5 +1,50 @@
-import { html, useState, go, pct, Tx } from "../lib.js";
+import { html, useState, go, pct, Tx, topicsInOrder } from "../lib.js";
 import { problemStats } from "./patterns.js";
+
+// One row per topic, in teaching order: quiz the whole topic, try one of its exam problems, or quiz a single lesson.
+// Study a week, then train that week.
+function TopicTrainer({ cid, d }) {
+  const { kn, mastery } = d;
+  const rows = topicsInOrder(kn);
+  if (!rows.length) return null;
+  const randomFrom = (list) => {
+    const untried = list.filter((x) => problemStats(d, x.id).attempts === 0);
+    const pool = untried.length ? untried : list;
+    const x = pool[Math.floor(Math.random() * pool.length)];
+    go(`/c/${cid}/problem/${x.id}?n=${Date.now()}`);
+  };
+  return html`<section class="card topic-train">
+    <div class="sec-head"><h3 class="m-0">Train topic by topic</h3>
+      <span class="muted small">Study a topic, then train just that topic</span></div>
+    <ol class="topic-list">
+      ${rows.map(({ topic, concepts, mcqs, problems }, i) => {
+        const seen = concepts.map((c) => mastery.concepts[c.id] && mastery.concepts[c.id].mastery).filter((m) => m !== null && m !== undefined);
+        const avg = seen.length ? seen.reduce((a, b) => a + b, 0) / concepts.length : null;
+        const n = Math.min(10, mcqs.length);
+        return html`<li class="topic-item">
+          <div class="topic-head">
+            <span class="plan-n">${String(i + 1).padStart(2, "0")}</span>
+            <div class="topic-body">
+              <div class="plan-name"><${Tx} text=${topic.name} /></div>
+              <div class="tiny muted">${concepts.length} lesson${concepts.length === 1 ? "" : "s"} · ${mcqs.length} quiz questions · ${problems.length} exam problem${problems.length === 1 ? "" : "s"}${avg !== null ? ` · ${pct(avg)} mastered` : " · not started"}</div>
+              <div class="bar mt-1"><div style=${`width:${Math.round(100 * (avg || 0))}%`}></div></div>
+            </div>
+            <div class="row topic-actions">
+              <a class=${"btn sm primary" + (n ? "" : " disabled")} href=${n ? `#/c/${cid}/quiz?mode=smart&n=${n}&topic=${topic.id}` : null}
+                aria-disabled=${!n}>Quiz topic${n ? ` (${n})` : ""}</a>
+              <button class="btn sm" onClick=${() => randomFrom(problems)} disabled=${!problems.length}>Exam problem</button>
+            </div>
+          </div>
+          <details class="topic-lessons"><summary class="small">Lessons in this topic</summary>
+            <ul class="plain">${concepts.map((c) => html`<li class="row between">
+              <a href=${`#/c/${cid}/concept/${c.id}`}><${Tx} text=${c.name} /></a>
+              <a class="btn sm" href=${`#/c/${cid}/quiz?concept=${c.id}`}>Quiz lesson</a></li>`)}</ul>
+          </details>
+        </li>`;
+      })}
+    </ol>
+  </section>`;
+}
 
 const TYPES = [
   ["intuition", "Intuition (everyday scenarios)"], ["misconception", "Misconceptions"],
@@ -34,6 +79,7 @@ export function PracticePage({ cid, d }) {
 
   return html`
     <h1>Practice</h1>
+    <${TopicTrainer} cid=${cid} d=${d} />
     <div class="grid two">
       <div class="card">
         <h3>Concept quiz (MCQ)</h3>
