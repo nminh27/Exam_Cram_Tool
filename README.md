@@ -40,6 +40,9 @@ Then you train:
 - **New course:** home page → *Make your course with your own AI* → **Copy prompt**, give it to your AI chat with your files,
   paste the reply, **Create course**. The prompt (`web/js/ai-prompt.js`) asks for the [knowledge pack format](docs/PACK_FORMAT.md);
   `web/js/pack-clean.js` repairs small mistakes (missing fields, clashing ids, out-of-range answers) and lists what it changed.
+- **Any subject, no files:** pick *Any subject, no files*, type what you want to learn (e.g. "Korean for beginners"), your level
+  and an optional goal, and copy that prompt instead. The AI builds lessons, exercise types, quizzes and practice problems from
+  its own knowledge, in the same format.
 - **Big course:** the AI builds a topic or two per reply. On the course's **Course file** page, **Copy "continue" message**, send it
   to the same chat, and paste each new reply under *Add more with your AI*. You can add more questions the same way at any time.
 - **Already have a file?** **Open course file** loads a `.json` course file you or a classmate saved; the demo course is built in.
