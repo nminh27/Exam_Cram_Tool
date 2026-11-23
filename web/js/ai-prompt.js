@@ -62,6 +62,24 @@ const FORMAT = `{
   }
 }`;
 
+// Rules shared by both prompts (after the "Rules:" heading, minus the first line about sources).
+const RULES = `- Text fields ending in _md are Markdown. Write maths in LaTeX: $...$ inline, $$...$$ on its own line. A literal dollar sign is \\$.
+- Ids are lowercase with dashes and must match exactly wherever they are used (topic_id, prerequisites, concept_ids, pattern_id).
+- "correct" and "correct_choices" count from 0. Give one option explanation per option.
+- Every quiz question ("mcqs") and every "guided" step has exactly 4 options: the right one plus 3 believable wrong ones. Put the right answer in a different position each time (not always A or B); the website also shuffles the order.
+- Step answer types: "numeric" needs numeric_answer as a plain number (calculate it carefully, then check it), with choices [] and correct_choices []. "choice" and "multi" need choices and correct_choices. "text" needs text_answer_md. Use null for numeric_answer and tolerance_pct when the step isn't numeric.
+- Work out every number step by step and check it before writing it down. The numbers in a lesson, its quiz, its problems and its figures must agree.
+- Write tokens in angle brackets such as <s>, </s> or <UNK> inside backticks (\`<s>\`) or as ⟨s⟩. Bare <...> is read as HTML and disappears.
+- Don't start a line with * or _ unless you mean a list or italics; write "times" or × for multiplication in text.
+
+SVG rules (for "diagram_svg" and "figure_svg"):
+- One self-contained <svg> element: xmlns="http://www.w3.org/2000/svg", a viewBox and a width and height of about 520 by 240 (taller for trees). No scripts, no links, no images, no external fonts.
+- Use single quotes for the attributes inside the SVG, so the JSON string needs no escaping. Keep each SVG small (under about 4 KB).
+- Draw on a dark background so it matches the website: a first <rect width='100%' height='100%' rx='10' fill='#170b3a'/>, text in #f4effe (labels) and #b6aad8 (axes, notes), font-family='monospace' at 11 to 14 px, and lines and highlights in #c977ff, #ff6b9a, #ffc46b, #6ee7b7 and #7aa2ff.
+- Label everything a student needs (axes, units, key values) and keep labels from overlapping. Draw only what the numbers say.
+- If you can't draw something correctly, leave the field empty rather than guess.
+- If the course is too big for one reply, build only the first one or two topics completely and say so in "description". I will then ask you to "continue with the next topics in the same format", and add each reply as another part.`;
+
 export const AI_PROMPT = `You are building a course file for Cramtoolfinal, a study website. I have attached my course materials: lecture notes, slides, tutorial sheets and past exam papers (with solutions if I have them).
 
 Read every file carefully, then reply with ONE JSON object in ONE \`\`\`json code block, following exactly the format below. No other text before or after it.
@@ -77,25 +95,41 @@ What to build:
 
 Rules:
 - Use only what is in my files. If something is missing, leave it out rather than invent it.
-- Text fields ending in _md are Markdown. Write maths in LaTeX: $...$ inline, $$...$$ on its own line. A literal dollar sign is \\$.
-- Ids are lowercase with dashes and must match exactly wherever they are used (topic_id, prerequisites, concept_ids, pattern_id).
-- "correct" and "correct_choices" count from 0. Give one option explanation per option.
-- Every quiz question ("mcqs") and every "guided" step has exactly 4 options: the right one plus 3 believable wrong ones. Put the right answer in a different position each time (not always A or B); the website also shuffles the order.
-- Step answer types: "numeric" needs numeric_answer as a plain number (calculate it carefully, then check it), with choices [] and correct_choices []. "choice" and "multi" need choices and correct_choices. "text" needs text_answer_md. Use null for numeric_answer and tolerance_pct when the step isn't numeric.
-- Work out every number step by step and check it before writing it down. The numbers in a lesson, its quiz, its problems and its figures must agree.
-- Write tokens in angle brackets such as <s>, </s> or <UNK> inside backticks (\`<s>\`) or as ⟨s⟩. Bare <...> is read as HTML and disappears.
-- Don't start a line with * or _ unless you mean a list or italics; write "times" or × for multiplication in text.
-
-SVG rules (for "diagram_svg" and "figure_svg"):
-- One self-contained <svg> element: xmlns="http://www.w3.org/2000/svg", a viewBox and a width and height of about 520 by 240 (taller for trees). No scripts, no links, no images, no external fonts.
-- Use single quotes for the attributes inside the SVG, so the JSON string needs no escaping. Keep each SVG small (under about 4 KB).
-- Draw on a dark background so it matches the website: a first <rect width='100%' height='100%' rx='10' fill='#170b3a'/>, text in #f4effe (labels) and #b6aad8 (axes, notes), font-family='monospace' at 11 to 14 px, and lines and highlights in #c977ff, #ff6b9a, #ffc46b, #6ee7b7 and #7aa2ff.
-- Label everything a student needs (axes, units, key values) and keep labels from overlapping. Draw only what the numbers say.
-- If you can't draw something correctly, leave the field empty rather than guess.
-- If the course is too big for one reply, build only the first one or two topics completely and say so in "description". I will then ask you to "continue with the next topics in the same format", and add each reply as another part.
+${RULES}
 
 Format:
 ${FORMAT}`;
+
+// The "any subject" prompt: no files, the AI teaches a subject the student names (a language, a skill, a school topic…).
+export function topicPrompt({ subject, level, goal }) {
+  const s = (subject || "").trim() || "<write the subject here>";
+  const lv = (level || "").trim() || "complete beginner";
+  const g = (goal || "").trim();
+  return `You are building a course file for Cramtoolfinal, a study website. I have no files: teach me from your own knowledge.
+
+Subject: ${s}
+My level: ${lv}${g ? `\nMy goal: ${g}` : ""}
+
+Plan a complete course for this subject at my level, then reply with ONE JSON object in ONE \`\`\`json code block, following exactly the format below. No other text before or after it.
+
+What to build:
+1. "overview_md": what the course covers, in what order, roughly how long each topic takes, and how I should study it (a short weekly plan). Say how I will know I have reached my goal.
+2. Topics, then every concept in them, in the order a good teacher would teach them, each building on the last. For each concept, a full "detail" breakdown: why it exists, what it does, how it works, an everyday picture, at least 4 tiny "atomic_steps", the exam or real-life wording that signals it, the traps beginners fall into, tips, a worked mini-example (every step shown) and self-check questions. Use "formulas" only for real formulas or fixed rules written in LaTeX; otherwise leave it as []. Fill "prerequisites" and "related" carefully: the website uses them to link lessons and to top up each lesson's quiz.
+3. A "diagram_svg" for every concept that has something to picture: a table, a chart, a timeline, a tree, a flow of steps, a worked example drawn out.
+4. "patterns": the kinds of exercises or test questions a learner of this subject meets (for a language: read aloud, translate a sentence, choose the right particle, conjugate a verb, listen and answer). Leave "source_questions" as [] (there are no past papers) and fill each "guide" with how to tackle that kind of exercise.
+5. At least 6 multiple-choice questions per core concept ("mcqs"), so a lesson's "Quiz me" has 10 good questions with its neighbours. Mix intuition, misconception and application questions. Each has an explanation for every option and a "solution_md": a numbered step-by-step working from the question to the right answer, one step per line, then why the tempting wrong options fail.
+6. A "guided" chain of 3 to 5 small questions (4 options each) for every core concept, leading from an everyday observation to the idea.
+7. "problems": 3 practice exercises per pattern ("source": "variant", "source_ref": "practice"), each solved as small steps the way a good teacher would walk through it, from easy to harder. Use "text" steps for open answers, with the model answer in text_answer_md.
+
+Rules:
+- Teach only well-established, correct material. If you are not sure of something, leave it out rather than guess.
+- Match my level: explain every new word or symbol the first time you use it.
+- For a language: write every example in the language's own script, then its pronunciation (romanisation), then the English meaning, e.g. 안녕하세요 (annyeonghaseyo) "hello".
+${RULES}
+
+Format:
+${FORMAT}`;
+}
 
 export const AI_CONTINUE = "Continue with the next topics in exactly the same JSON format, in one ```json code block. " +
   "Reuse the same ids for concepts and patterns you already made when you refer to them, and don't repeat them.";
