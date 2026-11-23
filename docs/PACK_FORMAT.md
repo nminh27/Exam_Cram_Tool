@@ -58,6 +58,10 @@ Guide: `{recognition_cues: [str], recipe: [{step_md, why_md, everyday_link}], tr
 
 Optional `figure_svg`: an SVG shown under the explanation once the question is checked (e.g. the spectrum that answers it). Rendered through `<img>` like `diagram_svg`; leave it out when there is no graph.
 
+Optional `question_svg`: an SVG shown **with the question**, before it is answered, for questions about a table, lattice, tree,
+stack or tagging scheme that a student would otherwise have to remember (draw the structure and label what the question
+points at, not the answer). Questions without one offer the first linked lesson's `diagram_svg` behind a "Show a figure to help" button.
+
 ### GuidedStep
 `{question_md, options: [str], correct: int, explanation_md}`
 

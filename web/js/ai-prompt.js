@@ -40,6 +40,7 @@ const FORMAT = `{
       "option_explanations": ["<why A is right or wrong>", "<B>", "<C>", "<D>"],
       "solution_md": "1. <what is given>\\n2. <which idea or formula applies>\\n3. <each substitution and result>\\n4. <why that is the right option, and where the wrong ones go astray>",
       "figure_svg": "<only if the answer is a graph, tree, table or sketch: an SVG of the worked answer; otherwise leave this key out>",
+      "question_svg": "<only if the question is about a table, lattice, tree, stack or tagging scheme: an SVG of that structure shown with the question (label what it points at, don't give the answer away); otherwise leave this key out>",
       "difficulty": 2 } ],
     "guided": { "c-<slug>": [ { "question_md": "<small question leading from everyday experience to the idea>",
       "options": ["<A>", "<B>", "<C>", "<D>"], "correct": 2, "explanation_md": "<explanation>" } ] },
@@ -72,7 +73,7 @@ const RULES = `- Text fields ending in _md are Markdown. Write maths in LaTeX: $
 - Write tokens in angle brackets such as <s>, </s> or <UNK> inside backticks (\`<s>\`) or as ⟨s⟩. Bare <...> is read as HTML and disappears.
 - Don't start a line with * or _ unless you mean a list or italics; write "times" or × for multiplication in text.
 
-SVG rules (for "diagram_svg" and "figure_svg"):
+SVG rules (for "diagram_svg", "figure_svg" and "question_svg"):
 - One self-contained <svg> element: xmlns="http://www.w3.org/2000/svg", a viewBox and a width and height of about 520 by 240 (taller for trees). No scripts, no links, no images, no external fonts.
 - Use single quotes for the attributes inside the SVG, so the JSON string needs no escaping. Keep each SVG small (under about 4 KB).
 - Draw on a dark background so it matches the website: a first <rect width='100%' height='100%' rx='10' fill='#170b3a'/>, text in #f4effe (labels) and #b6aad8 (axes, notes), font-family='monospace' at 11 to 14 px, and lines and highlights in #c977ff, #ff6b9a, #ffc46b, #6ee7b7 and #7aa2ff.
@@ -89,7 +90,7 @@ What to build:
 2. Topics, then every concept in them, in the order the course teaches them. For each concept, a full "detail" breakdown: why it exists, what it does, how it works, an everyday picture, at least 4 tiny "atomic_steps", every formula with each symbol explained, the exam wording that signals it, the traps that lose marks, tips, a worked mini-example in the style of the past papers (every step shown) and self-check questions. Fill "prerequisites" and "related" carefully: the website uses them to link lessons and to top up each lesson's quiz.
 3. A "diagram_svg" for every concept that has something to picture: a graph, a table being filled, a tree, a flow of steps, a worked example drawn out. Use the same numbers as the lesson's mini-example.
 4. Exam patterns: group every past-paper question into the question types the examiner reuses. Copy each past-paper question word for word into "source_questions", with its question number and marks.
-5. At least 6 multiple-choice questions per core concept ("mcqs"), so a lesson's "Quiz me" has 10 good questions with its neighbours. Mix intuition, misconception and application questions. Each has an explanation for every option and a "solution_md": a numbered step-by-step working from the question to the right answer, one step per line (what is given, which idea or formula applies, every substitution and its result, a quick check, then why the tempting wrong options fail). When the answer is a graph, a tree or a filled table, add "figure_svg" with it drawn.
+5. At least 6 multiple-choice questions per core concept ("mcqs"), so a lesson's "Quiz me" has 10 good questions with its neighbours. Mix intuition, misconception and application questions. Each has an explanation for every option and a "solution_md": a numbered step-by-step working from the question to the right answer, one step per line (what is given, which idea or formula applies, every substitution and its result, a quick check, then why the tempting wrong options fail). When the answer is a graph, a tree or a filled table, add "figure_svg" with it drawn. When the question asks about a table, a lattice, a tree, a stack or a tagging scheme (e.g. "what is in cell D(0, j)?"), add "question_svg": the structure drawn with the cell or part in question marked, so the student can reason it out instead of remembering it.
 6. A "guided" chain of 3 to 5 small questions (4 options each) for every core concept, leading from an everyday observation to the idea.
 7. "problems": every past-paper question, solved as small steps the way a top student writes the solution (what's given, what's asked, which formula, rearrange, substitute, calculate, check, final answer), plus one new variant per pattern with different numbers. When a step asks the student to draw or sketch something (a spectrum, a parse tree, a waveform, a graph), give its "figure_svg": the correct drawing.
 

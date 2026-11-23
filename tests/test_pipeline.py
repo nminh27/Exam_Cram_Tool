@@ -140,3 +140,12 @@ def test_full_pipeline(tmp_data, monkeypatch):
 def test_norm_qnum():
     assert pipeline.norm_qnum("Q1") == pipeline.norm_qnum("1") == pipeline.norm_qnum("Question 1")
     assert pipeline.norm_qnum("3(b)") == "3b"
+
+
+def test_clean_mcq_keeps_figures():
+    svg = "<svg xmlns='http://www.w3.org/2000/svg'></svg>"
+    q = {"options": ["a", "b"], "correct": 1, "question_md": "?", "figure_svg": svg, "question_svg": svg}
+    out = pipeline.clean_mcq(q, ["c-x"], "q-1")
+    assert out["figure_svg"] == svg and out["question_svg"] == svg
+    out = pipeline.clean_mcq({**q, "question_svg": "not an svg"}, ["c-x"], "q-1")
+    assert "question_svg" not in out

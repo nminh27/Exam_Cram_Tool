@@ -36,9 +36,22 @@ function mcqItems(kn, mastery, query) {
       explanations: order.map((i) => q.option_explanations[i] || ""),
       correct: order.indexOf(q.correct),
       figure_svg: q.figure_svg || "",
+      question_svg: q.question_svg || "",
+      ...helpFigure(kn, q.concept_ids),
       solution_md: q.solution_md || "",
     };
   });
+}
+
+// The lesson figure of the question's first lesson that has one: offered as "Show a figure to help" while answering,
+// so a question about a table or a tree can be reasoned out instead of remembered.
+function helpFigure(kn, conceptIds) {
+  for (const id of conceptIds || []) {
+    const c = kn.concepts.find((x) => x.id === id);
+    const svg = c && c.detail && c.detail.diagram_svg;
+    if (svg && String(svg).trim().startsWith("<svg")) return { help_svg: svg, help_name: c.name };
+  }
+  return {};
 }
 
 function sample(arr, k) { return shuffle(arr).slice(0, k); }
@@ -188,11 +201,18 @@ export function QuizPage({ cid, d, query }) {
     </div>`;
 }
 
+function QuestionFigure({ svg, alt, caption }) {
+  if (!svg || !String(svg).trim().startsWith("<svg")) return null;
+  return html`<div class="diagram q-fig"><img alt=${alt} src=${"data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg)} />
+    ${caption && html`<div class="tiny muted mt-1">${caption}</div>`}</div>`;
+}
+
 function Question({ item, onDone, onNext, last }) {
   const [picked, setPicked] = useState(item.kind === "multi" ? [] : null);
   const [order, setOrder] = useState(item.kind === "order" ? item.options : null);
   const [checked, setChecked] = useState(false);
   const [score, setScore] = useState(0);
+  const [help, setHelp] = useState(false);
 
   function check() {
     let s = 0;
@@ -212,6 +232,10 @@ function Question({ item, onDone, onNext, last }) {
 
   return html`<div>
     <div class="q-stem"><${Md} text=${item.question_md} /></div>
+    ${item.question_svg ? html`<${QuestionFigure} svg=${item.question_svg} alt="Figure for this question" />`
+      : item.help_svg && !checked && html`<div class="q-help">
+          <button class="btn sm ghost" onClick=${() => setHelp(!help)}>${help ? "Hide the figure" : "Show a figure to help"}</button>
+          ${help && html`<${QuestionFigure} svg=${item.help_svg} alt=${`Lesson figure: ${item.help_name}`} caption=${`From the lesson: ${item.help_name}`} />`}</div>`}
 
     ${item.kind === "single" && html`<div class="q-opts">${item.options.map((o, k) => {
       let cls = "q-opt";

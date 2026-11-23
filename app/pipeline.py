@@ -281,6 +281,7 @@ def clean_mcq(q: dict, concept_ids: list[str], qid: str) -> dict | None:
         "solution_md": str(q.get("solution_md") or ""),
         "difficulty": min(3, max(1, int(q.get("difficulty", 2) or 2))),
         **_svg_field(q.get("figure_svg")),
+        **({"question_svg": str(q["question_svg"]).strip()} if str(q.get("question_svg") or "").strip().startswith("<svg") else {}),
     }
 
 
