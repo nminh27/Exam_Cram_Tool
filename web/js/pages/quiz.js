@@ -1,4 +1,4 @@
-import { html, useState, useMemo, api, Md, AnswerFigure, recordEvents, shuffle, pct, loadCourse, useHasKey, IS_STATIC, LESSON_QUIZ_N, lessonQuizTiers } from "../lib.js";
+import { html, useState, useMemo, api, Md, AnswerFigure, recordEvents, shuffle, pct, loadCourse, useHasKey, IS_STATIC, LESSON_QUIZ_N, lessonQuizTiers, topicsInOrder } from "../lib.js";
 
 // ------------------------------------------------------------------ building the question list
 
@@ -129,6 +129,10 @@ export function QuizPage({ cid, d, query }) {
   const hasKey = useHasKey();
   const concept = query.get("concept");
   const cName = concept && (kn.concepts.find((c) => c.id === concept) || {}).name;
+  const topic = query.get("topic");
+  const tName = topic && (kn.topics.find((t) => t.id === topic) || {}).name;
+  const order = topic ? topicsInOrder(kn) : [];
+  const next = order[order.findIndex((x) => x.topic.id === topic) + 1];
 
   const again = () => {
     const p = new URLSearchParams(query);
@@ -165,6 +169,7 @@ export function QuizPage({ cid, d, query }) {
         </div>`)}</div>`}
       <div class="row"><button class="btn primary" onClick=${again}>Another round</button>
         ${concept && hasKey && html`<button class="btn" onClick=${genMore} disabled=${busyMore}>${busyMore ? "Generating…" : "Generate 6 fresh questions"}</button>`}
+        ${next && next.mcqs.length > 0 && html`<a class="btn" href=${`#/c/${cid}/quiz?mode=smart&n=${Math.min(10, next.mcqs.length)}&topic=${next.topic.id}`}>Next topic: ${next.topic.name} →</a>`}
         <a class="btn" href=${`#/c/${cid}/practice`}>Back to practice</a></div>`;
   }
 
@@ -174,7 +179,7 @@ export function QuizPage({ cid, d, query }) {
     recordEvents(cid, [{ kind: isMap ? "map" : "mcq", item_id: item.id, concept_ids: item.concept_ids, result: score === 1 ? "correct" : "wrong", score }]);
   };
   return html`
-    <div class="row between"><h1 class="m-0">${isMap ? "Map drills" : cName ? `Quiz: ${cName}` : "Concept quiz"}</h1>
+    <div class="row between"><h1 class="m-0">${isMap ? "Map drills" : cName ? `Quiz: ${cName}` : tName ? `Topic quiz: ${tName}` : "Concept quiz"}</h1>
       <span class="muted">${i + 1} / ${items.length}</span></div>
     <div class="bar mt-3 mb-4"><div style=${`width:${(100 * i) / items.length}%`}></div></div>
     <div class="card" key=${item.id}>
